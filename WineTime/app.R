@@ -22,10 +22,10 @@ library(shinydashboard)
 
 # Daten laden
 
-raw <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na="NA")
-raw2 <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv")
-raw3 <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv")
-raw4 <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv")
+E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na="NA")
+RF_ABG_Jahr_RS <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv")
+WB_BL_Jahr_RS <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv")
+WP_BL-Jahr_RS <- read.csv2("https://github.com/AndreaWiel/abgabe/blob/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv")
 
 selectable <- function(x)
 {

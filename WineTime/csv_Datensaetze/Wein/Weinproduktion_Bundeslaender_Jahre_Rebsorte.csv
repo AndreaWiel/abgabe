@@ -1,5 +1,5 @@
-GENESIS-Tabelle: 41254-0003
-Erzeugter Wein: Bundesländer, Jahre, Rebsorte,;;;;;;;;;;;;;
+GENESIS-Tabelle: 41254-0003;;;;;;;;;;;;;
+Erzeugter Wein: Bundesländer. Jahre. Rebsorte.;;;;;;;;;;;;;
 Weinkategorien;;;;;;;;;;;;;
 Erhebung der Weinerzeugung;;;;;;;;;;;;;
 Erzeugter Wein (hl);;;;;;;;;;;;;
@@ -150,9 +150,9 @@ Thüringen;2015;.;.;.;.;.;.;.;.;.;.;.;.
 Thüringen;2016;.;.;.;.;.;.;.;.;.;.;.;.
 Thüringen;2017;.;.;.;.;.;.;.;.;.;.;.;.
 Thüringen;2018;.;.;.;.;.;.;.;.;.;.;.;.
-__________
+__________;;;;;;;;;;;;;
 "Sachsen-Anhalt: Einschließlich Thüringen.
 
-Rotwein: Einschließlich Rotling und Roséwein."
-© Statistisches Bundesamt (Destatis), 2020
-Stand: 10.08.2020 / 17:59:57
+Rotwein: Einschließlich Rotling und Roséwein.";;;;;;;;;;;;;
+© Statistisches Bundesamt (Destatis). 2020;;;;;;;;;;;;;
+Stand: 10.08.2020 / 17:59:57;;;;;;;;;;;;;

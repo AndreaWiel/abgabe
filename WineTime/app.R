@@ -80,71 +80,71 @@ ui <- navbarPage(
         sliderInput(inputId = "num", 
                     label = "Choose a number", 
                     value = 25, min = 1, max = 100),
-        plotOutput("hist"), 
-        WeinanbaugebieteBody(
+        plotOutput("hist"))
+       # WeinanbaugebieteBody(
         # UI Tabs ----
-        tabItems(
+       # tabItems(
             # UI Tabs dashboard ----
-            tabItem(tabName = "Weinanbaugebiete",
-                    fluidRow(
-                        box( width = 8,
-                             plotOutput("demovariablen"),
-                             selectInput("varselect", "Variable auswählen", our_variables)
-                        ),
-                        box( width = 8,
-                             title = "Fälle pro Tag",
-                             plotlyOutput("plot1"),
-                             plotOutput("plotDetail"),
-                             plotOutput("plotSumme", 
-                                        hover = hoverOpts(id = "plot_hover", delayType = "debounce"),
-                                        brush = brushOpts(id = "plot_brush", direction = "x")),
-                             plotOutput("unser_brush")
-                        ),
-                        box(
-                            width = 4, 
-                            title = "Controls",
-                            selectInput("lk_selector", "Landkreis auswählen", choices = lks),
-                            selectInput("age_selector", "Altersgruppe auswählen", choices = ages),
-                            checkboxInput("facet_plot_yes_no", "Plot facetieren?", value = FALSE),
-                            selectInput("theme_selector", "Theme auswählen", choices = c("bw", "economist", "fivethirtyeight")),
-                            actionButton("dashboard_next", "Weiter")
-                        ),
+          #  tabItem(tabName = "Weinanbaugebiete",
+                  #  fluidRow(
+                       # box( width = 8,
+                           #  plotOutput("demovariablen"),
+                      #      # selectInput("varselect", "Variable auswählen", our_variables)
+                       # ),
+                       # box( width = 8,
+                            # title = "Fälle pro Tag",
+                            # plotlyOutput("plot1"),
+                            # plotOutput("plotDetail"),
+                            # plotOutput("plotSumme", 
+                                      # hover = hoverOpts(id = "plot_hover", delayType = "debounce"),
+                                       # brush = brushOpts(id = "plot_brush", direction = "x")),
+                            # plotOutput("unser_brush")
+                      #  ),
+                       # box(
+                          #  width = 4, 
+                          #  title = "Controls",
+                           # selectInput("lk_selector", "Landkreis auswählen", choices = lks),
+                           # selectInput("age_selector", "Altersgruppe auswählen", choices = ages),
+                           # checkboxInput("facet_plot_yes_no", "Plot facetieren?", value = FALSE),
+                           # selectInput("theme_selector", "Theme auswählen", choices = c("bw", "economist", "fivethirtyeight")),
+                           # actionButton("dashboard_next", "Weiter")
+                       # ),
                         
-                        box(width = 8,
-                            title = "Empty",
-                            textOutput("error"),
-                            verbatimTextOutput("debug")
-                        )
-                    )
+                        #box(width = 8,
+                           # title = "Empty",
+                           # textOutput("error"),
+                           # verbatimTextOutput("debug")
+                       # )
+                  #  )
                     
-            ),
+           # ),
             # UI Tabs widgets ----
-            tabItem(tabName = "Über den Datensatz", 
-                    fluidRow(
-                        box(width = 12,
-                            title = "Empty2",
-                            h1("Überschrift"),
-                            h2("Überschrift 2"),
-                            h3("Überschrift 3"),
-                            h4("Überschrift 4"),
-                            p("Hallo das ist ein Test"),
-                            br(), br(), 
-                            p("Zweiter Paragraph"),
-                            a(href = "www.google.com", "Hallo"),
-                            strong(p("Test")),
-                            hr()
+            #tabItem(tabName = "Über den Datensatz", 
+                  #  fluidRow(
+                    #    box(width = 12,
+                      #     title = "Empty2",
+                       #    h1("Überschrift"),
+                      #     h2("Überschrift 2"),
+                       #     h3("Überschrift 3"),
+                       #     h4("Überschrift 4"),
+                         #   p("Hallo das ist ein Test"),
+                        #    br(), br(), 
+                        #    p("Zweiter Paragraph"),
+                        #    a(href = "www.google.com", "Hallo"),
+                         #   strong(p("Test")),
+                         #   hr()
                             
                             
                             
-                        )
-                    )
-            )
+                      #  )
+                   # )
+           # )
             
-        )
-)
-)
+      #  )
+#)
+#)
         
-)
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {

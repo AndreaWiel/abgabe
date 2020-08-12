@@ -39,7 +39,7 @@ selectable <- function(x)
 our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 
 BL <- E_BL_Jahr_RS$Bundesland %>% unique() %>% sort()
-Jahr <- E_BL_Jahr_RS$Jahr %>% unique() %>% sort()
+JahrWein <- E_BL_Jahr_RS$Jahr %>% unique() %>% sort()
 IEM <- E_BL_Jahr_RS$Erntemenge_an_Weinmost %>% unique() %>% sort()
 RFEW <- E_BL_Jahr_RS$Rebfläche_im_Ertrag_Weißmost %>% unique() %>% sort()
 RFR <- E_BL_Jahr_RS$Erntemenge_an_Rotmost %>% unique() %>% sort()

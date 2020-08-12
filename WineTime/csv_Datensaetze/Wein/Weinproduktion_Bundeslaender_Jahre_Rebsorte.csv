@@ -1,13 +1,13 @@
-Bundesland;Jahr;Qualitätsweißwein (Wein mit g.U.);Prädikatsweißwein (Wein mit g.U.);Weißwein. Wein und/oder Landwein;Weißwein insgesamt;Qualitätsrotwein (Wein mit g.U.);Prädikatsrotwein (Wein mit g.U.);Rotwein. Wein und/oder Landwein;Rotwein Insgesamt;Qualitätswein insgesamt (Wein mit g.U.);Prädikatswein insgesamt (Wein mit g.U.);Wein und/oder Landwein insgesamt;Rebsorte insgesamt
-Baden-Württemberg;2010;505355;229912;2072;737338;809252;217803;2300;1029355;1314607;447715;4372;1766694
-Baden-Württemberg;2011;595897;396961;2828;995687;948342;419712;2738;1370792;1544239;816673;5566;2366478
-Baden-Württemberg;2012;568463;427385;2554;998403;876075;422613;2579;1301268;1444539;849998;5134;2299670
-Baden-Württemberg;2013;628594;226375;3453;858422;922699;209872;2977;1135548;1551293;436247;6429;1993970
-Baden-Württemberg;2014;792183;239972;6074;1038229;1136056;178254;3480;1317790;1928239;418226;9555;2356020
-Baden-Württemberg;2015;440513;513312;1405;955230;771621;502489;2428;1276538;1212134;1015801;3833;2231768
-Baden-Württemberg;2016;678248;398181;2479;1078908;1024595;327677;2621;1354893;1702843;725858;5100;2433800
-Baden-Württemberg;2017;498913;293792;1731;794435;799202;239057;2349;1040608;1298115;532849;4080;1835043
-Baden-Württemberg;2018;552717;677985;6959;1237661;714523;697278;4410;1416211;1267240;1375263;11369;2653872
+Bundesland;Jahr;Qualitaetsweisswein (Wein mit g.U.);Praedikatsweisswein (Wein mit g.U.);Weisswein. Wein und/oder Landwein;Weisswein insgesamt;Qualitaetsrotwein (Wein mit g.U.);Praedikatsrotwein (Wein mit g.U.);Rotwein. Wein und/oder Landwein;Rotwein Insgesamt;Qualitaetswein insgesamt (Wein mit g.U.);Praedikatswein insgesamt (Wein mit g.U.);Wein und/oder Landwein insgesamt;Rebsorte insgesamt
+Baden-Wuerttemberg;2010;505355;229912;2072;737338;809252;217803;2300;1029355;1314607;447715;4372;1766694
+Baden-Wuerttemberg;2011;595897;396961;2828;995687;948342;419712;2738;1370792;1544239;816673;5566;2366478
+Baden-Wuerttemberg;2012;568463;427385;2554;998403;876075;422613;2579;1301268;1444539;849998;5134;2299670
+Baden-Wuerttemberg;2013;628594;226375;3453;858422;922699;209872;2977;1135548;1551293;436247;6429;1993970
+Baden-Wuerttemberg;2014;792183;239972;6074;1038229;1136056;178254;3480;1317790;1928239;418226;9555;2356020
+Baden-Wuerttemberg;2015;440513;513312;1405;955230;771621;502489;2428;1276538;1212134;1015801;3833;2231768
+Baden-Wuerttemberg;2016;678248;398181;2479;1078908;1024595;327677;2621;1354893;1702843;725858;5100;2433800
+Baden-Wuerttemberg;2017;498913;293792;1731;794435;799202;239057;2349;1040608;1298115;532849;4080;1835043
+Baden-Wuerttemberg;2018;552717;677985;6959;1237661;714523;697278;4410;1416211;1267240;1375263;11369;2653872
 Bayern;2010;107433;151493;1275;260202;66141;9871;393;76405;173574;161364;1668;336607
 Bayern;2011;55977;225609;2099;283685;47024;27652;327;75003;103001;253261;2426;358688
 Bayern;2012;52123;314355;1809;368286;47252;47283;393;94929;99375;361638;2203;463215
@@ -134,15 +134,15 @@ Schleswig-Holstein;2015;-;-;184;184;-;-;109;109;-;-;292;292
 Schleswig-Holstein;2016;-;-;225;225;-;-;56;56;-;-;280;280
 Schleswig-Holstein;2017;-;-;.;.;-;-;.;.;-;-;200;200
 Schleswig-Holstein;2018;-;-;355;355;-;-;115;115;-;-;470;470
-Thüringen;2010;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2011;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2012;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2013;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2014;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2015;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2016;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2017;.;.;.;.;.;.;.;.;.;.;.;.
-Thüringen;2018;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2010;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2011;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2012;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2013;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2014;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2015;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2016;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2017;.;.;.;.;.;.;.;.;.;.;.;.
+Thueringen;2018;.;.;.;.;.;.;.;.;.;.;.;.
 __________;;;;;;;;;;;;;
 "Sachsen-Anhalt: Einschließlich Thüringen.
 

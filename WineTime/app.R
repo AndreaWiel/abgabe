@@ -67,11 +67,17 @@ ui <- navbarPage(
         
         # tabPanel 5 - Weinbestände
         tabPanel("Weinbestände"
-        )
+        ),
+        sliderInput(inputId = "num", 
+                    label = "Choose a number", 
+                    value = 25, min = 1, max = 100),
+        plotOutput("hist")
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output) { output$hist <- renderPlot({
+    hist(rnorm(input$num))
+})
 
     
 }

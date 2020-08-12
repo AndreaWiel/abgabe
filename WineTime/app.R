@@ -53,7 +53,17 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
-        title ="WineTime",
+  tags$head(
+    tags$style(HTML(
+    "@import url('//fonts.googleapis.com/css?family=Dancing+Script:wght@700&display=swap"))
+  ),
+  
+  headerPanel(
+    h1("WineTime", 
+       style = "font-family: 'Lobster', cursive;
+        font-weight: 500; line-height: 1.1; 
+        color: #4d3a7d;")),
+        title = "WineTime",
         theme = "bootstrap.min.css",
         footer = includeHTML("footer.html"),
         fluid = TRUE, 

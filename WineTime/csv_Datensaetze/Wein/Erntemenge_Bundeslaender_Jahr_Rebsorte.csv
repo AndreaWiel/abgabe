@@ -1,4 +1,4 @@
-Bundesland;Jahr;Erntemenge an Weinmost;Weinmostertrag je Hektar;Rebfläche im Ertrag Weißmost;Erntemenge an Rotmost;Rotmostertrag je Hektar;Rebfläche im Ertrag Rotmost;Insgesamte Erntemenge an Weinmost;Insgesamter Weinmostertrag je Hektar;Insgesamte Rebfläche im Ertrag
+Bundesland;Jahr;Erntemenge_an_Weinmost;Weinmostertrag_je_Hektar;Rebfläche_im Ertrag_Weißmost;Erntemenge_an_Rotmost;Rotmostertrag_je_Hektar;Rebfläche im Ertrag Rotmost;Insgesamte_Erntemenge an Weinmost;Insgesamter_Weinmostertrag je Hektar;Insgesamte_Rebfläche_im_Ertrag
 ;;hl;hl;ha;hl;hl;ha;hl;hl;ha
 Baden-Württemberg;1993;1330184;79.9;16645;987644;92.9;10632;2317828;85;27277
 Baden-Württemberg;1994;1452478;88.1;16491;1064166;98.9;10764;2516644;92.3;27255

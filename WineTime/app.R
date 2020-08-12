@@ -19,6 +19,7 @@ library(gghighlight)
 library(lubridate)
 library(tidyverse)
 library(shinydashboard)
+library(dplyr)
 
 # Daten laden
 

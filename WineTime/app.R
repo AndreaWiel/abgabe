@@ -59,9 +59,9 @@ ui <- navbarPage(
   ),
   
   headerPanel(
-    h1("WineTime", 
-       style = "font-family: 'Lobster', cursive;
-        font-weight: 500; line-height: 1.1; 
+    h5("WineTime", 
+       style = "font-family: 'Dancing Script', cursive;
+        font-weight: 900; line-height: 1.1; 
         color: #4d3a7d;")),
         title = "WineTime",
         theme = "bootstrap.min.css",

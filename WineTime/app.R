@@ -180,8 +180,8 @@ server <- function(input, output) {
           geom_bar() +
           labs(
             x = "Rebsorte",
-            y = "Weinbestand in hl"
-          )
+            y = "Weinbestand in hl",
+            caption = "Quelle&Copyright: Statistisches Bundesamt")
       })
     
 }

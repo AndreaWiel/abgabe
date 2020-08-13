@@ -33,7 +33,7 @@ Sommert <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master
 Sonne <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
 Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na="NA")
 TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-
+TempDurch2 <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na="NA")
 
 selectable <- function(x)
 {

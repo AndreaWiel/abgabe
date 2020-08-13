@@ -88,7 +88,7 @@ ui <- navbarPage(title = "WineTime",
         
         # tabPanel 5 - Weinbestände
         tabPanel("Weinbestände",
-                 sliderInput("Jahr5", "Wählen Sie ein Jahr:", value = 2010, min = 1993, max = 2018),
+                 sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
                  selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
                  plotOutput('Weinbestand1')
         )
@@ -170,7 +170,7 @@ server <- function(input, output) {
       # tabPanel 5 - Weinbestände
       output$Weinbestand1 <- renderPlot({
         WB_BL_Jahr_RS %>%
-          group_by("Rebsorte")
+          group_by("Rebsorte") %>%
           ggplot(aes(x = "Rebsorte")) +
           geom_bar() +
           labs(

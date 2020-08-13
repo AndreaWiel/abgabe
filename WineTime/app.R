@@ -86,8 +86,14 @@ ui <- navbarPage(title = "WineTime",
         ),
         
         # tabPanel 5 - Weinbestände
-        tabPanel("Weinbestände"
+        tabPanel("Weinbestände",
+                 sliderInput("Jahr5", "Wählen Sie ein Jahr:", value = 2010, min = 1993, max = 2018),
+                 selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
+                 plotOutput('Weinbestand1')
         ),
+  
+  
+  
         sliderInput(inputId = "num", 
                     label = "Choose a number", 
                     value = 25, min = 1, max = 100),
@@ -160,6 +166,17 @@ ui <- navbarPage(title = "WineTime",
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
+      # tabPanel 5 - Weinbestände
+      output$Weinbestand1 <- renderPlot({
+        WB_BL_Jahr_RS %>%
+          group_by("Rebsorte")
+          ggplot(aes(x = "Rebsorte")) +
+          geom_bar() +
+          labs(
+            x = "Rebsorte",
+            y = "Weinbestand in hl"
+          )
+      })
     
 }
 

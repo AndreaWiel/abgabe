@@ -54,6 +54,7 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 IRFE <- E_BL_Jahr_RS$Insgesamte_Rebfläche_im_Ertrag %>% unique() %>% sort()
 IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort()
 
+
 #Daten drehen
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                       slice(1:28) %>%
@@ -92,8 +93,17 @@ ui <- navbarPage(title = "WineTime",
         
         # tabPanel 3 - Ernte
         tabPanel("Weinernte",
-                 includeHTML("Weinernte.html")
-        ),
+                 includeHTML("Weinernte.html"),
+                 sidebarLayout(
+                   sidebarPanel(
+                     sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                     selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS$Bundesland)
+                   ),
+                   mainPanel(
+                     plotOutput('Weinernte1')
+                   )
+                 )
+),
         
         # tabPanel 4 - Weinproduktion
         tabPanel("Weinproduktion",
@@ -126,7 +136,7 @@ ui <- navbarPage(title = "WineTime",
                              )
                            )
                   ),
-                  tabPanel("Weinbestönde im Ländervergleich",
+                  tabPanel("Weinbestände im Ländervergleich",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
@@ -219,12 +229,25 @@ server <- function(input, output) {
       output$Map <- leaflet::renderLeaflet({
         
       })
+      
+      # tabPanel 2 - Weinernte
+      output$Weinernte1 <- renderPlot({
+        E_BL_Jahr_RS %>%
+          filter(Bundesland == input$Bundesland)
+        filter(Jahr == input$Jahr) %>%
+          ggplot(aes(x = "", color = Erntemenge_an_Weissmost)) +
+          geom_line() +
+          labs(
+            x = "Jahr",
+            y = "Erntemenge",
+            caption = "Quelle & Copyright: Statistisches Bundesamt"
+          )})
   
       # tabPanel 5 - Weinbestände
       output$Weinbestand1 <- renderPlot({
         WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5) %>%
-          filter(Jahr == input&Jahr5) %>%
+          filter(Jahr == input$Jahr5) %>%
           ggplot(aes(x = "", color = Rebsorte)) +
           geom_bar() +
           labs(

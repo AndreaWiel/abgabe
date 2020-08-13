@@ -58,7 +58,7 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(title = "WineTime",
-                 theme = shinytheme("flatly"),
+                 theme = "bootstrap.css",
                  footer = includeHTML("footer.html"),
                  fluid = TRUE, 
                  collapsible = TRUE,
@@ -92,10 +92,20 @@ ui <- navbarPage(title = "WineTime",
         ),
         
         # tabPanel 5 - Weinbestände
-        tabPanel("Weinbestände",
-                 sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                 selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
-                 plotOutput('Weinbestand1')
+        navbarMenu("Weinbestände",
+                  tabPanel("Weinbeständen der Bundeslänger",
+                           includeHTML("Weinbestand.html"),
+                           sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                           selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
+                           plotOutput('Weinbestand1')
+                  ),
+                  tabPanel("Weinbestände im Zeitvergleich",
+                           includeHTML("Weinbestand.html")
+                  ),
+                  tabPanel("Weinbestönde im Ländervergleich",
+                           includeHTML("Weinbestand.html")
+                  )
+                    
         )
   
   

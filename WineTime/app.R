@@ -70,7 +70,8 @@ ui <- navbarPage(title = "WineTime",
           color: #B3056A;")),
         
         # tabPanel 1 - Home
-        tabPanel("Home"
+        tabPanel("Home",
+                 includeHTML("home.html")
         ),
         
         # tabPanel 2 - Weinanbaugebiete

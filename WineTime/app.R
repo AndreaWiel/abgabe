@@ -176,7 +176,7 @@ server <- function(input, output) {
       output$Weinbestand1 <- renderPlot({
         WB_BL_Jahr_RS %>%
           group_by("Rebsorte") %>%
-          ggplot(aes(x = "Weisswein", color = Rebsorte)) +
+          ggplot(aes(x = "", color = Rebsorte)) +
           geom_bar() +
           labs(
             x = "Rebsorte",

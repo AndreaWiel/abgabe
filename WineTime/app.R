@@ -57,9 +57,12 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 #Daten drehen
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
-                      slice(1:28) %>%
-                      gather("Jahr", "n", 3:28) %>%
-                      spread(Rebsorte, n)
+                     gather("Jahr", "n", 3:28) %>%
+                     spread(Rebsorte, n)
+
+WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
+                     gather("Weinsorte", "n", 3:14) %>%
+                     spread(Jahr, n)
 
 
 # Define UI for application that draws a histogram
@@ -88,7 +91,7 @@ ui <- navbarPage(title = "WineTime",
         # tabPanel 2 - Weinanbaugebiete
         tabPanel("Weinanbaugebiete",
                  includeHTML("Weinanbau.html"),
-                 plotOutput('Map')
+                 leaflet::leafletOutput('Map', width = '70%', height = '70%')
         ),
         
         # tabPanel 3 - Ernte
@@ -106,8 +109,26 @@ ui <- navbarPage(title = "WineTime",
 ),
         
         # tabPanel 4 - Weinproduktion
-        tabPanel("Weinproduktion",
-                 includeHTML("Weinproduktion.html")
+        navbarMenu("Weinproduktion",
+                 tabPanel("Weinproduktion der Bundesländer",
+                          includeHTML("Weinproduktion.html"),
+                          selectInput("Weinsorte4", "Wählen Sie eine Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte)
+                 ),
+                 tabPanel("Weinproduktion im Zeitvergleich",
+                          includeHTML("Weinproduktion.html"),
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput("Bundesland4", "Wählen Sie ein Bundesland:", choices = WP_BL_Jahr_RS_neu$Bundesland),
+                              selectInput("Weinsorte4.1", "Wählen Sie eine Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte),
+                              selectInput("Weinsorte4.2", "Wählen Sie eine zweite Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte)
+                            ),
+                            mainPanel(
+                              plotOutput('Weinproduktion1'),
+                              plotOutput('Weinproduktion2'),
+                              plotOutput('Weinproduktion3')
+                            )
+                          )
+                 )
         ),
         
         # tabPanel 5 - Weinbestände
@@ -116,7 +137,7 @@ ui <- navbarPage(title = "WineTime",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
-                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1),
                                 selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
                              ),
                              mainPanel(
@@ -227,7 +248,9 @@ server <- function(input, output) {
       
       # tabPanel 2 - Weinanbaugebiete
       output$Map <- leaflet::renderLeaflet({
-        
+        leaflet() %>%
+          addTiles() %>%
+          setView( -98.58, 39.82, zoom = 5)
       })
       
       # tabPanel 2 - Weinernte
@@ -243,12 +266,54 @@ server <- function(input, output) {
             caption = "Quelle & Copyright: Statistisches Bundesamt"
           )})
   
+      # tabPanel 4 - Weinproduktion
+      output$Weinproduktion1 <- renderPlot({
+        WP_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland4) %>%
+          filter(Weinsorte == input$Weinsorte1) %>%
+          ggplot(aes(x = "Jahr"))+
+          geom_histogram()+
+          labs(
+            x = "Jahr",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      })
+      
+      output$Weinproduktion2 <- renderPlot({
+        WP_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland4) %>%
+          filter(Weinsorte == input$Weinsorte2) %>%
+          ggplot(aes(x = "Jahr"))+
+          geom_histogram()+
+          labs(
+            x = "Jahr",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      })
+      
+      output$Weinproduktion3 <-renderPlot({
+        WP_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland4) %>%
+          filter(Weinsorte == input$Weinsorte1|input$Weinsorte2) %>%
+          ggplot(aes(x = "Jahr", color = "Weinsorte"))+
+          geom_histogram()+
+          labs(
+            x = "Jahr",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      })
+      
+      
       # tabPanel 5 - Weinbestände
       output$Weinbestand1 <- renderPlot({
         WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5) %>%
           filter(Jahr == input$Jahr5) %>%
+<<<<<<< HEAD
           ggplot(aes(x = "", color = Rebsorte)) +
+=======
+          ggplot(aes(x = c("Weisswein", "Rotwein", "Insgesamt"))) +
+>>>>>>> 8e4af9994a8f672dd2b444aad3508b373ca54ef9
           geom_bar() +
           labs(
             x = "Rebsorte",

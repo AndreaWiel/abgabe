@@ -1,48 +1,68 @@
-<!-- Slideshow container -->
-<div class="slideshow-container">
-
-  <!-- Full-width images with number and caption text -->
-  <div class="mySlides fade">
-    <div class="numbertext">1 / 5</div>
-    <img src="www/home.jpg" style="width:100%">
-    <div class="text">Willkommen bei WineTime!</div>
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+    <li data-target="#myCarousel" data-slide-to="4"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="images/home.jpg" alt="1">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1 class="fit-head">Willkommen bei WineTime</h1>
+          <p class="fit-text">Viel Spaß beim Durchstöbern der Daten und Informationen rund um Wein.</p>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/Weinanbau.jpg" alt="2">
+      <div class="container">
+  <div class="carousel-caption">
+    <h1 class="fit-head">Regionale Vielfalt</h1>
+    <p class="fit-text">Entdecken Sie die Weinanbaugebiete Deutschlands.</p>
+    <a class="btn btn-lg btn-primary" onclick="$('li:eq(1) a').tab('show');" role="button">Erfahren Sie mehr &raquo;</a>
   </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">2 / 5</div>
-    <img src="www/Weinanbau.jpg" style="width:100%">
-    <div class="text">Entdenken Sie die Weinanbaugebiete Deutschlands.</div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/Weinernte.jpg" alt="3">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1 class="fit-head">Wein und Wetter</h1>
+          <p class="fit-text">Wie die regionale Bedingungen die Weinernte beeinflussen können.</p>
+          <p>
+            <a class="btn btn-lg btn-primary" onclick="$('li:eq(2) a').tab('show');" role="button">Erfahren Sie mehr &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/Weinproduktion.jpg" alt="4">
+      <div class="container">
+  <div class="carousel-caption">
+    <h1 class="fit-head">Rot, Weiß, Rosé</h1>
+    <p class="fit-text">Die Leistung der Winzer & Weingüter</p>
+    <a class="btn btn-lg btn-primary" onclick="$('li:eq(3) a').tab('show');" role="button">Erfahren Sie mehr &raquo;</a>
   </div>
-
-  <div class="mySlides fade">
-    <div class="numbertext">3 / 5</div>
-    <img src="www/Weinernte.jpg" style="width:100%">
-    <div class="text">Weinernte und Wetter - Die Einflüsse der Natur.</div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/Weinbestand.jpg" alt="5">
+      <div class="container">
+  <div class="carousel-caption">
+    <h1 class="fit-head">Vorräte fürs Leben</h1>
+    <p class="fit-text">Weinbestände in Deutschland.</p>
+    <a class="btn btn-lg btn-primary" onclick="$('li:eq(4) a').tab('show');" role="button">Erfahren Sie mehr &raquo;</a>
   </div>
-  
-   <div class="mySlides fade">
-    <div class="numbertext">4 / 5</div>
-    <img src="www/Weinproduktion.jpg" style="width:100%">
-    <div class="text">Weinproduktion - So viel schaffen die deutschen Weingüter.</div>
+      </div>
+    </div>
   </div>
-  
-   <div class="mySlides fade">
-    <div class="numbertext">5 / 5</div>
-    <img src="www/Weinbestand.jpg" style="width:100%">
-    <div class="text">Vorräte fürs Leben</div>
-  </div>
-
-  <!-- Next and previous buttons -->
-  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
 </div>
-<br>
-
-<!-- The dots/circles -->
-<div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span> 
-  <span class="dot" onclick="currentSlide(2)"></span> 
-  <span class="dot" onclick="currentSlide(3)"></span> 
-  <span class="dot" onclick="currentSlide(4)"></span>
-  <span class="dot" onclick="currentSlide(5)"></span>
-</div>
+<!-- /.carousel -->

@@ -53,25 +53,25 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(title = "WineTime",
-                 theme = shinytheme("sandstone"),
+                 theme = shinytheme("flatly"),
                  footer = includeHTML("footer.html"),
                  fluid = TRUE, 
                  collapsible = TRUE,
   
   
-  tags$head(
-    tags$style(HTML("@import url('//fonts.googleapis.com/css?family=Dancing+Script:wght@700&display=swap"))
-  ),
+ # tags$head(
+#    tags$style(HTML("@import url('//fonts.googleapis.com/css?family=Dancing+Script:wght@700&display=swap"))
+#  ),
   
-  headerPanel(
-    h1("WineTime",
-        style = "font-family: 'Dancing Script', cursive;
-          font-weight: 900; line-height: 3.2; 
-          color: #B3056A;")),
+ # headerPanel(
+  #  h1("WineTime",
+     #   style = "font-family: 'Dancing Script', cursive;
+      #    font-weight: 900; line-height: 3.2; 
+        #  color: #B3056A;")),
         
         # tabPanel 1 - Home
         tabPanel("Home",
-                 includeHTML("home.html")
+                 includeHTML("home.html"),
         ),
         
         # tabPanel 2 - Weinanbaugebiete
@@ -91,14 +91,14 @@ ui <- navbarPage(title = "WineTime",
                  sliderInput("Jahr5", "Wählen Sie ein Jahr:", value = 2010, min = 1993, max = 2018),
                  selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
                  plotOutput('Weinbestand1')
-        ),
+        )
   
   
   
-        sliderInput(inputId = "num", 
-                    label = "Choose a number", 
-                    value = 25, min = 1, max = 100),
-        plotOutput("hist"))
+     #   sliderInput(inputId = "num", 
+               #     label = "Choose a number", 
+               #     value = 25, min = 1, max = 100),
+      #  plotOutput("hist"))
        # WeinanbaugebieteBody(
         # UI Tabs ----
        # tabItems(
@@ -160,7 +160,7 @@ ui <- navbarPage(title = "WineTime",
             
       #  )
 #)
-#)
+)
         
 
 

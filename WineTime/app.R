@@ -194,7 +194,9 @@ server <- function(input, output) {
       # tabPanel 5 - Weinbestände
       output$Weinbestand1 <- renderPlot({
         WB_BL_Jahr_RS %>%
-          group_by("Rebsorte") %>%
+          slice(1:28,1:48) %>%
+          filter(Bundesland == input$Bundesland5) %>%
+          filter(Jahr == input&Jahr5) %>%
           ggplot(aes(x = "", color = Rebsorte)) +
           geom_bar() +
           labs(

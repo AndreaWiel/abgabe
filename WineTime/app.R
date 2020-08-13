@@ -107,7 +107,7 @@ ui <- navbarPage(title = "WineTime",
                            sidebarLayout(
                              sidebarPanel(
                                 sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                                selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland)
+                                selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
                              ),
                              mainPanel(
                                 plotOutput('Weinbestand1')
@@ -119,7 +119,7 @@ ui <- navbarPage(title = "WineTime",
                            sidebarLayout(
                              sidebarPanel(
                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                               selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland)
+                               selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
                              ),
                              mainPanel(
                                plotOutput('Weinbestand1')
@@ -131,7 +131,7 @@ ui <- navbarPage(title = "WineTime",
                            sidebarLayout(
                              sidebarPanel(
                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                               selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland)
+                               selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
                              ),
                              mainPanel(
                                plotOutput('Weinbestand1')
@@ -222,7 +222,7 @@ server <- function(input, output) {
   
       # tabPanel 5 - Weinbestände
       output$Weinbestand1 <- renderPlot({
-        WB_BL_Jahr_RS %>%
+        WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5) %>%
           filter(Jahr == input&Jahr5) %>%
           ggplot(aes(x = "", color = Rebsorte)) +

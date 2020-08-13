@@ -225,7 +225,7 @@ server <- function(input, output) {
           filter(Bundesland == input$Bundesland5) %>%
           filter(Jahr == input$Jahr5) %>%
           ggplot(aes(x = c("Weisswein", "Rotwein", "Insgesamt"))) +
-          geom_col() +
+          geom_bar() +
           labs(
             x = "Rebsorte",
             y = "Weinbestand in hl",

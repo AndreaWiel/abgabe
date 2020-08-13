@@ -86,7 +86,7 @@ ui <- navbarPage(title = "WineTime",
         # tabPanel 2 - Weinanbaugebiete
         tabPanel("Weinanbaugebiete",
                  includeHTML("Weinanbau.html"),
-                 plotOutput('Map')
+                 leaflet::leafletOutput('Map', width = '70%', height = '70%')
         ),
         
         # tabPanel 3 - Ernte
@@ -216,7 +216,9 @@ server <- function(input, output) {
       
       # tabPanel 2 - Weinanbaugebiete
       output$Map <- leaflet::renderLeaflet({
-        
+        leaflet() %>%
+          addTiles() %>%
+          setView( -98.58, 39.82, zoom = 5)
       })
   
       # tabPanel 5 - Weinbestände

@@ -80,24 +80,33 @@ ui <- navbarPage(title = "WineTime",
         ),
         
         # tabPanel 2 - Weinanbaugebiete
-        tabPanel("Weinanbaugebiete"
+        tabPanel("Weinanbaugebiete",
+                 includeHTML("Weinanbau.html")
         ),
         
         # tabPanel 3 - Ernte
-        tabPanel("Ernte"
+        tabPanel("Weinernte",
+                 includeHTML("Weinernte.html")
         ),
         
         # tabPanel 4 - Weinproduktion
-        tabPanel("Weinproduktion"
+        tabPanel("Weinproduktion",
+                 includeHTML("Weinproduktion.html")
         ),
         
         # tabPanel 5 - Weinbestände
         navbarMenu("Weinbestände",
-                  tabPanel("Weinbeständen der Bundeslänger",
+                  tabPanel("Weinbeständen der Bundesländer",
                            includeHTML("Weinbestand.html"),
-                           sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                           selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland),
-                           plotOutput('Weinbestand1')
+                           sidebarLayout(
+                             sidebarPanel(
+                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                                selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS$Bundesland)
+                             ),
+                             mainPanel(
+                                plotOutput('Weinbestand1')
+                             )
+                           )
                   ),
                   tabPanel("Weinbestände im Zeitvergleich",
                            includeHTML("Weinbestand.html")
@@ -191,7 +200,7 @@ server <- function(input, output) {
           labs(
             x = "Rebsorte",
             y = "Weinbestand in hl",
-            caption = "Quelle&Copyright: Statistisches Bundesamt")
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
       })
     
 }

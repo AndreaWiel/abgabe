@@ -54,6 +54,7 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 IRFE <- E_BL_Jahr_RS$Insgesamte_Rebfläche_im_Ertrag %>% unique() %>% sort()
 IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort()
 
+
 #Daten drehen
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "n", 3:28) %>%
@@ -84,7 +85,7 @@ ui <- navbarPage(title = "WineTime",
         
         # tabPanel 1 - Home
         tabPanel("Home",
-                 includeHTML("home.html"),
+                 includeHTML("home.html")
         ),
         
         # tabPanel 2 - Weinanbaugebiete
@@ -95,8 +96,17 @@ ui <- navbarPage(title = "WineTime",
         
         # tabPanel 3 - Ernte
         tabPanel("Weinernte",
-                 includeHTML("Weinernte.html")
-        ),
+                 includeHTML("Weinernte.html"),
+                 sidebarLayout(
+                   sidebarPanel(
+                     sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                     selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS$Bundesland)
+                   ),
+                   mainPanel(
+                     plotOutput('Weinernte1')
+                   )
+                 )
+),
         
         # tabPanel 4 - Weinproduktion
         navbarMenu("Weinproduktion",
@@ -147,7 +157,7 @@ ui <- navbarPage(title = "WineTime",
                              )
                            )
                   ),
-                  tabPanel("Weinbestönde im Ländervergleich",
+                  tabPanel("Weinbestände im Ländervergleich",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
@@ -161,73 +171,6 @@ ui <- navbarPage(title = "WineTime",
                   )
         )
   
-  
-  
-     #   sliderInput(inputId = "num", 
-               #     label = "Choose a number", 
-               #     value = 25, min = 1, max = 100),
-      #  plotOutput("hist"))
-       # WeinanbaugebieteBody(
-        # UI Tabs ----
-       # tabItems(
-            # UI Tabs dashboard ----
-          #  tabItem(tabName = "Weinanbaugebiete",
-                  #  fluidRow(
-                       # box( width = 8,
-                           #  plotOutput("demovariablen"),
-                      #      # selectInput("varselect", "Variable auswählen", our_variables)
-                       # ),
-                       # box( width = 8,
-                            # title = "Fälle pro Tag",
-                            # plotlyOutput("plot1"),
-                            # plotOutput("plotDetail"),
-                            # plotOutput("plotSumme", 
-                                      # hover = hoverOpts(id = "plot_hover", delayType = "debounce"),
-                                       # brush = brushOpts(id = "plot_brush", direction = "x")),
-                            # plotOutput("unser_brush")
-                      #  ),
-                       # box(
-                          #  width = 4, 
-                          #  title = "Controls",
-                           # selectInput("lk_selector", "Landkreis auswählen", choices = lks),
-                           # selectInput("age_selector", "Altersgruppe auswählen", choices = ages),
-                           # checkboxInput("facet_plot_yes_no", "Plot facetieren?", value = FALSE),
-                           # selectInput("theme_selector", "Theme auswählen", choices = c("bw", "economist", "fivethirtyeight")),
-                           # actionButton("dashboard_next", "Weiter")
-                       # ),
-                        
-                        #box(width = 8,
-                           # title = "Empty",
-                           # textOutput("error"),
-                           # verbatimTextOutput("debug")
-                       # )
-                  #  )
-                    
-           # ),
-            # UI Tabs widgets ----
-            #tabItem(tabName = "Über den Datensatz", 
-                  #  fluidRow(
-                    #    box(width = 12,
-                      #     title = "Empty2",
-                       #    h1("Überschrift"),
-                      #     h2("Überschrift 2"),
-                       #     h3("Überschrift 3"),
-                       #     h4("Überschrift 4"),
-                         #   p("Hallo das ist ein Test"),
-                        #    br(), br(), 
-                        #    p("Zweiter Paragraph"),
-                        #    a(href = "www.google.com", "Hallo"),
-                         #   strong(p("Test")),
-                         #   hr()
-                            
-                            
-                            
-                      #  )
-                   # )
-           # )
-            
-      #  )
-#)
 )
         
 
@@ -242,6 +185,19 @@ server <- function(input, output) {
           addTiles() %>%
           setView( -98.58, 39.82, zoom = 5)
       })
+      
+      # tabPanel 2 - Weinernte
+      output$Weinernte1 <- renderPlot({
+        E_BL_Jahr_RS %>%
+          filter(Bundesland == input$Bundesland)
+        filter(Jahr == input$Jahr) %>%
+          ggplot(aes(x = "", color = Erntemenge_an_Weissmost)) +
+          geom_line() +
+          labs(
+            x = "Jahr",
+            y = "Erntemenge",
+            caption = "Quelle & Copyright: Statistisches Bundesamt"
+          )})
   
       # tabPanel 4 - Weinproduktion
       output$Weinproduktion1 <- renderPlot({
@@ -286,6 +242,8 @@ server <- function(input, output) {
         WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5) %>%
           filter(Jahr == input$Jahr5) %>%
+          ggplot(aes(x = "", color = Rebsorte)) +
+
           ggplot(aes(x = c("Weisswein", "Rotwein", "Insgesamt"))) +
           geom_bar() +
           labs(

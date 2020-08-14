@@ -266,7 +266,8 @@ server <- function(input, output) {
           filter(Jahr == input$Jahr5.1) %>% 
           ggplot() +
           aes(x = Rebsorte, y = hl) +
-          geom_col() +
+          geom_col(position = "dodge") +
+          scale_fill_manual(values = c(Weisswein = "#A0E681", Rotwein = "DE144B", Insgesamt = "#F5A41D")) +
           labs(
             x = "Rebsorte",
             y = "Weinbestand in hl",

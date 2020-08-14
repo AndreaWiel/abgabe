@@ -1,5 +1,4 @@
 ﻿Bundesland;Jahr;Erntemenge_an_Weissmost;Weissmostertrag_je_Hektar;Rebflaeche_im_Ertrag_Weissmost;Erntemenge_an_Rotmost;Rotmostertrag_je_Hektar;Rebflaeche_im_Ertrag_Rotmost;Insgesamte_Erntemenge_an_Weinmost;Insgesamter_Weinmostertrag_je_Hektar;Insgesamte_Rebflaeche_im_Ertrag
-;;hl;hl;ha;hl;hl;ha;hl;hl;ha
 Baden-Wuerttemberg;1993;1330184;79.9;16645;987644;92.9;10632;2317828;85;27277
 Baden-Wuerttemberg;1994;1452478;88.1;16491;1064166;98.9;10764;2516644;92.3;27255
 Baden-Wuerttemberg;1995;1136536;70.3;16174;812657;74.9;10857;1949193;72.1;27030
@@ -416,5 +415,3 @@ Thueringen;2015;-;-;-;-;-;-;-;-;-
 Thueringen;2016;-;-;-;-;-;-;-;-;-
 Thueringen;2017;-;-;-;-;-;-;-;-;-
 Thueringen;2018;-;-;-;-;-;-;-;-;-
-;;;;;;;;;;
-;;;;;;;;;;

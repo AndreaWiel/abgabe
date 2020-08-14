@@ -298,7 +298,7 @@ server <- function(input, output) {
 
       
       # tabPanel 2 - Weinanbaugebiete ----
-      output$Weinanbaugebiet1.1 <- renderPlot({
+      output$Weinanbaugebiete1.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
           filter(Jahr == input$Jahr2.1) %>% 
@@ -312,13 +312,13 @@ server <- function(input, output) {
           caption = "Quelle & Copyright: Statistisches Bundesamt")
       })
       
-      output$Weinanbaugebiet1.2 <- DT::renderDT({
+      output$Weinanbaugebiete1.2 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
           filter(Jahr == input$Jahr2.1)
       })
       
-      output$Weinanbaugebiet2.1 <- renderPlot({
+      output$Weinanbaugebiete2.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.2.1) %>%
           ggplot()+
@@ -332,15 +332,15 @@ server <- function(input, output) {
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })
       
-      output$Weinanbaugebiet2.2 <- DT::renderDT({
+      output$Weinanbaugebiete2.2 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.2.1)
       })
       
-      output$Weinanbaugebiet2.3 <- renderPlot({
+      output$Weinanbaugebiete2.3 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
-          filter(Anbaugebiet == input$Anbaugebiet2.2.2|input$Anbaugebiet2.2.3) %>%
-          filter(Rebsorte == input$Rebsorte2.2)
+          filter(Anbaugebiet == input$Anbaugebiet2.2.2 | Anbaugebiet == input$Anbaugebiet2.2.3) %>%
+          filter(Rebsorte == input$Rebsorte2.2) %>%
           ggplot()+
           aes(x = Jahr, y = ha, color = Anbaugebiet)+
           geom_point()+
@@ -352,13 +352,13 @@ server <- function(input, output) {
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })
       
-      output$Weinanbaugebiet2.4 <- DT::renderDT({
+      output$Weinanbaugebiete2.4 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
-          filter(Anbaugebiet == input$Anbaugebiet2.2.2|input$Anbaugebiet2.2.3) %>%
+          filter(Anbaugebiet == input$Anbaugebiet2.2.2 | Anbaugebiet == input$Anbaugebiet2.2.3) %>%
           filter(Rebsorte == input$Rebsorte2.2)
       })
       
-      output$Weinanbaugebiet3.1 <- renderPlot({
+      output$Weinanbaugebiete3.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
           filter(Rebsorte == input$Rebsorte2.3.1) %>%
           filter(Jahr == input$Jahr2.3.1) %>%
@@ -374,18 +374,18 @@ server <- function(input, output) {
                 axis.title = element_text(size = 14))
       })
       
-      output$Weinanbaugebiet3.2 <- DT::renderDT({
+      output$Weinanbaugebiete3.2 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
           filter(Rebsorte == input$Rebsorte2.3.1) %>%
           filter(Jahr == input$Jahr2.3.1)
       })
       
-      output$Weinanbaugebiet3.3 <- renderPlot({
+      output$Weinanbaugebiete3.3 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
           filter(Rebsorte == input$Rebsorte2.3.2) %>%
-          filter(Jahr == input$Jahr2.3.2|input$Jahr2.3.3) %>%
+          filter(Jahr == input$Jahr2.3.2 | Jahr == input$Jahr2.3.3) %>%
           ggplot()+
-          aes(x = Anbaugebiet, y = ha)+
+          aes(x = Anbaugebiet, y = ha, color = Jahr)+
           geom_col(position = "dodge")+
           labs(
             x = "Anbaugebiet",
@@ -396,10 +396,10 @@ server <- function(input, output) {
                 axis.title = element_text(size = 14))
       })
       
-      output$Weinanbaugebiet3.4 <- DT::renderDT({
+      output$Weinanbaugebiete3.4 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
           filter(Rebsorte == input$Rebsorte2.3.2) %>%
-          filter(Jahr == input$Jahr2.3.2|input$Jahr2.3.3)
+          filter(Jahr == input$Jahr2.3.2 | Jahr == input$Jahr2.3.3)
       })
       
       

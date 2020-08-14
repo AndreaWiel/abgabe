@@ -56,17 +56,15 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 
 #Daten drehen
-WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
-                     gather("Jahr", "n", 3:28) #%>%
-                     #spread(Rebsorte, n)
-
 WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
                      gather("Weinsorte", "n", 3:14) %>%
                      spread(Jahr, n)
 
 
-
-opt_bundeslaender <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
+WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
+                     gather("Jahr", "n", 3:28) #%>%
+                     
+WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 
 # Define UI ----
 ui <- navbarPage(title = "WineTime",
@@ -111,7 +109,7 @@ ui <- navbarPage(title = "WineTime",
                  )
 ),
         
-        # tabPanel 4 - Weinproduktion
+        # tabPanel 4 - Weinproduktion ----
         navbarMenu("Weinproduktion",
                  tabPanel("Weinproduktion der Bundesländer",
                           includeHTML("Weinproduktion.html"),
@@ -139,25 +137,37 @@ ui <- navbarPage(title = "WineTime",
                   tabPanel("Weinbeständen der Bundesländer",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
-                             sidebarPanel(
-                                sliderInput("Jahr5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                selectInput("Bundesland5", "Wählen Sie ein Bundesland:", choices = opt_bundeslaender,
-                                            selected = opt_bundeslaender[1])
+                             sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                                sliderInput("Jahr5.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
-                             mainPanel(
-                                plotOutput('Weinbestand1')
+                             mainPanel(h4(strong("Weinbestände")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                            plotOutput('Weinbestand1.1')
+                                  ),
+                                  tabPanel("Tabelle",
+                                            DT::DTOutput('Weinbestand1.2')
+                                  )
+                                )
                              )
                            )
                   ),
                   tabPanel("Weinbestände im Zeitvergleich",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
-                             sidebarPanel(
-                               sliderInput("Jahr5x", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                               selectInput("Bundesland5x", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
+                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                               selectInput("Bundesland5.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
-                             mainPanel(
-                               plotOutput('Weinbestand1x')
+                             mainPanel(h4(strong("Weinbestände")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                            plotOutput('Weinbestand2.1')
+                                  ),
+                                  tabPanel("Tabelle",
+                                            DT::DTOutput('Weinbestand2.2')
+                                  )
+                                )
                              )
                            )
                   ),
@@ -165,11 +175,18 @@ ui <- navbarPage(title = "WineTime",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
-                               sliderInput("Jahr5xx", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                               sliderInput("Jahr5.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
                                selectInput("Bundesland5xx", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
                              ),
                              mainPanel(
-                               plotOutput('Weinbestand1xx')
+                               tabsetPanel(
+                                 tabPanel("Grafik",
+                                          plotOutput('Weinbestand3.1')
+                                 ),
+                                 tabPanel("Tabelle",
+                                          DT::DTOutput('Weinbestand3.2')
+                                 )
+                               )
                              )
                            )
                   )
@@ -183,14 +200,14 @@ ui <- navbarPage(title = "WineTime",
 server <- function(input, output) {
 
       
-      # tabPanel 2 - Weinanbaugebiete
+      # tabPanel 2 - Weinanbaugebiete ----
       output$Map <- leaflet::renderLeaflet({
         leaflet() %>%
           addTiles() %>%
           setView( -98.58, 39.82, zoom = 5)
       })
       
-      # tabPanel 2 - Weinernte
+      # tabPanel 3 - Weinernte ----
       output$Weinernte1 <- renderPlot({
         E_BL_Jahr_RS %>%
           filter(Bundesland == input$Bundesland3)
@@ -203,7 +220,7 @@ server <- function(input, output) {
             caption = "Quelle & Copyright: Statistisches Bundesamt"
           )})
   
-      # tabPanel 4 - Weinproduktion
+      # tabPanel 4 - Weinproduktion ----
       output$Weinproduktion1 <- renderPlot({
         WP_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland4) %>%
@@ -242,17 +259,11 @@ server <- function(input, output) {
       
       
       # tabPanel 5 - Weinbestände ----
-      output$Weinbestand1 <- renderPlot({
-        
-        #print(input$Bundesland5)
-        
-        temp <- WB_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland5) %>%
-          filter(Jahr == input$Jahr5) 
-        #print(nrow(temp))
-        temp %>% 
+      output$Weinbestand1.1 <- renderPlot({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.1) %>%
+          filter(Jahr == input$Jahr5.1) %>% 
           ggplot() +
-          #aes(x = "", color = Rebsorte) +
           aes(x = Rebsorte, y = n) +
           geom_col(position = "dodge") +
           scale_fill_manual(values = c(Weisswein = "#A0E681", Rotwein = "DE144B", Insgesamt = "#F5A41D")) +
@@ -261,7 +272,30 @@ server <- function(input, output) {
             y = "Weinbestand in hl",
             caption = "Quelle & Copyright: Statistisches Bundesamt")
       })
-    
+      
+      output$Weinbestand1.2 <- DT::renderDT({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.1) %>%
+          filter(Jahr == input$Jahr5.1)
+      })
+      
+      output$Weinbestand2.1 <- renderPlot({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.2) %>%
+          ggplot()+
+          aes(x = Jahr, y = n, color = Rebsorte)+
+          geom_jitter()+
+          geom_line()+
+          labs(
+            x = "Jahr",
+            y = "Weinbestand in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      })
+      
+      output$Weinbestand2.2 <- DT::renderDT({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.2)
+      })
 }
 
 # Run the application 

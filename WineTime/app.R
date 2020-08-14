@@ -62,7 +62,11 @@ WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
 
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
-                     gather("Jahr", "hl", 3:28) #%>%
+                      gather("Jahr", "hl", 3:28) #%>%
+
+E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
+                    gather("Weinsorte_Ernte", "n", 3:11)
+
                      
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
@@ -101,8 +105,8 @@ ui <- navbarPage(title = "WineTime",
                  includeHTML("Weinernte.html"),
                  sidebarLayout(
                    sidebarPanel(
-                     sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS$Bundesland)
+                     sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, sep = ""),
+                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS_neu$Bundesland)
                    ),
                    mainPanel(
                      plotOutput('Weinernte1')
@@ -210,16 +214,15 @@ server <- function(input, output) {
       
       # tabPanel 3 - Weinernte ----
       output$Weinernte1 <- renderPlot({
-        E_BL_Jahr_RS %>%
-          filter(Bundesland == input$Bundesland3)
-        filter(Jahr == input$Jahr3) %>%
-          ggplot(aes(x = "", color = Erntemenge_an_Weissmost)) +
-          geom_line() +
+        E_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland3) %>%
+          filter(Jahr == input$Jahr3) %>%
+          ggplot(aes(x = "Weinsorte_Ernte", y = "n")) +
+          geom_col(position = "dodge") +
           labs(
-            x = "Jahr",
-            y = "Erntemenge",
-            caption = "Quelle & Copyright: Statistisches Bundesamt"
-          )})
+            x = "Erntesorte",
+            y = "Erntemenge in hl & ha",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")})
   
       # tabPanel 4 - Weinproduktion ----
       output$Weinproduktion1 <- renderPlot({

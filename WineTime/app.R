@@ -55,7 +55,8 @@ IRFE <- E_BL_Jahr_RS$Insgesamte_Rebfläche_im_Ertrag %>% unique() %>% sort()
 IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort()
 
 
-#Daten drehen
+# Daten drehen----
+
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
                       gather("Jahr", "ha", 3:28)
 RF_ABG_Op <- RF_ABG_Jahr_RS_neu$Anbaugebiet %>% unique()
@@ -63,7 +64,9 @@ RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 
 
 E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
-  gather("Weinsorte_Ernte", "n", 3:11)
+  gather("Weinsorte_Ernte", "hl_u._ha", 3:11)
+E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
+E_BL_Op <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
 
 
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
@@ -76,12 +79,37 @@ WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
 
+Frosttage_neu <- Frost %>%
+  gather("Bundesland", "Frosttage", 2:18)
+
+Regentage_neu <- Regen %>%
+  gather("Bundesland", "Regentage", 2:18)
+
+Sonnentage_neu <- Sonne %>%
+  gather("Bundesland", "Sonnentage", 2:18)
+
+Sommertage_neu <- Sommert %>%
+  gather("Bundesland", "Sommertage", 2:18)
+
+TempDurch_neu <- TempDurch %>%
+  gather("Bundesland", "Temperaturdurchschnitt", 2:18)
+
+# Daten zusammenführen ----
+Wetter1 <- merge(Frosttage_neu, Regentage_neu)
+
+Wetter2 <- merge(Sommertage_neu, Sonnentage_neu)
+
+Wetter3 <- merge(Wetter1, Wetter2)
+
+Wetter_final <- merge(Wetter3, TempDurch_neu)
+
 # Define UI ----
 ui <- navbarPage(title = "WineTime",
                  theme = "bootstrap.css",
                  footer = includeHTML("footer.html"),
                  fluid = TRUE, 
                  collapsible = TRUE,
+                 
   
   
  # tags$head(
@@ -104,7 +132,7 @@ ui <- navbarPage(title = "WineTime",
                     tabPanel("Die deutschen Anbaugebiete",
                              includeHTML("Weinanbau.html"),
                              sidebarLayout(
-                               sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                             sliderInput("Jahr2.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                             selectInput("Anbaugebiet2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
                                ),
@@ -138,7 +166,7 @@ ui <- navbarPage(title = "WineTime",
                                )
                              ),
                              sidebarLayout(
-                               sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                             selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
                                             selectInput("Anbaugebiet2.2.3", "Wählen Sie ein zweites Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
                                             selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]) 
@@ -158,7 +186,7 @@ ui <- navbarPage(title = "WineTime",
                     tabPanel("Anbaugebiete im Ländervergleich",
                              includeHTML("Weinanbau.html"),
                              sidebarLayout(
-                               sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                             sliderInput("Jahr2.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                             selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                ),
@@ -643,6 +671,7 @@ server <- function(input, output) {
           aes(x = Rebsorte, y = hl) +
           geom_col(position = "dodge") +
           scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
+          scale_y_continuous(breaks = c(500:10000000), limits = c(0,10000000)) +
           labs(
             x = "Rebsorte",
             y = "Weinbestand in hl",

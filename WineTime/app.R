@@ -68,8 +68,8 @@ E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
 
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
                      gather("Weinkategorie", "hl", 3:14)
-WP_BL_Op <- WP_BL_Jahr_RS_neu$Bundesland %>% unique()
-WP_WK_Op <- WP_BL_Jahr_RS_neu$Weinkategorie %>% unique() 
+WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
+WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique() 
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "hl", 3:28)
@@ -535,9 +535,8 @@ server <- function(input, output) {
           ggplot() +
           aes(x = Weinkategorie, y = hl) +
           geom_col(position = "dodge") +
-          scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
           labs(
-            x = "Weinsorte",
+            x = "Weinkategorie",
             y = "Weinproduktion in hl",
             caption = "Quelle & Copyright: Statistisches Bundesamt")
       })

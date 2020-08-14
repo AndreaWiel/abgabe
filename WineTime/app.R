@@ -106,7 +106,7 @@ ui <- navbarPage(title = "WineTime",
                  sidebarLayout(
                    sidebarPanel(
                      sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, sep = ""),
-                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS$Bundesland)
+                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS_neu$Bundesland)
                    ),
                    mainPanel(
                      plotOutput('Weinernte1')
@@ -214,16 +214,15 @@ server <- function(input, output) {
       
       # tabPanel 3 - Weinernte ----
       output$Weinernte1 <- renderPlot({
-        E_BL_Jahr_RS %>%
+        E_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland3) %>%
-        filter(Jahr == input$Jahr3) %>%
-          ggplot(aes(x = "Bundesland", y = "Erntemenge_an_Weissmost")) +
-          geom_line() +
+          filter(Jahr == input$Jahr3) %>%
+          ggplot(aes(x = "Weinsorte_Ernte", y = "n")) +
+          geom_col(position = "dodge") +
           labs(
-            x = "Bundesland",
-            y = "Erntemenge",
-            caption = "Quelle & Copyright: Statistisches Bundesamt"
-          )})
+            x = "Erntesorte",
+            y = "Erntemenge in hl & ha",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")})
   
       # tabPanel 4 - Weinproduktion ----
       output$Weinproduktion1 <- renderPlot({

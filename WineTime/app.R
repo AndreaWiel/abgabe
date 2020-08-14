@@ -135,14 +135,14 @@ ui <- navbarPage(title = "WineTime",
         
         # tabPanel 5 - Weinbestände ----
         navbarMenu("Weinbestände",
-                  tabPanel("Weinbeständen der Bundesländer",
+                  tabPanel("Weinbestände der Bundesländer",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
                                 sliderInput("Jahr5.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                 selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
-                             mainPanel(h4(strong("Weinbestände")),
+                             mainPanel(h4(strong("Weinbestände der Bundesländer")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand1.1')
@@ -160,7 +160,7 @@ ui <- navbarPage(title = "WineTime",
                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                selectInput("Bundesland5.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
-                             mainPanel(h4(strong("Weinbestände")),
+                             mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand2.1')
@@ -179,7 +179,7 @@ ui <- navbarPage(title = "WineTime",
                                sliderInput("Jahr5.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                selectInput("Rebsorte5.3", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                              ),
-                             mainPanel(
+                             mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                tabsetPanel(
                                  tabPanel("Grafik",
                                           plotOutput('Weinbestand3.1')

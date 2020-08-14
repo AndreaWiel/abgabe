@@ -1377,7 +1377,7 @@ a.bg-primary:focus {
 }
 a.bg-success:hover,
 a.bg-success:focus {
-  background-color: #128f76;
+  background-color: #9e0657;
 }
 .bg-info {
   background-color: #3498db;
@@ -3153,21 +3153,21 @@ fieldset[disabled] .btn-primary.focus {
 .btn-success:focus,
 .btn-success.focus {
   color: #ffffff;
-  background-color: #128f76;
-  border-color: #0a4b3e;
+  background-color: #9e0657;
+  border-color: #9e0657;
 }
 .btn-success:hover {
   color: #ffffff;
-  background-color: #128f76;
-  border-color: #11866f;
+  background-color: #9e0657;
+  border-color: #9e0657;
 }
 .btn-success:active,
 .btn-success.active,
 .open > .dropdown-toggle.btn-success {
   color: #ffffff;
-  background-color: #128f76;
+  background-color: #9e0657;
   background-image: none;
-  border-color: #11866f;
+  border-color: #9e0657;
 }
 .btn-success:active:hover,
 .btn-success.active:hover,
@@ -3179,8 +3179,8 @@ fieldset[disabled] .btn-primary.focus {
 .btn-success.active.focus,
 .open > .dropdown-toggle.btn-success.focus {
   color: #ffffff;
-  background-color: #0e6f5c;
-  border-color: #0a4b3e;
+  background-color: #9e0657;
+  border-color: #9e0657;
 }
 .btn-success.disabled:hover,
 .btn-success[disabled]:hover,
@@ -4599,11 +4599,11 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   }
 }
 .navbar-inverse .navbar-toggle {
-  border-color: #128f76;
+  border-color: #9e0657;
 }
 .navbar-inverse .navbar-toggle:hover,
 .navbar-inverse .navbar-toggle:focus {
-  background-color: #128f76;
+  background-color: #9e0657;
 }
 .navbar-inverse .navbar-toggle .icon-bar {
   background-color: #ffffff;
@@ -4710,7 +4710,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .disabled > a:focus {
   color: #ecf0f1;
   cursor: not-allowed;
-  background-color: #3be6c4;
+  background-color: #9e0657;
   border-color: transparent;
 }
 .pagination-lg > li > a,
@@ -4827,7 +4827,7 @@ a.label:focus {
 }
 .label-success[href]:hover,
 .label-success[href]:focus {
-  background-color: #128f76;
+  background-color: #9e0657;
 }
 .label-info {
   background-color: #3498db;
@@ -6843,7 +6843,7 @@ input:focus {
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  background-color: #3be6c4;
+  background-color: #9e0657;
 }
 .close {
   color: #fff;

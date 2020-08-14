@@ -140,7 +140,7 @@ ui <- navbarPage(title = "WineTime",
                                sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
                                             selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
                                             selectInput("Anbaugebiet2.2.3", "Wählen Sie ein zweites Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
-                                            selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte", choices = RF_RS_Op, selected = RF_RS_Op[1]) 
+                                            selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]) 
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                          tabsetPanel(
@@ -159,7 +159,7 @@ ui <- navbarPage(title = "WineTime",
                              sidebarLayout(
                                sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
                                             sliderInput("Jahr2.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                            selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte", choices = RF_RS_Op, selected = RF_RS_Op[1])
+                                            selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                          tabsetPanel(
@@ -176,7 +176,7 @@ ui <- navbarPage(title = "WineTime",
                                sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
                                             sliderInput("Jahr2.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                             sliderInput("Jahr2.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                            selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte", choices = RF_RS_Op, selected = RF_RS_Op[1]) 
+                                            selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]) 
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                          tabsetPanel(
@@ -254,7 +254,7 @@ ui <- navbarPage(title = "WineTime",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                          selectInput("Bundesland5.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
+                                          selectInput("Bundesland5.2.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
                              mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                 tabsetPanel(
@@ -266,24 +266,58 @@ ui <- navbarPage(title = "WineTime",
                                   )
                                 )
                              )
+                           ),
+                           sidebarLayout(
+                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                          selectInput("Bundesland5.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
+                                          selectInput("Bundesland5.2.3", "Wählen Sie ein zweites Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
+                                          selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                             ),
+                             mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                            plotOutput('Weinbestand2.3')
+                                  ),
+                                  tabPanel("Tabelle",
+                                            DT::DTOutput('Weinbestand2.4')
+                                  )
+                                )
+                             )
                            )
                   ),
                   tabPanel("Weinbestände im Ländervergleich",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
-                               sliderInput("Jahr5.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                               selectInput("Rebsorte5.3", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                               sliderInput("Jahr5.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                               selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                              ),
                              mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                tabsetPanel(
                                  tabPanel("Grafik",
-                                          plotOutput('Weinbestand3.1')
+                                           plotOutput('Weinbestand3.1')
                                  ),
                                  tabPanel("Tabelle",
-                                          DT::DTOutput('Weinbestand3.2')
+                                           DT::DTOutput('Weinbestand3.2')
                                  )
                                )
+                             )
+                           ),
+                           sidebarLayout(
+                             sidebarPanel(
+                               sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
+                               sliderInput("Jahr5.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                               selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                             ),
+                             mainPanel(h4(strong("Weinbestände im Ländervergleich")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                            plotOutput('Weinbestand3.3')
+                                         ),
+                                  tabPanel("Tabelle",
+                                            DT::DTOutput('Weinbestand3.4')
+                                         )
+                                       )
                              )
                            )
                   )
@@ -483,7 +517,7 @@ server <- function(input, output) {
       
       output$Weinbestand2.1 <- renderPlot({
         WB_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland5.2) %>%
+          filter(Bundesland == input$Bundesland5.2.1) %>%
           ggplot()+
           aes(x = Jahr, y = hl, color = Rebsorte)+
           geom_point()+
@@ -497,13 +531,34 @@ server <- function(input, output) {
       
       output$Weinbestand2.2 <- DT::renderDT({
         WB_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland5.2)
+          filter(Bundesland == input$Bundesland5.2.1)
+      })
+      
+      output$Weinbestand2.3 <- renderPlot({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.2.2 | Bundesland == input$Bundesland5.2.3) %>%
+          filter(Rebsorte == input$Rebsorte5.2) %>%
+          ggplot()+
+          aes(x = Jahr, y = hl, color = Bundesland)+
+          geom_point()+
+          geom_line()+
+          labs(
+            x = "Jahr",
+            y = "Weinbestand in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      })
+      
+      output$Weinbestand2.4 <- DT::renderDT({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland5.2.2 | Bundesland == input$Bundesland5.2.3) %>%
+          filter(Rebsorte == input$Rebsorte5.2)
       })
       
       output$Weinbestand3.1 <- renderPlot({
         WB_BL_Jahr_RS_neu %>%
-          filter(Rebsorte == input$Rebsorte5.3) %>%
-          filter(Jahr == input$Jahr5.3) %>%
+          filter(Rebsorte == input$Rebsorte5.3.1) %>%
+          filter(Jahr == input$Jahr5.3.1) %>%
           ggplot()+
           aes(x = Bundesland, y = hl)+
           geom_col(position = "dodge")+
@@ -518,8 +573,30 @@ server <- function(input, output) {
       
       output$Weinbestand3.2 <- DT::renderDT({
         WB_BL_Jahr_RS_neu %>%
-          filter(Rebsorte == input$Rebsorte5.3) %>%
-          filter(Jahr == input$Jahr5.3)
+          filter(Rebsorte == input$Rebsorte5.3.1) %>%
+          filter(Jahr == input$Jahr5.3.1)
+      })
+      
+      output$Weinbestand3.3 <- renderPlot({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Rebsorte == input$Rebsorte5.3.2) %>%
+          filter(Jahr == input$Jahr5.3.2 | Jahr == input$Jahr5.3.3) %>%
+          ggplot()+
+          aes(x = Bundesland, y = hl)+
+          geom_col(position = "dodge")+
+          labs(
+            x = "Bundesland",
+            y = "Weinbestand in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+                axis.text = element_text(size = 12),
+                axis.title = element_text(size = 14))
+      })
+      
+      output$Weinbestand3.4 <- DT::renderDT({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Rebsorte == input$Rebsorte5.3.2) %>%
+          filter(Jahr == input$Jahr5.3.2 | Jahr == input$Jahr5.3.3)
       })
 }
 

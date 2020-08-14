@@ -62,9 +62,10 @@ WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
 
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
-                     gather("Jahr", "n", 3:28) #%>%
+                     gather("Jahr", "hl", 3:28) #%>%
                      
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
+WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
 
 # Define UI ----
 ui <- navbarPage(title = "WineTime",
@@ -82,7 +83,7 @@ ui <- navbarPage(title = "WineTime",
   #  h1("WineTime",
      #   style = "font-family: 'Dancing Script', cursive;
       #    font-weight: 900; line-height: 3.2; 
-        #  color: #B3056A;")),
+        #  color: #B3056A;")), #9e0657
         
         # tabPanel 1 - Home ----
         tabPanel("Home",
@@ -175,8 +176,8 @@ ui <- navbarPage(title = "WineTime",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
                              sidebarPanel(
-                               sliderInput("Jahr5.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
-                               selectInput("Bundesland5xx", "Wählen Sie ein Bundesland:", choices = WB_BL_Jahr_RS_neu$Bundesland)
+                               sliderInput("Jahr5.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                               selectInput("Rebsorte5.3", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                              ),
                              mainPanel(
                                tabsetPanel(
@@ -264,7 +265,7 @@ server <- function(input, output) {
           filter(Bundesland == input$Bundesland5.1) %>%
           filter(Jahr == input$Jahr5.1) %>% 
           ggplot() +
-          aes(x = Rebsorte, y = n) +
+          aes(x = Rebsorte, y = hl) +
           geom_col() +
           labs(
             x = "Rebsorte",
@@ -282,7 +283,7 @@ server <- function(input, output) {
         WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5.2) %>%
           ggplot()+
-          aes(x = Jahr, y = n, color = Rebsorte)+
+          aes(x = Jahr, y = hl, color = Rebsorte)+
           geom_jitter()+
           geom_line()+
           labs(
@@ -294,6 +295,25 @@ server <- function(input, output) {
       output$Weinbestand2.2 <- DT::renderDT({
         WB_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland5.2)
+      })
+      
+      output$Weinbestand3.1 <- renderPlot({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Rebsorte5.3) %>%
+          filter(Jahr == input$Jahr5.3) %>%
+          ggplot()+
+          aes(x = Bundesland, y = hl)+
+          geom_col()+
+          labs(
+            x = "Bundesland",
+            y = "Weinbestand in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      })
+      
+      output$Weinbestand3.2 <- DT::renderDT({
+        WB_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Rebsorte5.3) %>%
+          filter(Jahr == input$Jahr5.3)
       })
 }
 

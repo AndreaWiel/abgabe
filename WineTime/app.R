@@ -156,10 +156,10 @@ ui <- navbarPage(title = "WineTime",
                   tabPanel("Weinbestände im Zeitvergleich",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
-                             sidebarPanel("Auswahlmöglichkeiten",
+                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                selectInput("Bundesland5.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
-                             mainPanel("Weinbestände",
+                             mainPanel(h4(strong("Weinbestände")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand2.1')

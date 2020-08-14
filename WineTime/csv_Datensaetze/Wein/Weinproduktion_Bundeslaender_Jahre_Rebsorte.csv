@@ -1,4 +1,4 @@
-Bundesland;Jahr;Qualitaetsweisswein;Praedikatsweisswein;Weisswein_Wein_und/oder_Landwein;Weisswein_insgesamt;Qualitaetsrotwein;Praedikatsrotwein;Rotwein_Wein_und/oder_Landwein;Rotwein_Insgesamt;Qualitaetswein_insgesamt;Praedikatswein_insgesamt;Wein_und/oder_Landwein_insgesamt;Rebsorten_insgesamt
+Bundesland;Jahr;Weisswein - Qualitaetswein;Weisswein - Praedikatswein;Weisswein - Wein und/oder Landwein;Weisswein - Insgesamt;Rotwein - Qualitaetswein;Rotwein - Praedikatswein;Rotwein  - Wein und/oder Landwein;Rotwein - Insgesamt;insgesamt - Qualitaetswein ;Insgesamt - Praedikatswein;Insgesamt - Wein und/oder Landwein ;Insgesamt - Rebsorten
 Baden-Wuerttemberg;2010;505355;229912;2072;737338;809252;217803;2300;1029355;1314607;447715;4372;1766694
 Baden-Wuerttemberg;2011;595897;396961;2828;995687;948342;419712;2738;1370792;1544239;816673;5566;2366478
 Baden-Wuerttemberg;2012;568463;427385;2554;998403;876075;422613;2579;1301268;1444539;849998;5134;2299670

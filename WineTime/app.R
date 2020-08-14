@@ -27,7 +27,7 @@ library(dplyr)
 E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na="NA")
 RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na="NA", check.names = FALSE)
 WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na="NA", check.names = FALSE)
-WP_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na="NA")
+WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na="NA")
 Frost <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
 Sommert <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
 Sonne <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
@@ -66,9 +66,10 @@ E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
   gather("Weinsorte_Ernte", "n", 3:11)
 
 
-WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
-                     gather("Weinsorte", "hl", 3:14)
-  
+WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
+                     gather("Weinkategorie", "hl", 3:14)
+WP_BL_Op <- WP_BL_Jahr_RS_neu$Bundesland %>% unique()
+WP_WK_Op <- WP_BL_Jahr_RS_neu$Weinkategorie %>% unique() 
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "hl", 3:28)
@@ -210,23 +211,95 @@ ui <- navbarPage(title = "WineTime",
         navbarMenu("Weinproduktion",
                  tabPanel("Weinproduktion der Bundesländer",
                           includeHTML("Weinproduktion.html"),
-                          selectInput("Weinsorte4", "Wählen Sie eine Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte)
+                          sidebarLayout(
+                            sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                         sliderInput("Jahr4.1", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
+                                         selectInput("Bundesland4.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
+                            ),
+                            mainPanel(h4(strong("Weinbestände der Bundesländer")),
+                                      tabsetPanel(
+                                        tabPanel("Grafik",
+                                                 plotOutput('Weinproduktion1.1')
+                                        ),
+                                        tabPanel("Tabelle",
+                                                 DT::DTOutput('Weinproduktion1.2')
+                                        )
+                                      )
+                            )
+                          )
                  ),
                  tabPanel("Weinproduktion im Zeitvergleich",
                           includeHTML("Weinproduktion.html"),
                           sidebarLayout(
-                            sidebarPanel(
-                              selectInput("Bundesland4", "Wählen Sie ein Bundesland:", choices = WP_BL_Jahr_RS_neu$Bundesland),
-                              selectInput("Weinsorte4.1", "Wählen Sie eine Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte),
-                              selectInput("Weinsorte4.2", "Wählen Sie eine zweite Weinsorte:", choices = WP_BL_Jahr_RS_neu$Weinsorte)
+                            sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                         selectInput("Bundesland4.2.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
                             ),
-                            mainPanel(
-                              plotOutput('Weinproduktion1'),
-                              plotOutput('Weinproduktion2'),
-                              plotOutput('Weinproduktion3')
+                            mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
+                                      tabsetPanel(
+                                        tabPanel("Grafik",
+                                                 plotOutput('Weinproduktion2.1')
+                                        ),
+                                        tabPanel("Tabelle",
+                                                 DT::DTOutput('Weinproduktion2.2')
+                                        )
+                                      )
+                            )
+                          ),
+                          sidebarLayout(
+                            sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                         selectInput("Bundesland4.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
+                                         selectInput("Bundesland4.2.3", "Wählen Sie ein zweites Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
+                                         selectInput("Weinkategorie4.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
+                            ),
+                            mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
+                                      tabsetPanel(
+                                        tabPanel("Grafik",
+                                                 plotOutput('Weinbestand2.3')
+                                        ),
+                                        tabPanel("Tabelle",
+                                                 DT::DTOutput('Weinbestand2.4')
+                                        )
+                                      )
+                            )
+                          )
+                  ),
+                  tabPanel("Weinproduktion im Ländervergleich",
+                           includeHTML("Weinproduktion.html"),
+                            sidebarLayout(
+                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                          sliderInput("Jahr4.3.1", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
+                                          selectInput("Weinkategorie4.3.1", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
+                            ),
+                            mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
+                                      tabsetPanel(
+                                        tabPanel("Grafik",
+                                                 plotOutput('Weinproduktion3.1')
+                                        ),
+                                        tabPanel("Tabelle",
+                                                 DT::DTOutput('Weinproduktion3.2')
+                                        )
+                                      )
+                            )
+                          ),
+                          sidebarLayout(
+                            sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                         sliderInput("Jahr4.3.2", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
+                                         sliderInput("Jahr4.3.3", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2015, step = 1, sep = ""),
+                                         selectInput("Weinkategorie4.3.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
+                            ),
+                            mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
+                                      tabsetPanel(
+                                        tabPanel("Grafik",
+                                                 plotOutput('Weinproduktion3.3')
+                                        ),
+                                        tabPanel("Tabelle",
+                                                 DT::DTOutput('Weinproduktion3.4')
+                                        )
+                                      )
                             )
                           )
                  )
+                 
         ),
         
         # tabPanel 5 - Weinbestände ----
@@ -249,14 +322,14 @@ ui <- navbarPage(title = "WineTime",
                                 )
                              )
                            )
-                  ),
-                  tabPanel("Weinbestände im Zeitvergleich",
-                           includeHTML("Weinbestand.html"),
-                           sidebarLayout(
-                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                    ),
+                    tabPanel("Weinbestände im Zeitvergleich",
+                            includeHTML("Weinbestand.html"),
+                            sidebarLayout(
+                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                           selectInput("Bundesland5.2.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
-                             ),
-                             mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
+                              ),
+                              mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand2.1')
@@ -265,15 +338,15 @@ ui <- navbarPage(title = "WineTime",
                                             DT::DTOutput('Weinbestand2.2')
                                   )
                                 )
-                             )
-                           ),
+                              )
+                            ),
                            sidebarLayout(
-                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                           selectInput("Bundesland5.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
                                           selectInput("Bundesland5.2.3", "Wählen Sie ein zweites Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
                                           selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
-                             ),
-                             mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
+                              ),
+                              mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand2.3')
@@ -284,43 +357,43 @@ ui <- navbarPage(title = "WineTime",
                                 )
                              )
                            )
-                  ),
-                  tabPanel("Weinbestände im Ländervergleich",
-                           includeHTML("Weinbestand.html"),
-                           sidebarLayout(
-                             sidebarPanel(
-                               sliderInput("Jahr5.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                               selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
-                             ),
-                             mainPanel(h4(strong("Weinbestände im Ländervergleich")),
-                               tabsetPanel(
-                                 tabPanel("Grafik",
-                                           plotOutput('Weinbestand3.1')
-                                 ),
-                                 tabPanel("Tabelle",
-                                           DT::DTOutput('Weinbestand3.2')
-                                 )
-                               )
-                             )
-                           ),
-                           sidebarLayout(
-                             sidebarPanel(
-                               sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
-                               sliderInput("Jahr5.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                               selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
-                             ),
-                             mainPanel(h4(strong("Weinbestände im Ländervergleich")),
+                    ),
+                    tabPanel("Weinbestände im Ländervergleich",
+                            includeHTML("Weinbestand.html"),
+                            sidebarLayout(
+                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                          sliderInput("Jahr5.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                          selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                              ),
+                              mainPanel(h4(strong("Weinbestände im Ländervergleich")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                            plotOutput('Weinbestand3.1')
+                                  ),
+                                  tabPanel("Tabelle",
+                                            DT::DTOutput('Weinbestand3.2')
+                                  )
+                                )
+                              )
+                            ),
+                            sidebarLayout(
+                              sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                          sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
+                                          sliderInput("Jahr5.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                          selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                              ),
+                              mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                 tabsetPanel(
                                   tabPanel("Grafik",
                                             plotOutput('Weinbestand3.3')
-                                         ),
+                                  ),
                                   tabPanel("Tabelle",
                                             DT::DTOutput('Weinbestand3.4')
-                                         )
-                                       )
-                             )
-                           )
-                  )
+                                  )
+                                )
+                              )
+                            )
+                    )
         )
   
 )
@@ -455,40 +528,108 @@ server <- function(input, output) {
       
       
       # tabPanel 4 - Weinproduktion ----
-      output$Weinproduktion1 <- renderPlot({
-        WP_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland4) %>%
-          filter(Weinsorte == input$Weinsorte1) %>%
-          ggplot(aes(x = "Jahr"))+
-          geom_histogram()+
+      output$Weinproduktion1.1 <- renderPlot({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.1) %>%
+          filter(Jahr == input$Jahr4.1) %>% 
+          ggplot() +
+          aes(x = Weinkategorie, y = hl) +
+          geom_col(position = "dodge") +
+          scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
           labs(
-            x = "Jahr",
+            x = "Weinsorte",
             y = "Weinproduktion in hl",
             caption = "Quelle & Copyright: Statistisches Bundesamt")
       })
       
-      output$Weinproduktion2 <- renderPlot({
-        WP_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland4) %>%
-          filter(Weinsorte == input$Weinsorte2) %>%
-          ggplot(aes(x = "Jahr"))+
-          geom_histogram()+
-          labs(
-            x = "Jahr",
-            y = "Weinproduktion in hl",
-            caption = "Quelle & Copyright: Statistisches Bundesamt")
+      output$Weinproduktion1.2 <- DT::renderDT({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.1) %>%
+          filter(Jahr == input$Jahr4.1)
       })
       
-      output$Weinproduktion3 <-renderPlot({
-        WP_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland4) %>%
-          filter(Weinsorte == input$Weinsorte1|input$Weinsorte2) %>%
-          ggplot(aes(x = "Jahr", color = "Weinsorte"))+
-          geom_histogram()+
+      output$Weinproduktion2.1 <- renderPlot({
+        WB_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.2.1) %>%
+          ggplot()+
+          aes(x = Jahr, y = hl, color = Weinkategorie)+
+          geom_point()+
+          geom_line()+
           labs(
             x = "Jahr",
             y = "Weinproduktion in hl",
-            caption = "Quelle & Copyright: Statistisches Bundesamt")
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      })
+      
+      output$Weinproduktion2.2 <- DT::renderDT({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.2.1)
+      })
+      
+      output$Weinproduktion2.3 <- renderPlot({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.2.2 | Bundesland == input$Bundesland4.2.3) %>%
+          filter(Weinkategorie == input$Weinkategorie4.2) %>%
+          ggplot()+
+          aes(x = Jahr, y = hl, color = Bundesland)+
+          geom_point()+
+          geom_line()+
+          labs(
+            x = "Jahr",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      })
+      
+      output$Weinproduktion2.4 <- DT::renderDT({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Bundesland == input$Bundesland4.2.2 | Bundesland == input$Bundesland4.2.3) %>%
+          filter(Weinkategorie == input$Weinkategorie4.2)
+      })
+      
+      output$Weinproduktion3.1 <- renderPlot({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Weinkategorie == input$Weinkategorie4.3.1) %>%
+          filter(Jahr == input$Jahr4.3.1) %>%
+          ggplot()+
+          aes(x = Bundesland, y = hl)+
+          geom_col(position = "dodge")+
+          labs(
+            x = "Bundesland",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+                axis.text = element_text(size = 12),
+                axis.title = element_text(size = 14))
+      })
+      
+      output$Weinproduktion3.2 <- DT::renderDT({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Weinkategorie == input$Weinkategorie4.3.1) %>%
+          filter(Jahr == input$Jahr4.3.1)
+      })
+      
+      output$Weinproduktion3.3 <- renderPlot({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Weinkategorie == input$Weinkategorie4.3.2) %>%
+          filter(Jahr == input$Jahr4.3.2 | Jahr == input$Jahr4.3.3) %>%
+          ggplot()+
+          aes(x = Bundesland, y = hl)+
+          geom_col(position = "dodge")+
+          labs(
+            x = "Bundesland",
+            y = "Weinproduktion in hl",
+            caption = "Quelle & Copyright: Statistisches Bundesamt")+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+                axis.text = element_text(size = 12),
+                axis.title = element_text(size = 14))
+      })
+      
+      output$Weinproduktion3.4 <- DT::renderDT({
+        WP_BL_Jahr_WK_neu %>%
+          filter(Weinkategorie == input$Weinkategorie4.3.2) %>%
+          filter(Jahr == input$Jahr4.3.2 | Jahr == input$Jahr4.3.3)
       })
       
       

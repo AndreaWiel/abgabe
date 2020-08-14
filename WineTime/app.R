@@ -270,7 +270,7 @@ server <- function(input, output) {
           ggplot() +
           aes(x = Rebsorte, y = hl) +
           geom_col(position = "dodge") +
-          scale_fill_manual(values = c(Weisswein = "#A0E681", Rotwein = "DE144B", Insgesamt = "#F5A41D")) +
+          scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
           labs(
             x = "Rebsorte",
             y = "Weinbestand in hl",
@@ -303,7 +303,7 @@ server <- function(input, output) {
       
       output$Weinbestand3.1 <- renderPlot({
         WB_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Rebsorte5.3) %>%
+          filter(Rebsorte == input$Rebsorte5.3) %>%
           filter(Jahr == input$Jahr5.3) %>%
           ggplot()+
           aes(x = Bundesland, y = hl)+
@@ -316,7 +316,7 @@ server <- function(input, output) {
       
       output$Weinbestand3.2 <- DT::renderDT({
         WB_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Rebsorte5.3) %>%
+          filter(Rebsorte == input$Rebsorte5.3) %>%
           filter(Jahr == input$Jahr5.3)
       })
 }

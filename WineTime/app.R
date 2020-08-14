@@ -63,6 +63,9 @@ WP_BL_Jahr_RS_neu <- WP_BL_Jahr_RS %>%
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "n", 3:28) #%>%
+
+E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
+                    gather("Weinsorte_Ernte", "n", 3:11)
                      
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 
@@ -100,7 +103,7 @@ ui <- navbarPage(title = "WineTime",
                  includeHTML("Weinernte.html"),
                  sidebarLayout(
                    sidebarPanel(
-                     sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010),
+                     sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, sep = ""),
                      selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS$Bundesland)
                    ),
                    mainPanel(
@@ -210,12 +213,12 @@ server <- function(input, output) {
       # tabPanel 3 - Weinernte ----
       output$Weinernte1 <- renderPlot({
         E_BL_Jahr_RS %>%
-          filter(Bundesland == input$Bundesland3)
+          filter(Bundesland == input$Bundesland3) %>%
         filter(Jahr == input$Jahr3) %>%
-          ggplot(aes(x = "", color = Erntemenge_an_Weissmost)) +
+          ggplot(aes(x = "Bundesland", y = "Erntemenge_an_Weissmost")) +
           geom_line() +
           labs(
-            x = "Jahr",
+            x = "Bundesland",
             y = "Erntemenge",
             caption = "Quelle & Copyright: Statistisches Bundesamt"
           )})

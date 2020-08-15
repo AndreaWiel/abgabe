@@ -64,9 +64,9 @@ RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 
 
 E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
-  gather("Weinsorte_Ernte", "hl_u._ha", 3:11)
+  gather("Weinsorte_Ernte", "n", 3:11)
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
-E_BL_Op <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
+E_BL_Op2 <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
 
 
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
@@ -230,7 +230,7 @@ ui <- navbarPage(title = "WineTime",
                  sidebarLayout(
                    sidebarPanel(
                      sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, sep = ""),
-                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Jahr_RS_neu$Bundesland)
+                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])
                    ),
                    mainPanel(
                      plotOutput('Weinernte1')

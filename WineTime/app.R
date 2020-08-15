@@ -154,7 +154,7 @@ ui <- navbarPage(title = "WineTime",
                     tabPanel("Anbaugebiete im Zeitvergleich",
                              includeHTML("Weinanbau.html"),
                              sidebarLayout(
-                               sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                             selectInput("Anbaugebiet2.2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
@@ -205,7 +205,7 @@ ui <- navbarPage(title = "WineTime",
                                )
                              ),
                              sidebarLayout(
-                               sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                             sliderInput("Jahr2.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                             sliderInput("Jahr2.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                             selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])

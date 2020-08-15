@@ -137,6 +137,7 @@ ui <- navbarPage(title = "WineTime",
                                             selectInput("Anbaugebiet2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
                                ),
                                mainPanel(h4(strong("Die deutschen Anbaugebiete")),
+                                         textOutput('Wahl2.1'),
                                   tabsetPanel(
                                       tabPanel("Grafik",
                                                 plotOutput('Weinanbaugebiete1.1')
@@ -407,7 +408,7 @@ ui <- navbarPage(title = "WineTime",
                             sidebarLayout(
                               sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                           sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
-                                          sliderInput("Jahr5.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                          sliderInput("Jahr5.3.3", "Wählen Sie ein zweites Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                           selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                               ),
                               mainPanel(h4(strong("Weinbestände im Ländervergleich")),
@@ -433,6 +434,10 @@ server <- function(input, output) {
 
       
       # tabPanel 2 - Weinanbaugebiete ----
+      output$Wahl2.1 <- renderText({
+        paste("Weinanbaufläsche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
+      })
+  
       output$Weinanbaugebiete1.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.1) %>%

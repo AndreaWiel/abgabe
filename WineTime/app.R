@@ -74,10 +74,12 @@ WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
 WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
 WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique() 
 
+
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "hl", 3:28)
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
+
 
 Frosttage_neu <- Frost %>%
   gather("Bundesland", "Frosttage", 2:18)

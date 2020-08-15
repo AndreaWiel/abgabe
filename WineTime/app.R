@@ -158,6 +158,7 @@ ui <- navbarPage(title = "WineTime",
                                             selectInput("Anbaugebiet2.2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
+                                         textOutput('Wahl2.2.1'),
                                   tabsetPanel(
                                       tabPanel("Grafik",
                                                 plotOutput('Weinanbaugebiete2.1')
@@ -175,6 +176,7 @@ ui <- navbarPage(title = "WineTime",
                                             selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
+                                         textOutput('Wahl2.2.2'),
                                          tabsetPanel(
                                            tabPanel("Grafik",
                                                     plotOutput('Weinanbaugebiete2.3')
@@ -194,6 +196,7 @@ ui <- navbarPage(title = "WineTime",
                                             selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
+                                         textOutput('Wahl2.3.1'),
                                          tabsetPanel(
                                            tabPanel("Grafik",
                                                     plotOutput('Weinanbaugebiete3.1')
@@ -211,6 +214,7 @@ ui <- navbarPage(title = "WineTime",
                                             selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                ),
                                mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
+                                         textOutput('Wahl2.3.2'),
                                          tabsetPanel(
                                            tabPanel("Grafik",
                                                     plotOutput('Weinanbaugebiete3.3')
@@ -459,6 +463,10 @@ server <- function(input, output) {
           filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
           filter(Jahr == input$Jahr2.1)
       })
+      
+      output$Wahl2.2.1 <- renderText({
+        paste("Weinanbaufläsche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.2.1, "zwischen 1993 und 2018.")
+      })
 
       output$Weinanbaugebiete2.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
@@ -477,6 +485,10 @@ server <- function(input, output) {
       output$Weinanbaugebiete2.2 <- DT::renderDT({
         RF_ABG_Jahr_RS_neu %>%
           filter(Anbaugebiet == input$Anbaugebiet2.2.1)
+      })
+      
+      output$Wahl2.2.2 <- renderText({
+        paste("Weinanbaufläsche (in ha) der Rebsorte", input$Rebsorte2.2, "zwischen 1993 und 2018 im Vergleich der Anbaugebiete", input$Anbaugebiet2.2.2, "und", input$Anbaugebiet2.2.3, ".")
       })
 
       output$Weinanbaugebiete2.3 <- renderPlot({
@@ -499,6 +511,10 @@ server <- function(input, output) {
           filter(Anbaugebiet == input$Anbaugebiet2.2.2 | Anbaugebiet == input$Anbaugebiet2.2.3) %>%
           filter(Rebsorte == input$Rebsorte2.2)
       })
+      
+      output$Wahl2.3.1 <- renderText({
+        paste("Weinanbaufläsche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Jahr", input$Jahr2.3.1, ".")
+      })
 
       output$Weinanbaugebiete3.1 <- renderPlot({
         RF_ABG_Jahr_RS_neu %>%
@@ -520,6 +536,10 @@ server <- function(input, output) {
         RF_ABG_Jahr_RS_neu %>%
           filter(Rebsorte == input$Rebsorte2.3.1) %>%
           filter(Jahr == input$Jahr2.3.1)
+      })
+      
+      output$Wahl2.3.2 <- renderText({
+        paste("Weinanbaufläsche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Vergleich der Jahre", input$Jahr2.3.2, "und", input$Jahr2.3.3, ".")
       })
 
       output$Weinanbaugebiete3.3 <- renderPlot({

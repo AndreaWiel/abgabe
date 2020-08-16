@@ -632,7 +632,7 @@ server <- function(input, output) {
   })
   
   output$Wetter <- renderPlot({
-    Wetter_Ernte %>%
+    Wetter_final %>%
       filter(Bundesland == input$Bundesland3.2) %>%
       filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.3) %>%
       ggplot() +

@@ -279,6 +279,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland4.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
+                                                 textOutput('Wahl4.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinproduktion1.1')
@@ -298,6 +299,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland4.2.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
+                                                 textOutput('Wahl4.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinproduktion2.1')
@@ -315,6 +317,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Weinkategorie4.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
+                                                 textOutput('Wahl4.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinproduktion2.3')
@@ -334,6 +337,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Weinkategorie4.3.1", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
+                                                 textOutput('Wahl4.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinproduktion3.1')
@@ -351,6 +355,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Weinkategorie4.3.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
+                                                 textOutput('Wahl4.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinproduktion3.3')
@@ -375,6 +380,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
+                                                 textOutput('Wahl5.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinbestand1.1')
@@ -393,6 +399,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland5.2.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
+                                                 textOutput('Wahl5.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinbestand2.1')
@@ -410,6 +417,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
+                                                 textOutput('Wahl5.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinbestand2.3')
@@ -429,6 +437,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
+                                                 textOutput('Wahl5.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinbestand3.1')
@@ -446,6 +455,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
+                                                 textOutput('Wahl5.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
                                                             plotOutput('Weinbestand3.3')
@@ -472,13 +482,15 @@ server <- function(input, output) {
     paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
   })
   
-  output$Weinanbaugebiete1.1 <- renderPlot({
+  output$Weinanbaugebiete1.1 <- renderPlot(width = "auto", height = 600, {
     RF_ABG_Jahr_RS_neu %>%
       filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
       filter(Jahr == input$Jahr2.1) %>%
       ggplot() +
       aes(x = Rebsorte, y = ha) +
       geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
+      geom_label(aes(label=ha)) + 
+      ylim(0, 110000) +
       labs(
         x = "Rebsorte",
         y = "Anbaufläche in ha",
@@ -645,13 +657,19 @@ server <- function(input, output) {
   })
   
   # tabPanel 4 - Weinproduktion ----
-  output$Weinproduktion1.1 <- renderPlot({
+  output$Wahl4.1 <- renderText({
+    paste("Weinbestand (in hl) nach Weinkategorie für", input$Bundesland4.1, "im Jahr", input$Jahr4.1, ".")
+  })
+  
+  output$Weinproduktion1.1 <- renderPlot(width = "auto", height = 600, {
     WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.1) %>%
       filter(Jahr == input$Jahr4.1) %>%
       ggplot() +
       aes(x = Weinkategorie, y = hl) +
       geom_col(position = "dodge") +
+      geom_label(aes(label=hl)) + 
+      ylim(0, 6800000) +
       labs(
         x = "Weinkategorie",
         y = "Weinproduktion in hl",
@@ -663,6 +681,10 @@ server <- function(input, output) {
     WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.1) %>%
       filter(Jahr == input$Jahr4.1)
+  })
+  
+  output$Wahl4.2.1 <- renderText({
+    paste("Weinbestand (in hl) nach Weinkategorie für", input$Bundesland4.2.1, "zwischen 2010 und 2018.")
   })
   
   output$Weinproduktion2.1 <- renderPlot({
@@ -682,6 +704,10 @@ server <- function(input, output) {
   output$Weinproduktion2.2 <- DT::renderDT({
     WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.2.1)
+  })
+  
+  output$Wahl4.2.2 <- renderText({
+    paste("Weinbestand (in hl) der Weinkategorie", input$Weinkategorie4.2, "zwischen 2010 und 2018 im Vergleich von", input$Bundesland4.2.2, "und", input$Bundesland4.2.3, ".")
   })
   
   output$Weinproduktion2.3 <- renderPlot({
@@ -705,6 +731,10 @@ server <- function(input, output) {
       filter(Weinkategorie == input$Weinkategorie4.2)
   })
   
+  output$Wahl4.3.1 <- renderText({
+    paste("Weinbestand (in hl) der Bundesländer für die Weinkategorie", input$Weinkategorie4.3.1, "im Jahr", input$Jahr4.3.1, ".")
+  })
+  
   output$Weinproduktion3.1 <- renderPlot({
     WP_BL_Jahr_WK_neu %>%
       filter(Weinkategorie == input$Weinkategorie4.3.1) %>%
@@ -725,6 +755,10 @@ server <- function(input, output) {
     WP_BL_Jahr_WK_neu %>%
       filter(Weinkategorie == input$Weinkategorie4.3.1) %>%
       filter(Jahr == input$Jahr4.3.1)
+  })
+  
+  output$Wahl4.3.2 <- renderText({
+    paste("Weinbestand (in hl) der Bundesländer für die Weinkategorie", input$Weinkategorie4.3.2, "im Vergleich der Jahre", input$Jahr4.3.2, "und", input$Jahr4.3.3, ".")
   })
   
   output$Weinproduktion3.3 <- renderPlot({
@@ -753,15 +787,19 @@ server <- function(input, output) {
   
   
   # tabPanel 5 - Weinbestände ----
-  output$Weinbestand1.1 <- renderPlot({
+  output$Wahl5.1 <- renderText({
+    paste("Weinbestand (in hl) nach Rebsorten für", input$Bundesland5.1, "im Jahr", input$Jahr5.1, ".")
+  })
+  
+  output$Weinbestand1.1 <- renderPlot(width = "auto", height = 600, {
     WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.1) %>%
       filter(Jahr == input$Jahr5.1) %>% 
       ggplot() +
       aes(x = Rebsorte, y = hl) +
-      geom_col(position = "dodge") +
-      #scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
-      #scale_y_continuous(breaks = c(500:10000000), limits = c(0,10000000)) +
+      geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
+      geom_label(aes(label=hl)) + 
+      ylim(0, 10000000) +
       labs(
         x = "Rebsorte",
         y = "Weinbestand in hl",
@@ -772,6 +810,10 @@ server <- function(input, output) {
     WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.1) %>%
       filter(Jahr == input$Jahr5.1)
+  })
+  
+  output$Wahl5.2.1 <- renderText({
+    paste("Weinbestand (in hl) nach Rebsorten für", input$Bundesland5.2.1, "zwischen 1993 und 2018.")
   })
   
   output$Weinbestand2.1 <- renderPlot({
@@ -791,6 +833,10 @@ server <- function(input, output) {
   output$Weinbestand2.2 <- DT::renderDT({
     WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.2.1)
+  })
+  
+  output$Wahl5.2.2 <- renderText({
+    paste("Weinbestand (in hl) der Rebsorte", input$Rebsorte5.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland5.2.2, "und", input$Bundesland5.2.3, ".")
   })
   
   output$Weinbestand2.3 <- renderPlot({
@@ -814,6 +860,10 @@ server <- function(input, output) {
       filter(Rebsorte == input$Rebsorte5.2)
   })
   
+  output$Wahl5.3.1 <- renderText({
+    paste("Weinbestand (in hl) der Bundesländer für die Rebsorte", input$Rebsorte5.3.1, "im Jahr", input$Jahr5.3.1, ".")
+  })
+  
   output$Weinbestand3.1 <- renderPlot({
     WB_BL_Jahr_RS_neu %>%
       filter(Rebsorte == input$Rebsorte5.3.1) %>%
@@ -834,6 +884,10 @@ server <- function(input, output) {
     WB_BL_Jahr_RS_neu %>%
       filter(Rebsorte == input$Rebsorte5.3.1) %>%
       filter(Jahr == input$Jahr5.3.1)
+  })
+  
+  output$Wahl5.3.2 <- renderText({
+    paste("Weinbestand (in hl) der Bundesländer für  die Rebsorte", input$Rebsorte5.3.2, "im Vergleich der Jahre", input$Jahr5.3.2, "und", input$Jahr5.3.3, ".")
   })
   
   output$Weinbestand3.3 <- renderPlot({

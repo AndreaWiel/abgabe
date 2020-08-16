@@ -64,7 +64,7 @@ RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 
 
 E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
-  gather("Weinsorte_Ernte", "n", 3:11)
+  gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
 E_BL_Op2 <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
 
@@ -96,14 +96,20 @@ Sommertage_neu <- Sommert %>%
 TempDurch_neu <- TempDurch %>%
   gather("Bundesland", "Temperaturdurchschnitt", 2:18)
 
+
 # Daten zusammenführen ----
+
 Wetter1 <- merge(Frosttage_neu, Regentage_neu)
 
 Wetter2 <- merge(Sommertage_neu, Sonnentage_neu)
 
 Wetter3 <- merge(Wetter1, Wetter2)
 
-Wetter_final <- merge(Wetter3, TempDurch_neu)
+Wetter_zusam <- merge(Wetter3, TempDurch_neu)
+
+Wetter_final <- Wetter_zusam %>%
+               gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
+
 
 # Define UI ----
 ui <- navbarPage(title = "WineTime",
@@ -228,19 +234,46 @@ ui <- navbarPage(title = "WineTime",
                     )
         ),
         
-        # tabPanel 3 - Ernte ----
-        tabPanel("Weinernte",
-                 includeHTML("Weinernte.html"),
-                 sidebarLayout(
-                   sidebarPanel(
-                     sliderInput("Jahr3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, sep = ""),
-                     selectInput("Bundesland3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])
-                   ),
-                   mainPanel(
-                     plotOutput('Weinernte1')
-                   )
-                 )
-        ),
+# tabPanel 3 - Ernte ----
+navbarMenu("Weinernte & Wetter",
+           tabPanel("Weinernte",
+                    includeHTML("Weinernte.html"),
+                    sidebarLayout(
+                      sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                   sliderInput("Jahr3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                   selectInput("Bundesland3.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])),
+                      mainPanel(h4(strong("Weinernte nach Bundesländern")),
+                                tabsetPanel(
+                                  tabPanel("Grafik",
+                                           plotOutput('Weinernte1.1')
+                                  ),
+                                 tabPanel("Tabelle",
+                                           DT::DTOutput('Weinernte1.2')
+                                  )
+                                    )
+                                      ))
+                                        )
+                                         ),
+
+             tabPanel("Wetter",
+               includeHTML("Weinernte.html"),
+                    sidebarLayout(
+                     sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                        sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 2010, step = 1, sep = ""),
+                        selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_final$Bundesland, selected = Wetter_final$Bundesland[1])
+                            ),
+                        mainPanel(h4(strong("Wetter über die Jahre")),
+                        tabsetPanel(
+                        tabPanel("Grafik",
+                                plotOutput('Wetter1.1')
+                       ),
+                       tabPanel("Tabelle",
+                               DT::DTOutput('Wetter1.2')
+                        ))
+                           )
+                             )
+                              ), 
+
         
         # tabPanel 4 - Weinproduktion ----
         navbarMenu("Weinproduktion",
@@ -263,6 +296,7 @@ ui <- navbarPage(title = "WineTime",
                             )
                           )
                  ),
+                 
                  tabPanel("Weinproduktion im Zeitvergleich",
                           includeHTML("Weinproduktion.html"),
                           sidebarLayout(
@@ -566,21 +600,46 @@ server <- function(input, output) {
       
       
       
-      
       # tabPanel 3 - Weinernte ----
-      output$Weinernte1 <- renderPlot({
+      output$Weinernte1.1 <- renderPlot({
         E_BL_Jahr_RS_neu %>%
-          filter(Bundesland == input$Bundesland3) %>%
-          filter(Jahr == input$Jahr3) %>%
-          ggplot(aes(x = "Weinsorte_Ernte", y = "n")) +
+          filter(Bundesland == input$Bundesland3.1) %>%
+          filter(Jahr == input$Jahr3.1) %>%
+          ggplot() +
+          aes(x = Ernte_und_Ertrag, y = hl_oder_ha) +
           geom_col(position = "dodge") +
           labs(
-            x = "Erntesorte",
+            x = "Ernte & Ertrag",
             y = "Erntemenge in hl & ha",
-            caption = "Quelle & Copyright: Statistisches Bundesamt")})
-  
+            caption = "Quelle & Copyright: Statistisches Bundesamt") +
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      })
+      output$Weinernte1.2 <- DT::renderDT({
+       E_BL_Jahr_RS_neu %>%
+          filter(Bundesland == input$Bundesland3.1) %>%
+          filter(Jahr == input$Jahr3.1 | Jahr == input$Jahr3.2)
+      })
       
+      output$Wetter <- renderPlot({
+        Wetter_final %>%
+          filter(Bundesland == input$Bundesland3.2 | Bundesland == input$Bundesland3.2.2) %>%
+          filter(Jahr == input$Jahr3.2) %>%
+          ggplot() +
+          aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
+          geom_point() +
+          geom_line() +
+          labs(
+            x = "Bundesland",
+            y = "Wetterlage",
+            caption = "Quelle & Copyright: Statistisches Bundesamt") +
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      })
       
+      output$Wetter1.2 <- DT::renderDT({
+        Wetter_final %>%
+         filter(Bundesland == input$Bundesland3.2) %>%
+          filter(Jahr == input$Jahr3.2)
+      })
       
       # tabPanel 4 - Weinproduktion ----
       output$Weinproduktion1.1 <- renderPlot({

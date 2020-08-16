@@ -1380,11 +1380,11 @@ a.bg-success:focus {
   background-color: #9e0657;
 }
 .bg-info {
-  background-color: #3498db;
+  background-color: #8aa4be;
 }
 a.bg-info:hover,
 a.bg-info:focus {
-  background-color: #217dbb;
+  background-color: #8aa4be;
 }
 .bg-warning {
   background-color: #f39c12;
@@ -2386,7 +2386,7 @@ th {
 .table > thead > tr.info > th,
 .table > tbody > tr.info > th,
 .table > tfoot > tr.info > th {
-  background-color: #3498db;
+  background-color: #8aa4be;
 }
 .table-hover > tbody > tr > td.info:hover,
 .table-hover > tbody > tr > th.info:hover,
@@ -3200,25 +3200,25 @@ fieldset[disabled] .btn-success.focus {
 }
 .btn-info {
   color: #ffffff;
-  background-color: #3498db;
-  border-color: #3498db;
+  background-color: #8aa4be;
+  border-color: #8aa4be;
 }
 .btn-info:focus,
 .btn-info.focus {
   color: #ffffff;
-  background-color: #217dbb;
+  background-color: #8aa4be;
   border-color: #16527a;
 }
 .btn-info:hover {
   color: #ffffff;
-  background-color: #217dbb;
+  background-color: #8aa4be;
   border-color: #2077b2;
 }
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   color: #ffffff;
-  background-color: #217dbb;
+  background-color: #8aa4be;
   background-image: none;
   border-color: #2077b2;
 }
@@ -3244,11 +3244,11 @@ fieldset[disabled] .btn-info:focus,
 .btn-info.disabled.focus,
 .btn-info[disabled].focus,
 fieldset[disabled] .btn-info.focus {
-  background-color: #3498db;
-  border-color: #3498db;
+  background-color: #8aa4be;
+  border-color: #8aa4be;
 }
 .btn-info .badge {
-  color: #3498db;
+  color: #8aa4be;
   background-color: #ffffff;
 }
 .btn-warning {
@@ -4610,7 +4610,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 }
 .navbar-inverse .navbar-collapse,
 .navbar-inverse .navbar-form {
-  border-color: #149c82;
+  border-color: #9e0657;
 }
 .navbar-inverse .navbar-link {
   color: #ffffff;
@@ -4830,11 +4830,11 @@ a.label:focus {
   background-color: #9e0657;
 }
 .label-info {
-  background-color: #3498db;
+  background-color: #8aa4be;
 }
 .label-info[href]:hover,
 .label-info[href]:focus {
-  background-color: #217dbb;
+  background-color: #8aa4be;
 }
 .label-warning {
   background-color: #f39c12;
@@ -5007,8 +5007,8 @@ a.thumbnail.active {
 }
 .alert-info {
   color: #ffffff;
-  background-color: #3498db;
-  border-color: #3498db;
+  background-color: #8aa4be;
+  border-color: #8aa4be;
 }
 .alert-info hr {
   border-top-color: #258cd1;
@@ -5091,7 +5091,7 @@ a.thumbnail.active {
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-info {
-  background-color: #3498db;
+  background-color: #8aa4be;
 }
 .progress-striped .progress-bar-info {
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -5269,7 +5269,7 @@ button.list-group-item-success.active:focus {
 }
 .list-group-item-info {
   color: #ffffff;
-  background-color: #3498db;
+  background-color: #8aa4be;
 }
 a.list-group-item-info,
 button.list-group-item-info {
@@ -5651,22 +5651,22 @@ button.list-group-item-danger.active:focus {
   border-bottom-color: #9e0657;
 }
 .panel-info {
-  border-color: #3498db;
+  border-color: #8aa4be;
 }
 .panel-info > .panel-heading {
   color: #ffffff;
-  background-color: #3498db;
-  border-color: #3498db;
+  background-color: #8aa4be;
+  border-color: #8aa4be;
 }
 .panel-info > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #3498db;
+  border-top-color: #8aa4be;
 }
 .panel-info > .panel-heading .badge {
-  color: #3498db;
+  color: #8aa4be;
   background-color: #ffffff;
 }
 .panel-info > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #3498db;
+  border-bottom-color: #8aa4be;
 }
 .panel-warning {
   border-color: #f39c12;
@@ -6687,7 +6687,7 @@ button.close {
 }
 .text-info,
 .text-info:hover {
-  color: #3498db;
+  color: #8aa4be;
 }
 table a:not(.btn),
 .table a:not(.btn) {

@@ -10,8 +10,6 @@
 library(shiny)
 library(shinythemes)
 library(shinyjs)
-library(bootstrap)
-library(leaflet)
 library(ggplot2)
 library(plotly)
 library(ggthemes)
@@ -480,12 +478,14 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr2.1) %>%
       ggplot() +
       aes(x = Rebsorte, y = ha) +
-      geom_col(position = "dodge") +
-      scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
+      geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
       labs(
         x = "Rebsorte",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14))
   })
   
   output$Weinanbaugebiete1.2 <- DT::renderDT({

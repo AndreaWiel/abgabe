@@ -232,7 +232,7 @@ ui <- navbarPage(title = "WineTime",
         
 # tabPanel 3 - Ernte ----
 navbarMenu("Weinernte & Wetter",
-           tabPanel("Weinernte",
+           tabPanel("Mehr hierzu",
                     includeHTML("Weinernte.html"),
                     sidebarLayout(
                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
@@ -247,8 +247,8 @@ navbarMenu("Weinernte & Wetter",
                                            DT::DTOutput('Weinernte1.2')
                                   )
                                     )
-                                      ))
-                                        )
+                                      )
+                                        
                                          ),
 
                     sidebarLayout(
@@ -265,8 +265,8 @@ navbarMenu("Weinernte & Wetter",
                        tabPanel("Tabelle",
                                DT::DTOutput('Wetter1.2')
                         ))
-                           
-                             )
+                        )
+                             ))
                               ), 
 
         
@@ -626,6 +626,10 @@ server <- function(input, output) {
           aes(x = Jahr, y = Anzahl_Tage_u_Temp, color = Wetter) +
           geom_point() +
           geom_line() +
+          facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
+          scale_colour_discrete(name="Bundesland") +
+                                #breaks=c(""), 
+                                #labels= c("")) +
           labs(
             x = "Wetter",
             y = "Tage bzw Temperatur",

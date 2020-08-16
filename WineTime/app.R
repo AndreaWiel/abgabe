@@ -624,7 +624,7 @@ server <- function(input, output) {
       filter(Bundesland == input$Bundesland3.2) %>%
       filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.2) %>%
       ggplot() +
-      aes(x = Jahr, y = Anzahl_Tage_u_Temp, color = Wetter) +
+      aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
       geom_point() +
       geom_line() +
       facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+

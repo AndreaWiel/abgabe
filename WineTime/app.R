@@ -42,17 +42,7 @@ selectable <- function(x)
 
 our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 
-BL <- E_BL_Jahr_RS$Bundesland %>% unique() %>% sort()
-JahrWein <- E_BL_Jahr_RS$Jahr %>% unique() %>% sort()
-IEM <- E_BL_Jahr_RS$Erntemenge_an_Weinmost %>% unique() %>% sort()
-RFEW <- E_BL_Jahr_RS$Rebfläche_im_Ertrag_Weißmost %>% unique() %>% sort()
-RFR <- E_BL_Jahr_RS$Erntemenge_an_Rotmost %>% unique() %>% sort()
-REH <- E_BL_Jahr_RS$Rotmostertrag_je_Hektar %>% unique() %>% sort()
-RFER <- E_BL_Jahr_RS$Rebfläche_im_Ertrag_Rotmost %>% unique() %>% sort()
-IEMWM <- E_BL_Jahr_RS$Insgesamte_Erntemenge_an_Weinmost %>% unique() %>% sort()
-IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort()
-IRFE <- E_BL_Jahr_RS$Insgesamte_Rebfläche_im_Ertrag %>% unique() %>% sort()
-IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort()
+
 
 
 # Daten drehen----
@@ -261,11 +251,10 @@ navbarMenu("Weinernte & Wetter",
                                         )
                                          ),
 
-             tabPanel("Wetter",
-               includeHTML("Weinernte.html"),
                     sidebarLayout(
                      sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                         sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 2010, step = 1, sep = ""),
+                        sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 1995, step = 1, sep = ""),
                         selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
                             ),
                         mainPanel(h4(strong("Wetter über die Jahre")),
@@ -276,7 +265,7 @@ navbarMenu("Weinernte & Wetter",
                        tabPanel("Tabelle",
                                DT::DTOutput('Wetter1.2')
                         ))
-                           )
+                           
                              )
                               ), 
 
@@ -614,6 +603,8 @@ server <- function(input, output) {
           ggplot() +
           aes(x = Ernte_und_Ertrag, y = hl_oder_ha) +
           geom_col(position = "dodge") +
+          #coord_cartesian(ylim = c(0, 10000000), expand = TRUE) +
+          #scale_y_discrete(limits = factor(0, 1000000)) +
           labs(
             x = "Ernte & Ertrag",
             y = "Erntemenge in hl & ha",
@@ -624,15 +615,15 @@ server <- function(input, output) {
       output$Weinernte1.2 <- DT::renderDT({
        E_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland3.1) %>%
-          filter(Jahr == input$Jahr3.1 | Jahr == input$Jahr3.1)
+          filter(Jahr == input$Jahr3.1)
       })
       
       output$Wetter <- renderPlot({
         Wetter_Ernte %>%
           filter(Bundesland == input$Bundesland3.2) %>%
-          filter(Jahr == input$Jahr3.2) %>%
+          filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.2) %>%
           ggplot() +
-          aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
+          aes(x = Jahr, y = Anzahl_Tage_u_Temp, color = Wetter) +
           geom_point() +
           geom_line() +
           labs(

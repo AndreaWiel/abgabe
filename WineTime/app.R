@@ -614,6 +614,7 @@ server <- function(input, output) {
             caption = "Quelle & Copyright: Statistisches Bundesamt") +
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })
+      
       output$Weinernte1.2 <- DT::renderDT({
        E_BL_Jahr_RS_neu %>%
           filter(Bundesland == input$Bundesland3.1) %>%

@@ -252,8 +252,8 @@ ui <- navbarPage(title = "WineTime",
                                      
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 1995, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 1995, step = 1, sep = ""),
                                                     selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
                                        ),
                                        mainPanel(h4(strong("Wetter über die Jahre")),

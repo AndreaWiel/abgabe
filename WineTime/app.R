@@ -253,7 +253,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 1995, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 1995, step = 1, sep = ""),
                                                     selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
                                        ),
                                        mainPanel(h4(strong("Wetter über die Jahre")),
@@ -264,9 +264,9 @@ ui <- navbarPage(title = "WineTime",
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter1.2')
                                                    ))
-                                       )
-                                     ))
-                 ), 
+                                                       )
+                                                          ))
+                                                              ), 
                  
                  
                  # tabPanel 4 - Weinproduktion ----
@@ -622,13 +622,12 @@ server <- function(input, output) {
   output$Wetter <- renderPlot({
     Wetter_Ernte %>%
       filter(Bundesland == input$Bundesland3.2) %>%
-      filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.2) %>%
+      filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.3) %>%
       ggplot() +
       aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
-      geom_point() +
-      geom_line() +
-      facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
-      scale_colour_discrete(name="Bundesland") +
+      geom_col() +
+      #facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
+      #scale_colour_discrete(name="Bundesland") +
       #breaks=c(""), 
       #labels= c("")) +
       labs(

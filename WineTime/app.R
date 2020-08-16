@@ -59,24 +59,28 @@ IWEH <- E_BL_Jahr_RS$Insgesamter_Weinmostertrag_je_Hektar %>% unique() %>% sort(
 
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
                       gather("Jahr", "ha", 3:28)
+
 RF_ABG_Op <- RF_ABG_Jahr_RS_neu$Anbaugebiet %>% unique()
 RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 
 
 E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
   gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
+
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
 E_BL_Op2 <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
 
 
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
                      gather("Weinkategorie", "hl", 3:14)
+
 WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
 WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique() 
 
 
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
                      gather("Jahr", "hl", 3:28)
+
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
 
@@ -109,6 +113,8 @@ Wetter_zusam <- merge(Wetter3, TempDurch_neu)
 
 Wetter_final <- Wetter_zusam %>%
                gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
+
+Wetter_Ernte <- merge(Wetter_final, E_BL_Jahr_RS_neu)
 
 
 # Define UI ----
@@ -260,7 +266,7 @@ navbarMenu("Weinernte & Wetter",
                     sidebarLayout(
                      sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                         sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1951, max = 2018, value = 2010, step = 1, sep = ""),
-                        selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_final$Bundesland, selected = Wetter_final$Bundesland[1])
+                        selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
                             ),
                         mainPanel(h4(strong("Wetter über die Jahre")),
                         tabsetPanel(
@@ -376,7 +382,7 @@ navbarMenu("Weinernte & Wetter",
                   tabPanel("Weinbestände der Bundesländer",
                            includeHTML("Weinbestand.html"),
                            sidebarLayout(
-                             sidebarPanel(h4(strong("Auswhlmöglichkeiten")),
+                             sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                 sliderInput("Jahr5.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                 selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
                              ),
@@ -475,7 +481,7 @@ server <- function(input, output) {
       
       # tabPanel 2 - Weinanbaugebiete ----
       output$Wahl2.1 <- renderText({
-        paste("Weinanbaufläsche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
+        paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
       })
 
       output$Weinanbaugebiete1.1 <- renderPlot({
@@ -488,7 +494,7 @@ server <- function(input, output) {
           scale_fill_manual(values = c(Weisswein = "#8aa4be", Rotwein = "#9e0657", Insgesamt = "#2c3e50")) +
           labs(
             x = "Rebsorte",
-            y = "Anbaufläsche in ha",
+            y = "Anbaufläche in ha",
           caption = "Quelle & Copyright: Statistisches Bundesamt")
       })
 
@@ -499,7 +505,7 @@ server <- function(input, output) {
       })
       
       output$Wahl2.2.1 <- renderText({
-        paste("Weinanbaufläsche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.2.1, "zwischen 1993 und 2018.")
+        paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.2.1, "zwischen 1993 und 2018.")
       })
 
       output$Weinanbaugebiete2.1 <- renderPlot({
@@ -511,7 +517,7 @@ server <- function(input, output) {
           geom_line()+
           labs(
             x = "Jahr",
-            y = "Anbaufläsche in ha",
+            y = "Anbaufläche in ha",
             caption = "Quelle & Copyright: Statistisches Bundesamt")+
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })
@@ -522,7 +528,7 @@ server <- function(input, output) {
       })
       
       output$Wahl2.2.2 <- renderText({
-        paste("Weinanbaufläsche (in ha) der Rebsorte", input$Rebsorte2.2, "zwischen 1993 und 2018 im Vergleich der Anbaugebiete", input$Anbaugebiet2.2.2, "und", input$Anbaugebiet2.2.3, ".")
+        paste("Weinanbaufläche (in ha) der Rebsorte", input$Rebsorte2.2, "zwischen 1993 und 2018 im Vergleich der Anbaugebiete", input$Anbaugebiet2.2.2, "und", input$Anbaugebiet2.2.3, ".")
       })
 
       output$Weinanbaugebiete2.3 <- renderPlot({
@@ -535,7 +541,7 @@ server <- function(input, output) {
           geom_line()+
           labs(
             x = "Jahr",
-            y = "Anbaufläsche in ha",
+            y = "Anbaufläche in ha",
             caption = "Quelle & Copyright: Statistisches Bundesamt")+
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })
@@ -547,7 +553,7 @@ server <- function(input, output) {
       })
       
       output$Wahl2.3.1 <- renderText({
-        paste("Weinanbaufläsche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Jahr", input$Jahr2.3.1, ".")
+        paste("Weinanbaufläche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Jahr", input$Jahr2.3.1, ".")
       })
 
       output$Weinanbaugebiete3.1 <- renderPlot({
@@ -559,7 +565,7 @@ server <- function(input, output) {
           geom_col(position = "dodge")+
           labs(
             x = "Anbaugebiet",
-            y = "Anbaufläsche in ha",
+            y = "Anbaufläche in ha",
             caption = "Quelle & Copyright: Statistisches Bundesamt")+
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
                 axis.text = element_text(size = 12),
@@ -573,7 +579,7 @@ server <- function(input, output) {
       })
       
       output$Wahl2.3.2 <- renderText({
-        paste("Weinanbaufläsche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Vergleich der Jahre", input$Jahr2.3.2, "und", input$Jahr2.3.3, ".")
+        paste("Weinanbaufläche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Vergleich der Jahre", input$Jahr2.3.2, "und", input$Jahr2.3.3, ".")
       })
 
       output$Weinanbaugebiete3.3 <- renderPlot({
@@ -585,7 +591,7 @@ server <- function(input, output) {
           geom_col(position = "dodge")+
           labs(
             x = "Anbaugebiet",
-            y = "Anbaufläsche in ha",
+            y = "Anbaufläche in ha",
             caption = "Quelle & Copyright: Statistisches Bundesamt")+
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
                 axis.text = element_text(size = 12),
@@ -622,16 +628,16 @@ server <- function(input, output) {
       })
       
       output$Wetter <- renderPlot({
-        Wetter_final %>%
-          filter(Bundesland == input$Bundesland3.2 | Wetter == input$Wetter1.3) %>%
+        Wetter_Ernte %>%
+          filter(Bundesland == input$Bundesland3.2) %>%
           filter(Jahr == input$Jahr3.2) %>%
           ggplot() +
           aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
           geom_point() +
           geom_line() +
           labs(
-            x = "Bundesland",
-            y = "Wetterlage",
+            x = "Wetter",
+            y = "Tage bzw Temperatur",
             caption = "Quelle & Copyright: Statistisches Bundesamt") +
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
       })

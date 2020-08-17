@@ -20,15 +20,15 @@ library(shinydashboard)
 library(dplyr)
 
 # Daten einlesen ----
-E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na="NA")
-RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na="NA", check.names = FALSE)
-WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na="NA", check.names = FALSE)
-WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na="NA")
-Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na="NA")
-TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na="NA")
+E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na.strings=c("","NA"))
+RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE)
+WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE)
+WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"))
+Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
+Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
+Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
+Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na.strings=c("","NA"))
+TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na.strings=c("","NA"))
 
 selectable <- function(x)
 {
@@ -98,7 +98,7 @@ WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
 ## Daten Frosttage
 Frosttage_neu <- Frosttage %>%
   rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
-           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Baden-Württemberg" = "Baden.Wuerttemberg", 
            "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
            "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
            "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
@@ -114,7 +114,7 @@ Frosttage_neu <- Frosttage %>%
 ## Daten Regenmenge
 Regen_neu <- Regen %>%
   rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
-           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Baden-Württemberg" = "Baden.Wuerttemberg", 
            "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
            "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
            "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
@@ -130,7 +130,7 @@ Regen_neu <- Regen %>%
 ## Daten Sonnenstunden
 Sonnenstunden_neu <- Sonnenstunden %>%
   rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
-           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Baden-Württemberg" = "Baden.Wuerttemberg", 
            "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
            "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
            "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
@@ -146,7 +146,7 @@ Sonnenstunden_neu <- Sonnenstunden %>%
 ## Daten Sommertage
 Sommertage_neu <- Sommertage %>%
   rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
-           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Baden-Württemberg" = "Baden.Wuerttemberg", 
            "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
            "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
            "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
@@ -162,7 +162,7 @@ Sommertage_neu <- Sommertage %>%
 ## Daten Temperatur
 TempDurch_neu <- TempDurch %>%
   rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
-           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Baden-Württemberg" = "Baden.Wuerttemberg", 
            "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
            "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
            "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
@@ -185,6 +185,10 @@ Wetter_gesamt <- left_join(Wetter_ST_FT_SST_R, TempDurch_neu, by = c("Jahr", "Bu
 
 Wetter_BL_Op <- Wetter_gesamt$Bundesland %>% unique()
 Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
+
+
+## continuous zu discrete
+E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
 
 
 #Wetter_final <- Wetter_zusam %>%

@@ -187,8 +187,14 @@ Wetter_BL_Op <- Wetter_gesamt$Bundesland %>% unique()
 Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
 
 
-## continuous zu discrete
-E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
+## continuous zu discrete ----
+E_BL_Jahr_RS_neu$Wert <- as.factor(as.character(E_BL_Jahr_RS_neu$Wert))
+
+E_BL_Jahr_RS_neu$Wert <- as.numeric(as.factor(E_BL_Jahr_RS_neu$Wert))
+
+Wetter_gesamt$Wert <- as.factor(as.character(Wetter_gesamt$Wert))
+
+Wetter_gesamt$Wert <- as.numeric(as.factor(Wetter_gesamt$Wert))
 
 
 #Wetter_final <- Wetter_zusam %>%
@@ -982,7 +988,7 @@ server <- function(input, output) {
       aes(x = Wetterphänomen, y = Wert) +
       geom_col(position = "dodge") +
       geom_label(aes(label=Wert)) + 
-      #ylim(0, 1000) +
+      ylim(0, 1500) +
       labs(
         x = "Wetterphänomene",
         y = "Wert der Wettervariablen",

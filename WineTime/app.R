@@ -19,16 +19,14 @@ library(tidyverse)
 library(shinydashboard)
 library(dplyr)
 
-# Daten laden
-
 # Daten einlesen ----
 E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na="NA")
 RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na="NA", check.names = FALSE)
 WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na="NA", check.names = FALSE)
 WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na="NA")
-Frost <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-Sommert <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
-Sonne <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
+Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
+Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
+Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na="NA")
 Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na="NA")
 TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na="NA")
 
@@ -43,8 +41,9 @@ our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 
 
 
-# Daten drehen----
+# Daten aufbereiten ----
 
+## Daten Rebfäche
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
   gather("Jahr", "ha", 3:28)
 
@@ -52,13 +51,33 @@ RF_ABG_Op <- RF_ABG_Jahr_RS_neu$Anbaugebiet %>% unique()
 RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 
 
-E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
-  gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
+## Daten Ernte
+E_BL_Jahr_RS_EM <- E_BL_Jahr_RS %>%
+  select(1:3, 6, 9) %>%
+  rename(c("Weissmost" = "Erntemenge_an_Weissmost", "Rotmost" = "Erntemenge_an_Rotmost", "Weinmost insgesamt" = "Insgesamte_Erntemenge_an_Weinmost")) %>%
+  gather("Mostsorte", "Erntemenge in hl", 3:5)
+
+E_BL_Jahr_RS_EE <- E_BL_Jahr_RS %>%
+  select(1:2, 4, 7, 10) %>%
+  rename(c("Weissmost" = "Weissmostertrag_je_Hektar", "Rotmost" = "Rotmostertrag_je_Hektar", "Weinmost insgesamt" = "Insgesamter_Weinmostertrag_je_Hektar")) %>%
+  gather("Mostsorte", "Weinmostertrag je Hektar in hl", 3:5)
+
+E_BL_Jahr_RS_RE <- E_BL_Jahr_RS %>%
+  select(1:2, 5, 8, 11) %>%
+  rename(c("Weissmost" = "Rebflaeche_im_Ertrag_Weissmost", "Rotmost" = "Rebflaeche_im_Ertrag_Rotmost", "Weinmost insgesamt" = "Insgesamte_Rebflaeche_im_Ertrag")) %>%
+  gather("Mostsorte", "Rebfläche im Ertrag in ha", 3:5)
+
+E_BL_Jahr_RS_EM_EE <- left_join(E_BL_Jahr_RS_EM, E_BL_Jahr_RS_EE, by = c("Bundesland", "Jahr", "Mostsorte"))
+E_BL_Jahr_RS_neu <- left_join(E_BL_Jahr_RS_EM_EE, E_BL_Jahr_RS_RE, by = c("Bundesland", "Jahr", "Mostsorte"))
+  
+    #E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
+    #  gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
 
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
-E_BL_Op2 <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
+E_RS_Op <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
 
 
+## Daten Weinproduktion
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
   gather("Weinkategorie", "hl", 3:14)
 
@@ -66,6 +85,7 @@ WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
 WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique() 
 
 
+## Daten Weinbestand
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
   gather("Jahr", "hl", 3:28)
 
@@ -73,36 +93,98 @@ WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
 
 
-Frosttage_neu <- Frost %>%
-  gather("Bundesland", "Frosttage", 2:18)
+## Daten Frosttage
+Frosttage_neu <- Frosttage %>%
+  rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
+           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
+           "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
+           "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
+           "Rheinland-Pfalz" = "Rheinland.Pfalz",
+           "Schleswig-Holstein" = "Schleswig.Holstein",
+           "Sachsen-Anhalt" = "Sachsen.Anhalt",
+           "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
+           "Thüringen" = "Thueringen")) %>%
+  gather("Bundesland", "Frosttage", 2:18) %>%
+  filter(Jahr >= 1993)
 
-Regentage_neu <- Regen %>%
-  gather("Bundesland", "Regentage", 2:18)
 
-Sonnentage_neu <- Sonne %>%
-  gather("Bundesland", "Sonnentage", 2:18)
+## Daten Regenmenge
+Regen_neu <- Regen %>%
+  rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
+           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
+           "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
+           "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
+           "Rheinland-Pfalz" = "Rheinland.Pfalz",
+           "Schleswig-Holstein" = "Schleswig.Holstein",
+           "Sachsen-Anhalt" = "Sachsen.Anhalt",
+           "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
+           "Thüringen" = "Thueringen")) %>%
+  gather("Bundesland", "Regenmenge in mm (1mm = 1l/m²)", 2:18) %>%
+  filter(Jahr >= 1993)
 
-Sommertage_neu <- Sommert %>%
-  gather("Bundesland", "Sommertage", 2:18)
 
+## Daten Sonnenstunden
+Sonnenstunden_neu <- Sonnenstunden %>%
+  rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
+           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
+           "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
+           "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
+           "Rheinland-Pfalz" = "Rheinland.Pfalz",
+           "Schleswig-Holstein" = "Schleswig.Holstein",
+           "Sachsen-Anhalt" = "Sachsen.Anhalt",
+           "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
+           "Thüringen" = "Thueringen")) %>%
+  gather("Bundesland", "Sonnenstunden", 2:18) %>%
+  filter(Jahr >= 1993)
+
+
+## Daten Sommertage
+Sommertage_neu <- Sommertage %>%
+  rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
+           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
+           "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
+           "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
+           "Rheinland-Pfalz" = "Rheinland.Pfalz",
+           "Schleswig-Holstein" = "Schleswig.Holstein",
+           "Sachsen-Anhalt" = "Sachsen.Anhalt",
+           "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
+           "Thüringen" = "Thueringen")) %>%
+  gather("Bundesland", "Sommertage", 2:18) %>%
+  filter(Jahr >= 1993)
+
+
+## Daten Temperatur
 TempDurch_neu <- TempDurch %>%
-  gather("Bundesland", "Temperaturdurchschnitt", 2:18)
+  rename(c("Brandenburg & Berlin" = "Brandenburg.Berlin", 
+           "Baden-Wüerttemberg" = "Baden.Wuerttemberg", 
+           "Mecklenburg-Vorpommern" = "Mecklenburg.Vorpommern", 
+           "Niedersachsen, Hamburg & Bremen" = "Niedersachsen.Hamburg.Bremen", 
+           "Nordrhein-Westfalen" = "Nordrhein.Westfalen",
+           "Rheinland-Pfalz" = "Rheinland.Pfalz",
+           "Schleswig-Holstein" = "Schleswig.Holstein",
+           "Sachsen-Anhalt" = "Sachsen.Anhalt",
+           "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
+           "Thüringen" = "Thueringen")) %>%
+  gather("Bundesland", "Temperaturdurchschnitt in °C", 2:18) %>%
+  filter(Jahr >= 1993)
 
 
-# Daten zusammenführen ----
+## Daten Wetter insgesamt
 
-Wetter1 <- merge(Frosttage_neu, Regentage_neu)
+Wetter_ST_FT <- left_join(Sommertage_neu, Frosttage_neu, by = c("Jahr", "Bundesland"))
+Wetter_ST_FT_SST <- left_join(Wetter_ST_FT, Sonnenstunden_neu, by = c("Jahr", "Bundesland"))
+Wetter_ST_FT_SST_R <- left_join(Wetter_ST_FT_SST, Regen_neu, by = c("Jahr", "Bundesland"))
+Wetter_gesamt <- left_join(Wetter_ST_FT_SST_R, TempDurch_neu, by = c("Jahr", "Bundesland")) %>%
+  gather("Wetterphänomen", "Wert der Wettervariablen", 3:7)
 
-Wetter2 <- merge(Sommertage_neu, Sonnentage_neu)
+#Wetter_final <- Wetter_zusam %>%
+ # gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
 
-Wetter3 <- merge(Wetter1, Wetter2)
-
-Wetter_zusam <- merge(Wetter3, TempDurch_neu)
-
-Wetter_final <- Wetter_zusam %>%
-  gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
-
-Wetter_Ernte <- merge(Wetter_final, E_BL_Jahr_RS_neu)
+#Wetter_Ernte <- merge(Wetter_final, E_BL_Jahr_RS_neu)
 
 
 # Define UI ----

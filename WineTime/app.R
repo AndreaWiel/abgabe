@@ -54,27 +54,29 @@ RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
 ## Daten Ernte
 E_BL_Jahr_RS_EM <- E_BL_Jahr_RS %>%
   select(1:3, 6, 9) %>%
-  rename(c("Weissmost" = "Erntemenge_an_Weissmost", "Rotmost" = "Erntemenge_an_Rotmost", "Weinmost insgesamt" = "Insgesamte_Erntemenge_an_Weinmost")) %>%
+  rename(c("Weißmost" = "Erntemenge_an_Weissmost", "Rotmost" = "Erntemenge_an_Rotmost", "Weinmost insgesamt" = "Insgesamte_Erntemenge_an_Weinmost")) %>%
   gather("Mostsorte", "Erntemenge in hl", 3:5)
 
 E_BL_Jahr_RS_EE <- E_BL_Jahr_RS %>%
   select(1:2, 4, 7, 10) %>%
-  rename(c("Weissmost" = "Weissmostertrag_je_Hektar", "Rotmost" = "Rotmostertrag_je_Hektar", "Weinmost insgesamt" = "Insgesamter_Weinmostertrag_je_Hektar")) %>%
+  rename(c("Weißmost" = "Weissmostertrag_je_Hektar", "Rotmost" = "Rotmostertrag_je_Hektar", "Weinmost insgesamt" = "Insgesamter_Weinmostertrag_je_Hektar")) %>%
   gather("Mostsorte", "Weinmostertrag je Hektar in hl", 3:5)
 
 E_BL_Jahr_RS_RE <- E_BL_Jahr_RS %>%
   select(1:2, 5, 8, 11) %>%
-  rename(c("Weissmost" = "Rebflaeche_im_Ertrag_Weissmost", "Rotmost" = "Rebflaeche_im_Ertrag_Rotmost", "Weinmost insgesamt" = "Insgesamte_Rebflaeche_im_Ertrag")) %>%
+  rename(c("Weißmost" = "Rebflaeche_im_Ertrag_Weissmost", "Rotmost" = "Rebflaeche_im_Ertrag_Rotmost", "Weinmost insgesamt" = "Insgesamte_Rebflaeche_im_Ertrag")) %>%
   gather("Mostsorte", "Rebfläche im Ertrag in ha", 3:5)
 
 E_BL_Jahr_RS_EM_EE <- left_join(E_BL_Jahr_RS_EM, E_BL_Jahr_RS_EE, by = c("Bundesland", "Jahr", "Mostsorte"))
-E_BL_Jahr_RS_neu <- left_join(E_BL_Jahr_RS_EM_EE, E_BL_Jahr_RS_RE, by = c("Bundesland", "Jahr", "Mostsorte"))
+E_BL_Jahr_RS_neu <- left_join(E_BL_Jahr_RS_EM_EE, E_BL_Jahr_RS_RE, by = c("Bundesland", "Jahr", "Mostsorte")) %>%
+  gather("Messparameter", "Wert", 4:6)
   
     #E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
     #  gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
 
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
-E_RS_Op <- E_BL_Jahr_RS_neu$Weinsorte_Ernte %>% unique()
+E_MS_Op <- E_BL_Jahr_RS_neu$Mostsorte %>% unique()
+E_MP_Op <- E_BL_Jahr_RS_neu$Messparameter %>% unique()
 
 
 ## Daten Weinproduktion
@@ -179,7 +181,11 @@ Wetter_ST_FT <- left_join(Sommertage_neu, Frosttage_neu, by = c("Jahr", "Bundesl
 Wetter_ST_FT_SST <- left_join(Wetter_ST_FT, Sonnenstunden_neu, by = c("Jahr", "Bundesland"))
 Wetter_ST_FT_SST_R <- left_join(Wetter_ST_FT_SST, Regen_neu, by = c("Jahr", "Bundesland"))
 Wetter_gesamt <- left_join(Wetter_ST_FT_SST_R, TempDurch_neu, by = c("Jahr", "Bundesland")) %>%
-  gather("Wetterphänomen", "Wert der Wettervariablen", 3:7)
+  gather("Wetterphänomen", "Wert", 3:7)
+
+Wetter_BL_Op <- Wetter_gesamt$Bundesland %>% unique()
+Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
+
 
 #Wetter_final <- Wetter_zusam %>%
  # gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
@@ -255,7 +261,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
-                                                    selectInput("Anbaugebiet2.2.3", "Wählen Sie ein zweites Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
+                                                    selectInput("Anbaugebiet2.2.3", "Wählen Sie ein weiteres Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
                                                     selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
@@ -312,44 +318,237 @@ ui <- navbarPage(title = "WineTime",
                  ),
                  
                  # tabPanel 3 - Ernte ----
-                 navbarMenu("Weinernte & Wetter",
-                            tabPanel("Mehr hierzu",
+                 # navbarMenu("Weinernte & Wetter",
+                 #            tabPanel("Mehr hierzu",
+                 #                     includeHTML("Weinernte.html"),
+                 #                     sidebarLayout(
+                 #                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                 #                                    sliderInput("Jahr3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                 #                                    selectInput("Bundesland3.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])),
+                 #                       mainPanel(h4(strong("Weinernte nach Bundesländern")),
+                 #                                 tabsetPanel(
+                 #                                   tabPanel("Grafik",
+                 #                                            plotOutput('Weinernte1.1')
+                 #                                   ),
+                 #                                   tabPanel("Tabelle",
+                 #                                            DT::DTOutput('Weinernte1.2')
+                 #                                   )
+                 #                                 )
+                 #                       )
+                 #                       
+                 #                     ),
+                 #                     
+                 #                     sidebarLayout(
+                 #                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                 #                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                 #                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 1995, step = 1, sep = ""),
+                 #                                    selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
+                 #                       ),
+                 #                       mainPanel(h4(strong("Wetter über die Jahre")),
+                 #                                 tabsetPanel(
+                 #                                   tabPanel("Grafik",
+                 #                                            plotOutput('Wetter1.1')
+                 #                                   ),
+                 #                                   tabPanel("Tabelle",
+                 #                                            DT::DTOutput('Wetter1.2')
+                 #                                   ))
+                 #                                       )
+                 #                                          ))
+                 #                                              ), 
+                 # 
+                 navbarMenu("Weinernte",
+                            tabPanel("Weinernte & Wetter der Bundesländer",
                                      includeHTML("Weinernte.html"),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    sliderInput("Jahr3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Bundesland3.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])),
-                                       mainPanel(h4(strong("Weinernte nach Bundesländern")),
+                                                    sliderInput("Jahr3.1.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Bundesland3.1.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
+                                                    selectInput("Messparameter3.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Weinernte der Bundesländer")),
+                                                 textOutput('Wahl3.1.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinernte1.1')
+                                                            plotOutput('Weinernte1.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinernte1.2')
                                                    )
                                                  )
                                        )
-                                       
                                      ),
-                                     
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 1995, step = 1, sep = ""),
-                                                    selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
+                                                    sliderInput("Jahr3.1.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Bundesland3.1.2", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
+                                                    h6("*Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
                                        ),
-                                       mainPanel(h4(strong("Wetter über die Jahre")),
+                                       mainPanel(h4(strong("Wetterdaten der Bundesländer")),
+                                                 textOutput('Wahl3.1.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Wetter1.1')
+                                                            plotOutput('Wetter1.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter1.2')
-                                                   ))
-                                                       )
-                                                          ))
-                                                              ), 
-                 
+                                                   )
+                                                 )
+                                       )
+                                     )
+                            ),
+                            tabPanel("Weinernte & Wetter im Zeitvergleich",
+                                     includeHTML("Weinernte.html"),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    selectInput("Bundesland3.2.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
+                                                    selectInput("Messparameter3.2.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Weinernte im Zeitvergleich")),
+                                                 textOutput('Wahl3.2.1'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Weinernte2.1')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Weinernte2.2')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    selectInput("Bundesland3.2.2", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
+                                                    h6("*Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
+                                       ),
+                                       mainPanel(h4(strong("Wetter im Zeitvergleich")),
+                                                 textOutput('Wahl3.2.2'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Wetter2.1')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Wetter2.2')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    selectInput("Bundesland3.2.3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
+                                                    selectInput("Bundesland3.2.4", "Wählen Sie ein weiteres Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
+                                                    selectInput("Messparameter3.2.2", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Mostsorte3.2", "Wählen Sie eine Mostsorte", choices = E_MS_Op, selected = E_MS_Op)
+                                       ),
+                                       mainPanel(h4(strong("Weinernte im Zeitvergleich")),
+                                                 textOutput('Wahl3.2.3'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Weinernte2.3')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Weinernte2.4')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    selectInput("Bundesland3.2.5", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
+                                                    selectInput("Bundesland3.2.6", "Wählen Sie ein weiteres Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[2]),
+                                                    selectInput("Wetterphänomen3.2", "Wählen Sie eine Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1]),
+                                                    h6("*Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
+                                       ),
+                                       mainPanel(h4(strong("Wetter im Zeitvergleich")),
+                                                 textOutput('Wahl3.2.4'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Wetter2.3')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Wetter2.4')
+                                                   )
+                                                 )
+                                       )
+                                     )
+                                     
+                            ),
+                            tabPanel("Weinernte & Wetter im Ländervergleich",
+                                     includeHTML("Weinernte.html"),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    sliderInput("Jahr3.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Messparameter3.3.1", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Mostsorte3.3.1", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Weinernte im Ländervergleich")),
+                                                 textOutput('Wahl3.3.1'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Weinernte3.1')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Weinernte3.2')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    sliderInput("Jahr3.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
+                                                    selectInput("Wetterphänomen3.3.1", "Wählen Sie eine Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Wetter im Ländervergleich")),
+                                                 textOutput('Wahl3.3.2'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Wetter3.1')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Wetter3.2')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.3.4", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Messparameter3.3.2", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Mostsorte3.3.2", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Weinernte im Ländervergleich")),
+                                                 textOutput('Wahl3.3.3'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Weinernte3.3')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Weinernte3.4')
+                                                   )
+                                                 )
+                                       )
+                                     ),
+                                     sidebarLayout(
+                                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
+                                                    sliderInput("Jahr3.3.5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.3.6", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Wetterphänomen3.3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
+                                       ),
+                                       mainPanel(h4(strong("Wetter im Ländervergleich")),
+                                                 textOutput('Wahl3.3.4'),
+                                                 tabsetPanel(
+                                                   tabPanel("Grafik",
+                                                            plotOutput('Wetter3.3')
+                                                   ),
+                                                   tabPanel("Tabelle",
+                                                            DT::DTOutput('Wetter3.4')
+                                                   )
+                                                 )
+                                       )
+                                     )
+                            )
+                            
+                 ),
                  
                  # tabPanel 4 - Weinproduktion ----
                  navbarMenu("Weinproduktion",
@@ -395,7 +594,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland4.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
-                                                    selectInput("Bundesland4.2.3", "Wählen Sie ein zweites Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
+                                                    selectInput("Bundesland4.2.3", "Wählen Sie ein weiteres Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
                                                     selectInput("Weinkategorie4.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
@@ -433,7 +632,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr4.3.2", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
-                                                    sliderInput("Jahr4.3.3", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2015, step = 1, sep = ""),
+                                                    sliderInput("Jahr4.3.3", "Wählen Sie ein weiteres Jahr:", min = 2010, max = 2018, value = 2015, step = 1, sep = ""),
                                                     selectInput("Weinkategorie4.3.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
@@ -495,7 +694,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland5.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
-                                                    selectInput("Bundesland5.2.3", "Wählen Sie ein zweites Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
+                                                    selectInput("Bundesland5.2.3", "Wählen Sie ein weiteres Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
                                                     selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
@@ -533,7 +732,7 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
-                                                    sliderInput("Jahr5.3.3", "Wählen Sie ein zweites Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    sliderInput("Jahr5.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
@@ -691,51 +890,315 @@ server <- function(input, output) {
   
   
   # tabPanel 3 - Weinernte ----
-  output$Weinernte1.1 <- renderPlot({
+  # output$Weinernte1.1 <- renderPlot({
+  #   E_BL_Jahr_RS_neu %>%
+  #     filter(Bundesland == input$Bundesland3.1) %>%
+  #     filter(Jahr == input$Jahr3.1) %>%
+  #     ggplot() +
+  #     aes(x = Ernte_und_Ertrag, y = hl_oder_ha) +
+  #     geom_col(position = "dodge") +
+  #     #coord_cartesian(ylim = c(0, 10000000), expand = TRUE) +
+  #     #scale_y_discrete(limits = factor(0, 1000000)) +
+  #     labs(
+  #       x = "Ernte & Ertrag",
+  #       y = "Erntemenge in hl & ha",
+  #       caption = "Quelle & Copyright: Statistisches Bundesamt") +
+  #     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  # })
+  # 
+  # output$Weinernte1.2 <- DT::renderDT({
+  #   E_BL_Jahr_RS_neu %>%
+  #     filter(Bundesland == input$Bundesland3.1) %>%
+  #     filter(Jahr == input$Jahr3.1)
+  # })
+  # 
+  # output$Wetter <- renderPlot({
+  #   Wetter_final %>%
+  #     filter(Bundesland == input$Bundesland3.2) %>%
+  #     filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.3) %>%
+  #     ggplot() +
+  #     aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
+  #     geom_col() +
+  #     #facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
+  #     #scale_colour_discrete(name="Bundesland") +
+  #     #breaks=c(""), 
+  #     #labels= c("")) +
+  #     labs(
+  #       x = "Wetter",
+  #       y = "Tage bzw Temperatur",
+  #       caption = "Quelle & Copyright: Statistisches Bundesamt") +
+  #     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  # })
+  # 
+  # output$Wetter1.2 <- DT::renderDT({
+  #   Wetter_final %>%
+  #     filter(Bundesland == input$Bundesland3.2) %>%
+  #     filter(Jahr == input$Jahr3.2)
+  # })
+  
+  output$Wahl3.1.1 <- renderText({
+    paste("Weinernte (", input$Messparameter3.1, ") nach Mostsorte für", input$Bundesland3.1.1, "im Jahr", input$Jahr3.1.1, ".")
+  })
+  
+  output$Weinernte1.1 <- renderPlot(width = "auto", height = 600, {
     E_BL_Jahr_RS_neu %>%
-      filter(Bundesland == input$Bundesland3.1) %>%
-      filter(Jahr == input$Jahr3.1) %>%
+      filter(Bundesland == input$Bundesland3.1.1) %>%
+      filter(Jahr == input$Jahr3.1.1) %>%
+      filter(Messparameter == input$Messparameter3.1) %>%
       ggplot() +
-      aes(x = Ernte_und_Ertrag, y = hl_oder_ha) +
-      geom_col(position = "dodge") +
-      #coord_cartesian(ylim = c(0, 10000000), expand = TRUE) +
-      #scale_y_discrete(limits = factor(0, 1000000)) +
+      aes(x = Mostsorte, y = Wert) +
+      geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
+      geom_label(aes(label=Wert)) + 
+      ylim(0, 1000000) +
       labs(
-        x = "Ernte & Ertrag",
-        y = "Erntemenge in hl & ha",
+        x = "Mostsorte",
+        y = "Wert der Messvariablen",
         caption = "Quelle & Copyright: Statistisches Bundesamt") +
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14))
   })
   
-  output$Weinernte1.2 <- DT::renderDT({
+  output$Weiernte1.2 <- DT::renderDT({
     E_BL_Jahr_RS_neu %>%
-      filter(Bundesland == input$Bundesland3.1) %>%
-      filter(Jahr == input$Jahr3.1)
+      filter(Bundesland == input$Bundesland3.1.1) %>%
+      filter(Jahr == input$Jahr3.1.1) %>%
+      filter(Messparameter == input$Messparameter3.1)
   })
   
-  output$Wetter <- renderPlot({
-    Wetter_final %>%
-      filter(Bundesland == input$Bundesland3.2) %>%
-      filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.3) %>%
+  output$Wahl3.1.2 <- renderText({
+    paste("Wetter nach Wetterphänomenen für", input$Bundesland3.1.2, "im Jahr", input$Jahr3.1.2, ".")
+  })
+  
+  output$Wetter1.1 <- renderPlot(width = "auto", height = 600, {
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.1.2) %>%
+      filter(Jahr == input$Jahr3.1.2) %>%
       ggplot() +
-      aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
-      geom_col() +
-      #facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
-      #scale_colour_discrete(name="Bundesland") +
-      #breaks=c(""), 
-      #labels= c("")) +
+      aes(x = Wetterphänomen, y = Wert) +
+      geom_col(position = "dodge") +
+      geom_label(aes(label=Wert)) + 
+      #ylim(0, 1000) +
       labs(
-        x = "Wetter",
-        y = "Tage bzw Temperatur",
+        x = "Wetterphänomene",
+        y = "Wert der Wettervariablen",
         caption = "Quelle & Copyright: Statistisches Bundesamt") +
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Wetter1.2 <- DT::renderDT({
-    Wetter_final %>%
-      filter(Bundesland == input$Bundesland3.2) %>%
-      filter(Jahr == input$Jahr3.2)
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.1.2) %>%
+      filter(Jahr == input$Jahr3.1.2)
   })
+  
+  output$Wahl3.2.1 <- renderText({
+    paste("Weinernte (", input$Messparameter3.2.1, ") nach Mostsorte für", input$Bundesland3.2.1, "zwischen 1993 und 2018.")
+  })
+  
+  output$Weinernte2.1 <- renderPlot({
+    E_BL_Jahr_RS_neu %>%
+      filter(Bundesland == input$Bundesland3.2.1) %>%
+      filter(Messparameter == input$Messparameter3.2.1) %>%
+      ggplot()+
+      aes(x = Jahr, y = Wert, color = Mostsorte)+
+      geom_point()+
+      geom_line()+
+      labs(
+        x = "Jahr",
+        y = "Wert der Messvariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  })
+  
+  output$Weinernte2.2 <- DT::renderDT({
+    E_BL_Jahr_RS_neu %>%
+      filter(Bundesland == input$Bundesland3.2.1) %>%
+      filter(Messparameter == input$Messparameter3.2.1)
+  })
+  
+  output$Wahl3.2.2 <- renderText({
+    paste("Wetter nach Wetterphänomenen für", input$Bundesland3.2.2, "zwischen 1993 und 2018.")
+  })
+  
+  output$Wetter2.1 <- renderPlot({
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.2.2) %>%
+      ggplot()+
+      aes(x = Jahr, y = Wert, color = Wetterphänomen)+
+      geom_point()+
+      geom_line()+
+      labs(
+        x = "Jahr",
+        y = "Wert der Wettervariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  })
+  
+  output$Wetter2.2 <- DT::renderDT({
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.2.2)
+  })
+  
+  output$Wahl3.2.3 <- renderText({
+    paste("Weinernte (", input$Messparameter3.2.2, ") der Mostsorte", input$Mostsorte3.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland3.2.3, "und", input$Bundesland3.2.4, ".")
+  })
+  
+  output$Weinernte2.3 <- renderPlot({
+    E_BL_Jahr_RS_neu %>%
+      filter(Bundesland == input$Bundesland3.2.3 | Bundesland == input$Bundesland3.2.4) %>%
+      filter(Messparameter == input$Messparameter3.2.2) %>%
+      filter(Mostsorte == input$Mostsorte3.2) %>%
+      ggplot()+
+      aes(x = Jahr, y = Wert, color = Bundesland)+
+      geom_point()+
+      geom_line()+
+      labs(
+        x = "Jahr",
+        y = "Wert der Messvariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  })
+  
+  output$Weinernte2.4 <- DT::renderDT({
+    E_BL_Jahr_RS_neu %>%
+      filter(Bundesland == input$Bundesland3.2.3 | Bundesland == input$Bundesland3.2.4) %>%
+      filter(Messparameter == input$Messparameter3.2.2) %>%
+      filter(Mostsorte == input$Mostsorte3.2)
+  })
+  
+  output$Wahl3.2.4 <- renderText({
+    paste(input$Wetterphänomen3.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland3.2.5, "und", input$Bundesland3.2.6, ".")
+  })
+  
+  output$Wetter2.3 <- renderPlot({
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.2.5 | Bundesland == input$Bundesland3.2.6) %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.2) %>%
+      ggplot()+
+      aes(x = Jahr, y = Wert, color = Bundesland)+
+      geom_point()+
+      geom_line()+
+      labs(
+        x = "Jahr",
+        y = "Wert der Wettervariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  })
+  
+  output$Wetter2.4 <- DT::renderDT({
+    Wetter_gesamt %>%
+      filter(Bundesland == input$Bundesland3.2.5 | Bundesland == input$Bundesland3.2.6) %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.2)
+  })
+  
+  output$Wahl3.3.1 <- renderText({
+    paste("Weinernte (", input$Messparameter3.3.1, ") der Bundesländer für die Mostsorte", input$Rebsorte3.3.1, "im Jahr", input$Jahr3.3.1, ".")
+  })
+  
+  output$Weinernte3.1 <- renderPlot({
+    E_BL_Jahr_RS_neu %>%
+      filter(Mostsorte == input$Mostsorte3.3.1) %>%
+      filter(Jahr == input$Jahr3.3.1) %>%
+      filter(Messparameter == input$Messparameter3.3.1) %>%
+      ggplot()+
+      aes(x = Bundesland, y = Wert)+
+      geom_col(position = "dodge")+
+      labs(
+        x = "Bundesland",
+        y = "Wert der Messvariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+            axis.text = element_text(size = 12),
+            axis.title = element_text(size = 14))
+  })
+  
+  output$Weinernte3.2 <- DT::renderDT({
+    WB_BL_Jahr_RS_neu %>%
+      filter(Rebsorte == input$Rebsorte5.3.1) %>%
+      filter(Jahr == input$Jahr5.3.1)
+  })
+  
+  output$Wahl3.3.2 <- renderText({
+    paste(input$Wetterphänomen3.3.1, "der Bundesländer im Jahr", input$Jahr3.3.2, ".")
+  })
+  
+  output$Wetter3.1 <- renderPlot({
+    Wetter_gesamt %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.3.1) %>%
+      filter(Jahr == input$Jahr3.3.2) %>%
+      ggplot()+
+      aes(x = Bundesland, y = Wert)+
+      geom_col(position = "dodge")+
+      labs(
+        x = "Bundesland",
+        y = "Wert der Wettervariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+            axis.text = element_text(size = 12),
+            axis.title = element_text(size = 14))
+  })
+  
+  output$Wetter3.2 <- DT::renderDT({
+    Wetter_gesamt %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.3.1) %>%
+      filter(Jahr == input$Jahr3.3.2)
+  })
+  
+  output$Wahl3.3.3 <- renderText({
+    paste("Weinernte (", input$Messparameter3.3.2, ") der Bundesländer für  die Mostsorte", input$Mostsorte3.3.2, "im Vergleich der Jahre", input$Jahr3.3.3, "und", input$Jahr3.3.4, ".")
+  })
+  
+  output$Weinbestand3.3 <- renderPlot({
+    E_BL_Jahr_RS_neu %>%
+      filter(Messparameter == input$Messparameter3.3.2) %>%
+      filter(Mostsorte == input$Mostsorte3.3.2) %>%
+      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) %>%
+      ggplot()+
+      aes(x = Bundesland, y = Wert, fill = Jahr)+
+      geom_col(position = "dodge")+
+      labs(
+        x = "Bundesland",
+        y = "Wert der Messvariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+            axis.text = element_text(size = 12),
+            axis.title = element_text(size = 14))
+  })
+  
+  output$Weinbestand3.4 <- DT::renderDT({
+    E_BL_Jahr_RS_neu %>%
+      filter(Messparameter == input$Messparameter3.3.2) %>%
+      filter(Mostsorte == input$Mostsorte3.3.2) %>%
+      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4)
+  })
+  
+  output$Wahl3.3.4 <- renderText({
+    paste(input$Wetterphänomen3.3.2, "der Bundesländer im Vergleich der Jahre", input$Jahr3.3.5, "und", input$Jahr3.3.6, ".")
+  })
+  
+  output$Wetter3.3 <- renderPlot({
+    Wetter_gesamt %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.3.2) %>%
+      filter(Jahr == input$Jahr3.3.5 | Jahr == input$Jahr3.3.6) %>%
+      ggplot()+
+      aes(x = Bundesland, y = Wert, fill = Jahr)+
+      geom_col(position = "dodge")+
+      labs(
+        x = "Bundesland",
+        y = "Wert der Wettervariablen",
+        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+            axis.text = element_text(size = 12),
+            axis.title = element_text(size = 14))
+  })
+  
+  output$Wetter3.4 <- DT::renderDT({
+    Wetter_gesamt %>%
+      filter(Wetterphänomen == input$Wetterphänomen3.3.2) %>%
+      filter(Jahr == input$Jahr3.3.5 | Jahr == input$Jahr3.3.6)
+  })
+  
   
   # tabPanel 4 - Weinproduktion ----
   output$Wahl4.1 <- renderText({

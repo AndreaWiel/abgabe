@@ -26,7 +26,7 @@ WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/
 WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), dec = ".")
 Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
 Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
-Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
+Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sonnenstunden_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
 Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na.strings=c("","NA"),  dec = ".")
 TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na.strings=c("","NA"), dec = ".")
 
@@ -70,9 +70,6 @@ E_BL_Jahr_RS_RE <- E_BL_Jahr_RS %>%
 E_BL_Jahr_RS_EM_EE <- left_join(E_BL_Jahr_RS_EM, E_BL_Jahr_RS_EE, by = c("Bundesland", "Jahr", "Mostsorte"))
 E_BL_Jahr_RS_neu <- left_join(E_BL_Jahr_RS_EM_EE, E_BL_Jahr_RS_RE, by = c("Bundesland", "Jahr", "Mostsorte")) %>%
   gather("Messparameter", "Wert", 4:6)
-  
-    #E_BL_Jahr_RS_neu <- E_BL_Jahr_RS %>%
-    #  gather("Ernte_und_Ertrag", "hl_oder_ha", 3:11)
 
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
 E_MS_Op <- E_BL_Jahr_RS_neu$Mostsorte %>% unique()
@@ -110,6 +107,8 @@ Frosttage_neu <- Frosttage %>%
   gather("Bundesland", "Frosttage", 2:18) %>%
   filter(Jahr >= 1993)
 
+Frosttage_neu$Frosttage <- as.numeric(as.character(Frosttage_neu$Frosttage))
+
 
 ## Daten Regenmenge
 Regen_neu <- Regen %>%
@@ -125,6 +124,8 @@ Regen_neu <- Regen %>%
            "Thüringen" = "Thueringen")) %>%
   gather("Bundesland", "Regenmenge in mm (1mm = 1l/m²)", 2:18) %>%
   filter(Jahr >= 1993)
+
+Regen_neu$Frostt <- as.numeric(as.character(Frosttage_neu$Frosttage))
 
 
 ## Daten Sonnenstunden
@@ -192,11 +193,6 @@ Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
 #E_BL_Jahr_RS_neu$Wert <- as.character(as.factor(E_BL_Jahr_RS_neu$Wert))
 #E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
 
-
-#Wetter_final <- Wetter_zusam %>%
- # gather("Wetter", "Anzahl_Tage_u_Temp", 3:7)
-
-#Wetter_Ernte <- merge(Wetter_final, E_BL_Jahr_RS_neu)
 
 
 # Define UI ----

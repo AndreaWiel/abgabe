@@ -243,7 +243,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete1.1', height = 600)
+                                                            plotOutput('Weinanbaugebiete1.1', height = 650)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete1.2')
@@ -266,7 +266,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete2.1', height = 600)
+                                                            plotOutput('Weinanbaugebiete2.1', height = 650)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete2.2')
@@ -288,7 +288,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete2.3', height = 600)
+                                                            plotOutput('Weinanbaugebiete2.3', height = 650)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete2.4')
@@ -781,7 +781,7 @@ server <- function(input, output) {
       aes(x = Rebsorte, y = ha) +
       geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
       geom_label(aes(label=ha)) + 
-      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
+      scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Rebsorte",
         y = "Anbaufläche in ha",
@@ -806,10 +806,10 @@ server <- function(input, output) {
       filter(Anbaugebiet == input$Anbaugebiet2.2.1) %>%
       ggplot()+
       aes(x = Jahr, y = ha, color = Rebsorte)+
-      geom_point() +
-      geom_line(aes(group = Rebsorte))+
-      scale_color_manual(values = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
-      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
+      geom_point(size = 2) +
+      geom_line(aes(group = Rebsorte), size = 1.25)+
+      scale_color_manual(values = c("Weisswein" = "#BEE309", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Anbaufläche in ha",
@@ -835,10 +835,10 @@ server <- function(input, output) {
       filter(Rebsorte == input$Rebsorte2.2) %>%
       ggplot()+
       aes(x = Jahr, y = ha, color = Anbaugebiet)+
-      geom_point()+
-      geom_line(aes(group = Anbaugebiet))+
+      geom_point(size = 2)+
+      geom_line(aes(group = Anbaugebiet), size = 1.25)+
       scale_color_manual(values = c("#8BCCCA", "92A2D6")) +
-      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
+      scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Anbaufläche in ha",

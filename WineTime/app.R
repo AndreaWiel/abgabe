@@ -243,7 +243,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete1.1')
+                                                            plotOutput('Weinanbaugebiete1.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete1.2')
@@ -266,7 +266,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete2.1')
+                                                            plotOutput('Weinanbaugebiete2.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete2.2')
@@ -288,7 +288,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete2.3')
+                                                            plotOutput('Weinanbaugebiete2.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete2.4')
@@ -312,7 +312,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete3.1')
+                                                            plotOutput('Weinanbaugebiete3.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete3.2')
@@ -334,7 +334,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl2.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinanbaugebiete3.3')
+                                                            plotOutput('Weinanbaugebiete3.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinanbaugebiete3.4')
@@ -346,44 +346,6 @@ ui <- navbarPage(title = "WineTime",
                  ),
                  
                  # tabPanel 3 - Ernte ----
-                 # navbarMenu("Weinernte & Wetter",
-                 #            tabPanel("Mehr hierzu",
-                 #                     includeHTML("Weinernte.html"),
-                 #                     sidebarLayout(
-                 #                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                 #                                    sliderInput("Jahr3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                 #                                    selectInput("Bundesland3.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1])),
-                 #                       mainPanel(h4(strong("Weinernte nach Bundesländern")),
-                 #                                 tabsetPanel(
-                 #                                   tabPanel("Grafik",
-                 #                                            plotOutput('Weinernte1.1')
-                 #                                   ),
-                 #                                   tabPanel("Tabelle",
-                 #                                            DT::DTOutput('Weinernte1.2')
-                 #                                   )
-                 #                                 )
-                 #                       )
-                 #                       
-                 #                     ),
-                 #                     
-                 #                     sidebarLayout(
-                 #                       sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                 #                                    sliderInput("Jahr3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                 #                                    sliderInput("Jahr3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 1995, step = 1, sep = ""),
-                 #                                    selectInput("Bundesland3.2", "Wählen Sie ein Bundesland:", choices = Wetter_Ernte$Bundesland, selected = Wetter_Ernte$Bundesland[1])
-                 #                       ),
-                 #                       mainPanel(h4(strong("Wetter über die Jahre")),
-                 #                                 tabsetPanel(
-                 #                                   tabPanel("Grafik",
-                 #                                            plotOutput('Wetter1.1')
-                 #                                   ),
-                 #                                   tabPanel("Tabelle",
-                 #                                            DT::DTOutput('Wetter1.2')
-                 #                                   ))
-                 #                                       )
-                 #                                          ))
-                 #                                              ), 
-                 # 
                  navbarMenu("Weinernte",
                             tabPanel("Weinernte & Wetter der Bundesländer",
                                      includeHTML("Weinernte.html"),
@@ -439,7 +401,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinernte2.1')
+                                                            plotOutput('Weinernte2.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinernte2.2')
@@ -456,7 +418,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Wetter2.1')
+                                                            plotOutput('Wetter2.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter2.2')
@@ -477,7 +439,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.2.3'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinernte2.3')
+                                                            plotOutput('Weinernte2.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinernte2.4')
@@ -496,7 +458,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.2.4'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Wetter2.3')
+                                                            plotOutput('Wetter2.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter2.4')
@@ -520,7 +482,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinernte3.1')
+                                                            plotOutput('Weinernte3.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinernte3.2')
@@ -537,7 +499,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Wetter3.1')
+                                                            plotOutput('Wetter3.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter3.2')
@@ -558,7 +520,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.3.3'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinernte3.3')
+                                                            plotOutput('Weinernte3.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinernte3.4')
@@ -576,7 +538,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl3.3.4'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Wetter3.3')
+                                                            plotOutput('Wetter3.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Wetter3.4')
@@ -602,7 +564,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl4.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinproduktion1.1')
+                                                            plotOutput('Weinproduktion1.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinproduktion1.2')
@@ -622,7 +584,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl4.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinproduktion2.1')
+                                                            plotOutput('Weinproduktion2.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinproduktion2.2')
@@ -642,7 +604,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl4.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinproduktion2.3')
+                                                            plotOutput('Weinproduktion2.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinproduktion2.4')
@@ -663,7 +625,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl4.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinproduktion3.1')
+                                                            plotOutput('Weinproduktion3.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinproduktion3.2')
@@ -682,7 +644,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl4.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinproduktion3.3')
+                                                            plotOutput('Weinproduktion3.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinproduktion3.4')
@@ -708,7 +670,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl5.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinbestand1.1')
+                                                            plotOutput('Weinbestand1.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinbestand1.2')
@@ -728,7 +690,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl5.2.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinbestand2.1')
+                                                            plotOutput('Weinbestand2.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinbestand2.2')
@@ -747,7 +709,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl5.2.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinbestand2.3')
+                                                            plotOutput('Weinbestand2.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinbestand2.4')
@@ -768,7 +730,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl5.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinbestand3.1')
+                                                            plotOutput('Weinbestand3.1', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinbestand3.2')
@@ -787,7 +749,7 @@ ui <- navbarPage(title = "WineTime",
                                                  textOutput('Wahl5.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik",
-                                                            plotOutput('Weinbestand3.3')
+                                                            plotOutput('Weinbestand3.3', height = 600)
                                                    ),
                                                    tabPanel("Tabelle",
                                                             DT::DTOutput('Weinbestand3.4')
@@ -811,19 +773,19 @@ server <- function(input, output) {
     paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
   })
   
-  output$Weinanbaugebiete1.1 <- renderPlot(width = "auto", height = 600, {
+  output$Weinanbaugebiete1.1 <- renderPlot({
     RF_ABG_Jahr_RS_neu %>%
       filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
       filter(Jahr == input$Jahr2.1) %>%
       ggplot() +
       aes(x = Rebsorte, y = ha) +
-      geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
+      geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
       geom_label(aes(label=ha)) + 
-      ylim(0, 110000) +
+      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Rebsorte",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14))
@@ -844,13 +806,18 @@ server <- function(input, output) {
       filter(Anbaugebiet == input$Anbaugebiet2.2.1) %>%
       ggplot()+
       aes(x = Jahr, y = ha, color = Rebsorte)+
-      geom_point()+
-      geom_line()+
+      geom_point() +
+      geom_line(aes(group = Rebsorte))+
+      scale_color_manual(values = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Weinanbaugebiete2.2 <- DT::renderDT({
@@ -869,12 +836,17 @@ server <- function(input, output) {
       ggplot()+
       aes(x = Jahr, y = ha, color = Anbaugebiet)+
       geom_point()+
-      geom_line()+
+      geom_line(aes(group = Anbaugebiet))+
+      scale_color_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_y_continuous(limits = c(0, 106500), breaks = seq(0, 106500, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Weinanbaugebiete2.4 <- DT::renderDT({
@@ -938,57 +910,11 @@ server <- function(input, output) {
   
   
   # tabPanel 3 - Weinernte ----
-  # output$Weinernte1.1 <- renderPlot({
-  #   E_BL_Jahr_RS_neu %>%
-  #     filter(Bundesland == input$Bundesland3.1) %>%
-  #     filter(Jahr == input$Jahr3.1) %>%
-  #     ggplot() +
-  #     aes(x = Ernte_und_Ertrag, y = hl_oder_ha) +
-  #     geom_col(position = "dodge") +
-  #     #coord_cartesian(ylim = c(0, 10000000), expand = TRUE) +
-  #     #scale_y_discrete(limits = factor(0, 1000000)) +
-  #     labs(
-  #       x = "Ernte & Ertrag",
-  #       y = "Erntemenge in hl & ha",
-  #       caption = "Quelle & Copyright: Statistisches Bundesamt") +
-  #     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-  # })
-  # 
-  # output$Weinernte1.2 <- DT::renderDT({
-  #   E_BL_Jahr_RS_neu %>%
-  #     filter(Bundesland == input$Bundesland3.1) %>%
-  #     filter(Jahr == input$Jahr3.1)
-  # })
-  # 
-  # output$Wetter <- renderPlot({
-  #   Wetter_final %>%
-  #     filter(Bundesland == input$Bundesland3.2) %>%
-  #     filter(Jahr == input$Jahr3.2 | Jahr == input$Jahr3.3) %>%
-  #     ggplot() +
-  #     aes(x = Wetter, y = Anzahl_Tage_u_Temp) +
-  #     geom_col() +
-  #     #facet_grid(Bundesland ~ ., labeller = as_labeller(Bundesländer))+
-  #     #scale_colour_discrete(name="Bundesland") +
-  #     #breaks=c(""), 
-  #     #labels= c("")) +
-  #     labs(
-  #       x = "Wetter",
-  #       y = "Tage bzw Temperatur",
-  #       caption = "Quelle & Copyright: Statistisches Bundesamt") +
-  #     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-  # })
-  # 
-  # output$Wetter1.2 <- DT::renderDT({
-  #   Wetter_final %>%
-  #     filter(Bundesland == input$Bundesland3.2) %>%
-  #     filter(Jahr == input$Jahr3.2)
-  # })
-  
   output$Wahl3.1.1 <- renderText({
     paste("Weinernte (", input$Messparameter3.1, ") nach Mostsorte für", input$Bundesland3.1.1, "im Jahr", input$Jahr3.1.1, ".")
   })
   
-  output$Weinernte1.1 <- renderPlot(width = "auto", height = 600, {
+  output$Weinernte1.1 <- renderPlot({
     E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.1.1) %>%
       filter(Jahr == input$Jahr3.1.1) %>%
@@ -997,7 +923,7 @@ server <- function(input, output) {
       aes(x = Mostsorte, y = Wert) +
       geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
       geom_label(aes(label=Wert)) + 
-      ylim(0, 1000000) +
+      ylim(0, 12300000) +
       labs(
         x = "Mostsorte",
         y = "Wert der Messvariablen",
@@ -1018,7 +944,7 @@ server <- function(input, output) {
     paste("Wetter nach Wetterphänomenen für", input$Bundesland3.1.2, "im Jahr", input$Jahr3.1.2, ".")
   })
   
-  output$Wetter1.1 <- renderPlot(width = "auto", height = 600, {
+  output$Wetter1.1 <- renderPlot({
     Wetter_gesamt %>%
       filter(Bundesland == input$Bundesland3.1.2) %>%
       filter(Jahr == input$Jahr3.1.2) %>%
@@ -1026,7 +952,7 @@ server <- function(input, output) {
       aes(x = Wetterphänomen, y = Wert) +
       geom_col(position = "dodge") +
       geom_label(aes(label=Wert)) + 
-      ylim(0, 1500) +
+      ylim(0, 2153) +
       labs(
         x = "Wetterphänomene",
         y = "Wert der Wettervariablen",

@@ -190,7 +190,7 @@ Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
 ## discrete zu numeric ----
 
 #E_BL_Jahr_RS_neu$Wert <- as.character(as.factor(E_BL_Jahr_RS_neu$Wert))
-E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
+#E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
 
 
 #Wetter_final <- Wetter_zusam %>%

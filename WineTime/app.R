@@ -20,15 +20,15 @@ library(shinydashboard)
 library(dplyr)
 
 # Daten einlesen ----
-E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na.strings=c("","NA"))
-RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE)
-WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE)
-WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"))
-Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
-Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
-Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"))
-Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na.strings=c("","NA"))
-TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na.strings=c("","NA"))
+E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Erntemenge_Bundeslaender_Jahr_Rebsorte.csv", na.strings=c("","NA"), dec = ".")
+RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE, dec = ".")
+WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE, dec = ".")
+WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), dec = ".")
+Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
+Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
+Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundesl%C3%A4nder_Jahr.csv", na.strings=c("","NA"), dec = ".")
+Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundesland_Jahr.csv", na.strings=c("","NA"),  dec = ".")
+TempDurch <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittstemperatur_Bundeslaender_Jahr_2.csv", na.strings=c("","NA"), dec = ".")
 
 selectable <- function(x)
 {
@@ -187,14 +187,10 @@ Wetter_BL_Op <- Wetter_gesamt$Bundesland %>% unique()
 Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
 
 
-## continuous zu discrete ----
-E_BL_Jahr_RS_neu$Wert <- as.factor(as.character(E_BL_Jahr_RS_neu$Wert))
+## discrete zu numeric ----
 
-E_BL_Jahr_RS_neu$Wert <- as.numeric(as.factor(E_BL_Jahr_RS_neu$Wert))
-
-Wetter_gesamt$Wert <- as.factor(as.character(Wetter_gesamt$Wert))
-
-Wetter_gesamt$Wert <- as.numeric(as.factor(Wetter_gesamt$Wert))
+#E_BL_Jahr_RS_neu$Wert <- as.character(as.factor(E_BL_Jahr_RS_neu$Wert))
+E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
 
 
 #Wetter_final <- Wetter_zusam %>%
@@ -235,7 +231,11 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr2.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Anbaugebiet2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
+                                                    selectInput("Anbaugebiet2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
+                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
+                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
+                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Die deutschen Anbaugebiete")),
                                                  textOutput('Wahl2.1'),
@@ -254,7 +254,11 @@ ui <- navbarPage(title = "WineTime",
                                      includeHTML("Weinanbau.html"),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    selectInput("Anbaugebiet2.2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1])
+                                                    selectInput("Anbaugebiet2.2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
+                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
+                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
+                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.1'),
@@ -272,7 +276,11 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
                                                     selectInput("Anbaugebiet2.2.3", "Wählen Sie ein weiteres Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
-                                                    selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
+                                                    selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
+                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
+                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
+                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.2'),
@@ -292,7 +300,11 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr2.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
+                                                    selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
+                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
+                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
+                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.1'),
@@ -310,7 +322,11 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr2.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr2.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1])
+                                                    selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
+                                                    h6("Hinweis:    Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
+                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
+                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.2'),
@@ -373,7 +389,9 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.1.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Bundesland3.1.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Messparameter3.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1])
+                                                    selectInput("Messparameter3.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen ab 1998.
+                                                       Rotmost: Einschließlich Most aus gemischten Beständen.")
                                        ),
                                        mainPanel(h4(strong("Weinernte der Bundesländer")),
                                                  textOutput('Wahl3.1.1'),
@@ -411,7 +429,9 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Messparameter3.2.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1])
+                                                    selectInput("Messparameter3.2.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen ab 1998.
+                                                    Rotmost: Einschließlich Most aus gemischten Beständen.")
                                        ),
                                        mainPanel(h4(strong("Weinernte im Zeitvergleich")),
                                                  textOutput('Wahl3.2.1'),
@@ -447,7 +467,9 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland3.2.3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
                                                     selectInput("Bundesland3.2.4", "Wählen Sie ein weiteres Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
                                                     selectInput("Messparameter3.2.2", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
-                                                    selectInput("Mostsorte3.2", "Wählen Sie eine Mostsorte", choices = E_MS_Op, selected = E_MS_Op)
+                                                    selectInput("Mostsorte3.2", "Wählen Sie eine Mostsorte", choices = E_MS_Op, selected = E_MS_Op),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen ab 1998.
+                                                    Rotmost: Einschließlich Most aus gemischten Beständen.")
                                        ),
                                        mainPanel(h4(strong("Weinernte im Zeitvergleich")),
                                                  textOutput('Wahl3.2.3'),
@@ -466,7 +488,7 @@ ui <- navbarPage(title = "WineTime",
                                                     selectInput("Bundesland3.2.5", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
                                                     selectInput("Bundesland3.2.6", "Wählen Sie ein weiteres Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[2]),
                                                     selectInput("Wetterphänomen3.2", "Wählen Sie eine Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1]),
-                                                    h6("*Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
+                                                    h6("Hinweis: Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
                                        ),
                                        mainPanel(h4(strong("Wetter im Zeitvergleich")),
                                                  textOutput('Wahl3.2.4'),
@@ -488,7 +510,9 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Messparameter3.3.1", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
-                                                    selectInput("Mostsorte3.3.1", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1])
+                                                    selectInput("Mostsorte3.3.1", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen ab 1998.
+                                                      Rotmost: Einschließlich Most aus gemischten Beständen.")
                                        ),
                                        mainPanel(h4(strong("Weinernte im Ländervergleich")),
                                                  textOutput('Wahl3.3.1'),
@@ -524,7 +548,9 @@ ui <- navbarPage(title = "WineTime",
                                                     sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     sliderInput("Jahr3.3.4", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Messparameter3.3.2", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
-                                                    selectInput("Mostsorte3.3.2", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1])
+                                                    selectInput("Mostsorte3.3.2", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen ab 1998.
+                                                    Rotmost: Einschließlich Most aus gemischten Beständen.")
                                        ),
                                        mainPanel(h4(strong("Weinernte im Ländervergleich")),
                                                  textOutput('Wahl3.3.3'),
@@ -567,8 +593,9 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr4.1", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
-                                                    selectInput("Bundesland4.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
-                                       ),
+                                                    selectInput("Bundesland4.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen.    Rotwein: Einschließlich Rotling und Roséwein.")
+                                                     ),
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
                                                  textOutput('Wahl4.1'),
                                                  tabsetPanel(
@@ -605,8 +632,10 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland4.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
                                                     selectInput("Bundesland4.2.3", "Wählen Sie ein weiteres Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
-                                                    selectInput("Weinkategorie4.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
-                                       ),
+                                                    selectInput("Weinkategorie4.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen.    Rotwein: Einschließlich Rotling und Roséwein.")
+                                                     ),
+                                      
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
                                                  textOutput('Wahl4.2.2'),
                                                  tabsetPanel(
@@ -625,7 +654,8 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr4.3.1", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
-                                                    selectInput("Weinkategorie4.3.1", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
+                                                    selectInput("Weinkategorie4.3.1", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen.    Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
                                                  textOutput('Wahl4.3.1'),
@@ -643,7 +673,8 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr4.3.2", "Wählen Sie ein Jahr:", min = 2010, max = 2018, value = 2012, step = 1, sep = ""),
                                                     sliderInput("Jahr4.3.3", "Wählen Sie ein weiteres Jahr:", min = 2010, max = 2018, value = 2015, step = 1, sep = ""),
-                                                    selectInput("Weinkategorie4.3.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1])
+                                                    selectInput("Weinkategorie4.3.2", "Wählen Sie eine Weinkategorie:", choices = WP_WK_Op, selected = WP_WK_Op[1]),
+                                                    h6("Hinweis: Sachsen-Anhalt: Einschließlich Thüringen.    Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
                                                  textOutput('Wahl4.3.2'),
@@ -668,7 +699,8 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr5.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
+                                                    selectInput("Bundesland5.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
+                                                    h6("Hinweis: Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
                                                  textOutput('Wahl5.1'),
@@ -687,7 +719,8 @@ ui <- navbarPage(title = "WineTime",
                                      includeHTML("Weinbestand.html"),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    selectInput("Bundesland5.2.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1])
+                                                    selectInput("Bundesland5.2.1", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
+                                                    h6("Hinweis: Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                                  textOutput('Wahl5.2.1'),
@@ -705,7 +738,8 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland5.2.2", "Wählen Sie ein Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[1]),
                                                     selectInput("Bundesland5.2.3", "Wählen Sie ein weiteres Bundesland:", choices = WB_BL_Op, selected = WB_BL_Op[2]),
-                                                    selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                                                    selectInput("Rebsorte5.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1]),
+                                                    h6("Hinweis: Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                                  textOutput('Wahl5.2.2'),
@@ -725,7 +759,8 @@ ui <- navbarPage(title = "WineTime",
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr5.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                                                    selectInput("Rebsorte5.3.1", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1]),
+                                                    h6("Hinweis: Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                                  textOutput('Wahl5.3.1'),
@@ -743,7 +778,8 @@ ui <- navbarPage(title = "WineTime",
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr5.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr5.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1])
+                                                    selectInput("Rebsorte5.3.2", "Wählen Sie eine Rebsorte:", choices = WB_RS_Op, selected = WB_RS_Op[1]),
+                                                    h6("Hinweis: Rotwein: Einschließlich Rotling und Roséwein.")
                                        ),
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                                  textOutput('Wahl5.3.2'),
@@ -1322,6 +1358,7 @@ server <- function(input, output) {
       ggplot()+
       aes(x = Bundesland, y = hl, fill = Jahr)+
       geom_col(position = "dodge")+
+      ylim(0, 10000000)
       labs(
         x = "Bundesland",
         y = "Weinproduktion in hl",

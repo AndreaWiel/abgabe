@@ -24,7 +24,7 @@ E_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/m
 RF_ABG_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Rebflaechen_Anbaugebiete_Jahr_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE, dec = ".")
 WB_BL_Jahr_RS <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinbestaende_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), check.names = FALSE, dec = ".")
 WP_BL_Jahr_WK <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wein/Weinproduktion_Bundeslaender_Jahre_Rebsorte.csv", na.strings=c("","NA"), dec = ".")
-Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundelsaender_Jahr_neu.csv", na.strings=c("","NA"), dec = ".")
+Frosttage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Frosttage_Bundeslaender_Jahr_neu.csv", na.strings=c("","NA"), dec = ".")
 Sommertage <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sommertage_Bundeslaender_Jahr_neu.csv", na.strings=c("","NA"), dec = ".")
 Sonnenstunden <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnitt_Sonnenstunden_Bundeslaender_Jahr_neu.csv", na.strings=c("","NA"), dec = ".")
 Regen <- read.csv2("https://raw.githubusercontent.com/AndreaWiel/abgabe/master/WineTime/csv_Datensaetze/Wetter/Durchschnittsniederschlag_Bundeslaender_Jahr_neu.csv", na.strings=c("","NA"),  dec = ".")
@@ -78,6 +78,18 @@ E_MP_Op <- E_BL_Jahr_RS_neu$Messparameter %>% unique()
 
 ## Daten Weinproduktion
 WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
+  rename(c("Weißwein: Qualitätswein" = "Weisswein...Qualitaetswein",
+           "Weißwein: Prädikatswein" = "Weisswein...Praedikatswein",
+           "Weißwein: Wein und/oder Landwein" = "Weisswein...Wein.und.oder.Landwein",
+           "Weißwein: Insgesamt" = "Weisswein...Insgesamt",
+           "Rotwein: Qualitätswein" = "Rotwein...Qualitaetswein",
+           "Rotwein: Prädikatswein" = "Rotwein...Praedikatswein",
+           "Rotwein: Wein und/oder Landwein" = "Rotwein....Wein.und.oder.Landwein",
+           "Rotwein: Insgesamt" = "Rotwein...Insgesamt",
+           "Insgesamt: Qualitätswein" = "insgesamt...Qualitaetswein",
+           "Insgesamt: Prädikatswein" = "Insgesamt...Praedikatswein",
+           "Insgesamt: Wein und/oder Landwein" = "Insgesamt...Wein.und.oder.Landwein",
+           "Insgesamt: alles Rebsorten und Weinkategorien" = "Insgesamt...Rebsorten")) %>%
   gather("Weinkategorie", "hl", 3:14)
 
 WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
@@ -103,11 +115,10 @@ Frosttage_neu <- Frosttage %>%
            "Schleswig-Holstein" = "Schleswig.Holstein",
            "Sachsen-Anhalt" = "Sachsen.Anhalt",
            "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
-           "Thüringen" = "Thueringen")) %>%
+           "Thüringen" = "Thueringen",
+           "Gesamt-Deutschland" = "Gesamt.Deutschland")) %>%
   gather("Bundesland", "Frosttage", 2:18) %>%
   filter(Jahr >= 1993)
-
-Frosttage_neu$Frosttage <- as.numeric(as.character(Frosttage_neu$Frosttage))
 
 
 ## Daten Regenmenge
@@ -121,11 +132,10 @@ Regen_neu <- Regen %>%
            "Schleswig-Holstein" = "Schleswig.Holstein",
            "Sachsen-Anhalt" = "Sachsen.Anhalt",
            "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
-           "Thüringen" = "Thueringen")) %>%
+           "Thüringen" = "Thueringen",
+           "Gesamt-Deutschland" = "Gesamt.Deutschland")) %>%
   gather("Bundesland", "Regenmenge in mm (1mm = 1l/m²)", 2:18) %>%
   filter(Jahr >= 1993)
-
-Regen_neu$Frostt <- as.numeric(as.character(Frosttage_neu$Frosttage))
 
 
 ## Daten Sonnenstunden
@@ -139,7 +149,8 @@ Sonnenstunden_neu <- Sonnenstunden %>%
            "Schleswig-Holstein" = "Schleswig.Holstein",
            "Sachsen-Anhalt" = "Sachsen.Anhalt",
            "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
-           "Thüringen" = "Thueringen")) %>%
+           "Thüringen" = "Thueringen",
+           "Gesamt-Deutschland" = "Gesamt.Deutschland")) %>%
   gather("Bundesland", "Sonnenstunden", 2:18) %>%
   filter(Jahr >= 1993)
 
@@ -155,7 +166,8 @@ Sommertage_neu <- Sommertage %>%
            "Schleswig-Holstein" = "Schleswig.Holstein",
            "Sachsen-Anhalt" = "Sachsen.Anhalt",
            "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
-           "Thüringen" = "Thueringen")) %>%
+           "Thüringen" = "Thueringen",
+           "Gesamt-Deutschland" = "Gesamt.Deutschland")) %>%
   gather("Bundesland", "Sommertage", 2:18) %>%
   filter(Jahr >= 1993)
 
@@ -171,7 +183,8 @@ TempDurch_neu <- TempDurch %>%
            "Schleswig-Holstein" = "Schleswig.Holstein",
            "Sachsen-Anhalt" = "Sachsen.Anhalt",
            "Thüringen & Sachsen-Anhalt" = "Thueringen.Sachsen.Anhalt",
-           "Thüringen" = "Thueringen")) %>%
+           "Thüringen" = "Thueringen",
+           "Gesamt-Deutschland" = "Gesamt.Deutschland")) %>%
   gather("Bundesland", "Temperaturdurchschnitt in °C", 2:18) %>%
   filter(Jahr >= 1993)
 
@@ -186,13 +199,6 @@ Wetter_gesamt <- left_join(Wetter_ST_FT_SST_R, TempDurch_neu, by = c("Jahr", "Bu
 
 Wetter_BL_Op <- Wetter_gesamt$Bundesland %>% unique()
 Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
-
-
-## discrete zu numeric ----
-
-#E_BL_Jahr_RS_neu$Wert <- as.character(as.factor(E_BL_Jahr_RS_neu$Wert))
-#E_BL_Jahr_RS_neu$Wert <- as.numeric(as.character(E_BL_Jahr_RS_neu$Wert))
-
 
 
 # Define UI ----

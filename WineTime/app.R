@@ -44,6 +44,10 @@ our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 
 # Daten aufbereiten ----
 
+## NA mit 0 ersetzen
+E_BL_Jahr_RS[is.na(E_BL_Jahr_RS)] <- 0
+WP_BL_Jahr_WK[is.na(WP_BL_Jahr_WK)] <- 0
+
 ## Daten Rebfäche
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
   gather("Jahr", "ha", 3:28)
@@ -227,9 +231,9 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                           
                  ),
                  
-                 # tabPanel 2 - Weinanbaugebiete ----
-                 navbarMenu("Weinanbaugebiete",
-                            tabPanel("Gut zu Wissen",
+                 # tabPanel 2 - Weinanbauflächen ----
+                 navbarMenu("Weinanbauflächen",
+                            tabPanel("Gut zu wissen",
                                      includeHTML("WeinanbauINFO.html")
                             ),
                             tabPanel("Die deutschen Anbaugebiete",
@@ -353,7 +357,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                  
                  # tabPanel 3 - Ernte ----
                  navbarMenu("Weinernte",
-                            tabPanel("Gut zu Wissen",
+                            tabPanel("Gut zu wissen",
                                      includeHTML("WeinernteINFO.html")
                             ),
                             tabPanel("Weinernte & Wetter der Bundesländer",
@@ -568,7 +572,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                  
                  # tabPanel 4 - Weinproduktion ----
                  navbarMenu("Weinproduktion",
-                            tabPanel("Gut zu Wissen",
+                            tabPanel("Gut zu wissen",
                                      includeHTML("WeinproduktionINFO.html")
                             ),
                             tabPanel("Weinproduktion der Bundesländer",
@@ -680,7 +684,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                  
                  # tabPanel 5 - Weinbestände ----
                  navbarMenu("Weinbestände",
-                            tabPanel("Gut zu Wissen",
+                            tabPanel("Gut zu wissen",
                                      includeHTML("WeinbestandINFO.html")
                             ),
                             tabPanel("Weinbestände der Bundesländer",
@@ -983,12 +987,14 @@ server <- function(input, output) {
       AErnte1
   })
   
-  output$Weiernte1.2 <- DT::renderDT({
+  output$Weinernte1.2 <- DT::renderDT({
     E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.1.1) %>%
       filter(Jahr == input$Jahr3.1.1) %>%
       filter(Messparameter == input$Messparameter3.1)
   })
+  
+  
   
   ## Wetter 1 ----
   output$Wahl3.1.2 <- renderText({
@@ -1020,6 +1026,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.1.2)
   })
   
+    
   ## Weinernte 2.1 ----
   output$Wahl3.2.1 <- renderText({
     paste("Weinernte (", input$Messparameter3.2.1, ") nach Mostsorte für", input$Bundesland3.2.1, "zwischen 1993 und 2018.")

@@ -773,6 +773,7 @@ server <- function(input, output) {
   
   
   # tabPanel 2 - Weinanbaugebiete ----
+  ## Anbau 1 ----
   output$Wahl2.1 <- renderText({
     paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.1, "im Jahr", input$Jahr2.1, ".")
   })
@@ -801,6 +802,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr2.1)
   })
   
+  ## Anbau 2.1 ----
   output$Wahl2.2.1 <- renderText({
     paste("Weinanbaufläche (in ha) nach Rebsorten für das Anbaugebiet", input$Anbaugebiet2.2.1, "zwischen 1993 und 2018.")
   })
@@ -829,6 +831,7 @@ server <- function(input, output) {
       filter(Anbaugebiet == input$Anbaugebiet2.2.1)
   })
   
+  ## Anabu 2.2 ----
   output$Wahl2.2.2 <- renderText({
     paste("Weinanbaufläche (in ha) der Rebsorte", input$Rebsorte2.2, "zwischen 1993 und 2018 im Vergleich der Anbaugebiete", input$Anbaugebiet2.2.2, "und", input$Anbaugebiet2.2.3, ".")
   })
@@ -859,6 +862,7 @@ server <- function(input, output) {
       filter(Rebsorte == input$Rebsorte2.2)
   })
   
+  ## Anbau 3.1 ----
   output$Wahl2.3.1 <- renderText({
     paste("Weinanbaufläche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Jahr", input$Jahr2.3.1, ".")
   })
@@ -887,6 +891,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr2.3.1)
   })
   
+  ## Anbau 3.2 ----
   output$Wahl2.3.2 <- renderText({
     paste("Weinanbaufläche (in ha) der deutschen Anbaugebiete für die Rebsorte", input$Rebsorte2.3.2, "im Vergleich der Jahre", input$Jahr2.3.2, "und", input$Jahr2.3.3, ".")
   })
@@ -919,31 +924,30 @@ server <- function(input, output) {
   
   
   # tabPanel 3 - Weinernte ----
+  ## Weinernte 1 ----
   output$Wahl3.1.1 <- renderText({
     paste("Weinernte (", input$Messparameter3.1, ") nach Mostsorte für", input$Bundesland3.1.1, "im Jahr", input$Jahr3.1.1, ".")
   })
   
   output$Weinernte1.1 <- renderPlot({
-    temp <- E_BL_Jahr_RS_neu %>%
+    Ernte1 <- E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.1.1) %>%
       filter(Jahr == input$Jahr3.1.1) %>%
       filter(Messparameter == input$Messparameter3.1) 
     
-    
-    anmerkung <- NULL
-    
-    summentabelle <- temp %>% group_by(Bundesland) %>% 
-      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% pull(Wert)
-    
-    
-    if(summentabelle == 0) {
-      anmerkung <- annotate("text", x = 2, y = 6000000, label = "Dieses Bundesland hat keine Weinernte!", size = 9)
+    AErnte1 <- NULL
+    STErnte1 <- Ernte1 %>% 
+      group_by(Bundesland) %>% 
+      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
+      pull(Wert)
+    if(STErnte1 == 0) {
+      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "Dieses Bundesland hat keine Weinernte!", size = 9)
     }
     
-    temp %>%
+    Ernte1 %>%
       ggplot() +
       aes(x = Mostsorte, y = Wert) +
-      geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
+      geom_col(position = "dodge", fill = c("Weißmost" = "#8aa4be", "Rotmost" = "#9e0657", "Weinmost insgesamt" = "#2c3e50")) +
       geom_label(aes(label=Wert)) + 
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
@@ -953,7 +957,7 @@ server <- function(input, output) {
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14)) +
-      anmerkung
+      AErnte1
   })
   
   output$Weiernte1.2 <- DT::renderDT({
@@ -963,6 +967,7 @@ server <- function(input, output) {
       filter(Messparameter == input$Messparameter3.1)
   })
   
+  ## Wetter 1 ----
   output$Wahl3.1.2 <- renderText({
     paste("Wetter nach Wetterphänomenen für", input$Bundesland3.1.2, "im Jahr", input$Jahr3.1.2, ".")
   })
@@ -989,6 +994,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.1.2)
   })
   
+  ## Weinernte 2.1 ----
   output$Wahl3.2.1 <- renderText({
     paste("Weinernte (", input$Messparameter3.2.1, ") nach Mostsorte für", input$Bundesland3.2.1, "zwischen 1993 und 2018.")
   })
@@ -1015,6 +1021,7 @@ server <- function(input, output) {
       filter(Messparameter == input$Messparameter3.2.1)
   })
   
+  ## Wetter 2.1 ----
   output$Wahl3.2.2 <- renderText({
     paste("Wetter nach Wetterphänomenen für", input$Bundesland3.2.2, "zwischen 1993 und 2018.")
   })
@@ -1038,6 +1045,7 @@ server <- function(input, output) {
       filter(Bundesland == input$Bundesland3.2.2)
   })
   
+  ## Weinernte 2.2 ----
   output$Wahl3.2.3 <- renderText({
     paste("Weinernte (", input$Messparameter3.2.2, ") der Mostsorte", input$Mostsorte3.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland3.2.3, "und", input$Bundesland3.2.4, ".")
   })
@@ -1066,6 +1074,7 @@ server <- function(input, output) {
       filter(Mostsorte == input$Mostsorte3.2)
   })
   
+  ## Wetter 2.2 ----
   output$Wahl3.2.4 <- renderText({
     paste(input$Wetterphänomen3.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland3.2.5, "und", input$Bundesland3.2.6, ".")
   })
@@ -1091,6 +1100,7 @@ server <- function(input, output) {
       filter(Wetterphänomen == input$Wetterphänomen3.2)
   })
   
+  ## Weinernte 3.1 ----
   output$Wahl3.3.1 <- renderText({
     paste("Weinernte (", input$Messparameter3.3.1, ") der Bundesländer für die Mostsorte", input$Rebsorte3.3.1, "im Jahr", input$Jahr3.3.1, ".")
   })
@@ -1119,6 +1129,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr5.3.1)
   })
   
+  ## Wetter 3.1 ----
   output$Wahl3.3.2 <- renderText({
     paste(input$Wetterphänomen3.3.1, "der Bundesländer im Jahr", input$Jahr3.3.2, ".")
   })
@@ -1145,6 +1156,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.3.2)
   })
   
+  ## Weinernte 3.2 ----
   output$Wahl3.3.3 <- renderText({
     paste("Weinernte (", input$Messparameter3.3.2, ") der Bundesländer für  die Mostsorte", input$Mostsorte3.3.2, "im Vergleich der Jahre", input$Jahr3.3.3, "und", input$Jahr3.3.4, ".")
   })
@@ -1173,6 +1185,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4)
   })
   
+  ## Wetter 3.2 ----
   output$Wahl3.3.4 <- renderText({
     paste(input$Wetterphänomen3.3.2, "der Bundesländer im Vergleich der Jahre", input$Jahr3.3.5, "und", input$Jahr3.3.6, ".")
   })
@@ -1202,6 +1215,7 @@ server <- function(input, output) {
   
   
   # tabPanel 4 - Weinproduktion ----
+  ## Produktion 1 ----
   output$Wahl4.1 <- renderText({
     paste("Weinbestand (in hl) nach Weinkategorie für", input$Bundesland4.1, "im Jahr", input$Jahr4.1, ".")
   })
@@ -1231,6 +1245,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr4.1)
   })
   
+  ## Produktion 2.1 ----
   output$Wahl4.2.1 <- renderText({
     paste("Weinbestand (in hl) nach Weinkategorie für", input$Bundesland4.2.1, "zwischen 2010 und 2018.")
   })
@@ -1259,6 +1274,7 @@ server <- function(input, output) {
       filter(Bundesland == input$Bundesland4.2.1)
   })
   
+  ## Produktion 2.2 ----
   output$Wahl4.2.2 <- renderText({
     paste("Weinbestand (in hl) der Weinkategorie", input$Weinkategorie4.2, "zwischen 2010 und 2018 im Vergleich von", input$Bundesland4.2.2, "und", input$Bundesland4.2.3, ".")
   })
@@ -1289,6 +1305,7 @@ server <- function(input, output) {
       filter(Weinkategorie == input$Weinkategorie4.2)
   })
   
+  ## Produktion 3.1 ----
   output$Wahl4.3.1 <- renderText({
     paste("Weinbestand (in hl) der Bundesländer für die Weinkategorie", input$Weinkategorie4.3.1, "im Jahr", input$Jahr4.3.1, ".")
   })
@@ -1317,6 +1334,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr4.3.1)
   })
   
+  ## Produktion 3.2 ----
   output$Wahl4.3.2 <- renderText({
     paste("Weinbestand (in hl) der Bundesländer für die Weinkategorie", input$Weinkategorie4.3.2, "im Vergleich der Jahre", input$Jahr4.3.2, "und", input$Jahr4.3.3, ".")
   })
@@ -1351,6 +1369,7 @@ server <- function(input, output) {
   
   
   # tabPanel 5 - Weinbestände ----
+  ## Bestand 1 ----
   output$Wahl5.1 <- renderText({
     paste("Weinbestand (in hl) nach Rebsorten für", input$Bundesland5.1, "im Jahr", input$Jahr5.1, ".")
   })
@@ -1379,6 +1398,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr5.1)
   })
   
+  ## Bestand 2.1 ----
   output$Wahl5.2.1 <- renderText({
     paste("Weinbestand (in hl) nach Rebsorten für", input$Bundesland5.2.1, "zwischen 1993 und 2018.")
   })
@@ -1407,6 +1427,7 @@ server <- function(input, output) {
       filter(Bundesland == input$Bundesland5.2.1)
   })
   
+  ## Bestand 2.2 ----
   output$Wahl5.2.2 <- renderText({
     paste("Weinbestand (in hl) der Rebsorte", input$Rebsorte5.2, "zwischen 1993 und 2018 im Vergleich von", input$Bundesland5.2.2, "und", input$Bundesland5.2.3, ".")
   })
@@ -1437,6 +1458,7 @@ server <- function(input, output) {
       filter(Rebsorte == input$Rebsorte5.2)
   })
   
+  ## Bestand 3.1 ----
   output$Wahl5.3.1 <- renderText({
     paste("Weinbestand (in hl) der Bundesländer für die Rebsorte", input$Rebsorte5.3.1, "im Jahr", input$Jahr5.3.1, ".")
   })
@@ -1465,6 +1487,7 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr5.3.1)
   })
   
+  ## Bestand 3.2 ----
   output$Wahl5.3.2 <- renderText({
     paste("Weinbestand (in hl) der Bundesländer für  die Rebsorte", input$Rebsorte5.3.2, "im Vergleich der Jahre", input$Jahr5.3.2, "und", input$Jahr5.3.3, ".")
   })

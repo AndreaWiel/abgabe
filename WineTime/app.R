@@ -203,7 +203,7 @@ Wetter_WP_Op <- Wetter_gesamt$Wetterphänomen %>% unique()
 
 
 # Define UI ----
-ui <- navbarPage(title = "WineTime",
+ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-top: -14px; padding-right:10px;padding-bottom:10px", height = 60), "WineTime"),
                  theme = "bootstrap.css",
                  footer = includeHTML("footer.html"),
                  fluid = TRUE, 
@@ -222,7 +222,7 @@ ui <- navbarPage(title = "WineTime",
                  #  color: #B3056A;")), #9e0657
                  
                  # tabPanel 1 - Home ----
-                 tabPanel("Home",
+                 tabPanel("Home", 
                           includeHTML("home.html")
                           
                  ),
@@ -246,10 +246,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Die deutschen Anbaugebiete")),
                                                  textOutput('Wahl2.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinanbaugebiete1.1', height = 650)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinanbaugebiete1.2')
                                                    )
                                                  )
@@ -269,10 +269,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinanbaugebiete2.1', height = 650)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinanbaugebiete2.2')
                                                    )
                                                  )
@@ -292,10 +292,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinanbaugebiete2.3', height = 650)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinanbaugebiete2.4')
                                                    )
                                                  )
@@ -316,10 +316,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinanbaugebiete3.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinanbaugebiete3.2')
                                                    )
                                                  )
@@ -339,10 +339,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinanbaugebiete3.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinanbaugebiete3.4')
                                                    )
                                                  )
@@ -369,10 +369,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinernte der Bundesländer")),
                                                  textOutput('Wahl3.1.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinernte1.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinernte1.2')
                                                    )
                                                  )
@@ -388,10 +388,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Wetterdaten der Bundesländer")),
                                                  textOutput('Wahl3.1.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Wetter1.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Wetter1.2')
                                                    )
                                                  )
@@ -410,10 +410,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinernte im Zeitvergleich")),
                                                  textOutput('Wahl3.2.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinernte2.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinernte2.2')
                                                    )
                                                  )
@@ -428,10 +428,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Wetter im Zeitvergleich")),
                                                  textOutput('Wahl3.2.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Wetter2.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Wetter2.2')
                                                    )
                                                  )
@@ -450,10 +450,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinernte im Zeitvergleich")),
                                                  textOutput('Wahl3.2.3'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinernte2.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinernte2.4')
                                                    )
                                                  )
@@ -470,10 +470,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Wetter im Zeitvergleich")),
                                                  textOutput('Wahl3.2.4'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Wetter2.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Wetter2.4')
                                                    )
                                                  )
@@ -494,10 +494,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinernte im Ländervergleich")),
                                                  textOutput('Wahl3.3.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinernte3.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinernte3.2')
                                                    )
                                                  )
@@ -512,10 +512,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Wetter im Ländervergleich")),
                                                  textOutput('Wahl3.3.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Wetter3.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Wetter3.2')
                                                    )
                                                  )
@@ -534,10 +534,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinernte im Ländervergleich")),
                                                  textOutput('Wahl3.3.3'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinernte3.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinernte3.4')
                                                    )
                                                  )
@@ -553,10 +553,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Wetter im Ländervergleich")),
                                                  textOutput('Wahl3.3.4'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Wetter3.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Wetter3.4')
                                                    )
                                                  )
@@ -582,10 +582,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
                                                  textOutput('Wahl4.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinproduktion1.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinproduktion1.2')
                                                    )
                                                  )
@@ -603,10 +603,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
                                                  textOutput('Wahl4.2.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinproduktion2.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinproduktion2.2')
                                                    )
                                                  )
@@ -624,10 +624,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
                                                  textOutput('Wahl4.2.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinproduktion2.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinproduktion2.4')
                                                    )
                                                  )
@@ -645,10 +645,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
                                                  textOutput('Wahl4.3.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinproduktion3.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinproduktion3.2')
                                                    )
                                                  )
@@ -665,10 +665,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinproduktion im Ländervergleich")),
                                                  textOutput('Wahl4.3.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinproduktion3.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinproduktion3.4')
                                                    )
                                                  )
@@ -694,10 +694,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände der Bundesländer")),
                                                  textOutput('Wahl5.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinbestand1.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinbestand1.2')
                                                    )
                                                  )
@@ -714,10 +714,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                                  textOutput('Wahl5.2.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinbestand2.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinbestand2.2')
                                                    )
                                                  )
@@ -734,10 +734,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände im Zeitvergleich")),
                                                  textOutput('Wahl5.2.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinbestand2.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinbestand2.4')
                                                    )
                                                  )
@@ -755,10 +755,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                                  textOutput('Wahl5.3.1'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinbestand3.1', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinbestand3.2')
                                                    )
                                                  )
@@ -775,10 +775,10 @@ ui <- navbarPage(title = "WineTime",
                                        mainPanel(h4(strong("Weinbestände im Ländervergleich")),
                                                  textOutput('Wahl5.3.2'),
                                                  tabsetPanel(
-                                                   tabPanel("Grafik",
+                                                   tabPanel("Grafik", icon = icon("bar-chart-o"),
                                                             plotOutput('Weinbestand3.3', height = 750)
                                                    ),
-                                                   tabPanel("Tabelle",
+                                                   tabPanel("Tabelle", icon = icon("table"),
                                                             DT::DTOutput('Weinbestand3.4')
                                                    )
                                                  )

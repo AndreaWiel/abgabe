@@ -1479,9 +1479,9 @@ server <- function(input, output) {
   })
   
   output$Weinbestand1.1 <- renderPlot(width = "auto", height = 600, {
-    WB_BL_Jahr_RS_neu %>%
+    Bestand1.1 <- WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.1) %>%
-      filter(Jahr == input$Jahr5.1) %>% 
+      filter(Jahr == input$Jahr5.1) %>%
       ggplot() +
       aes(x = Rebsorte, y = hl) +
       geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +

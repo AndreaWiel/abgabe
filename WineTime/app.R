@@ -854,7 +854,7 @@ server <- function(input, output) {
       filter(Anbaugebiet == input$Anbaugebiet2.2.1)
   })
   
-  ## Anabu 2.2 ----
+  ## Anbau 2.2 ----
   output$Wahl2.2.2 <- renderText({
     paste("Weinanbaufläche (in ha) der Rebsorte", input$Rebsorte2.2, "zwischen 1993 und 2018 im Vergleich der Anbaugebiete", input$Anbaugebiet2.2.2, "und", input$Anbaugebiet2.2.3, ".")
   })
@@ -964,7 +964,7 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte1 == 0) {
-      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "Dieses Bundesland hat keine Weinernte!", size = 9)
+      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
     }
     
     Ernte1 %>%
@@ -1026,9 +1026,21 @@ server <- function(input, output) {
   })
   
   output$Weinernte2.1 <- renderPlot({
-    E_BL_Jahr_RS_neu %>%
+     Ernte2.1 <- E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.2.1) %>%
-      filter(Messparameter == input$Messparameter3.2.1) %>%
+      filter(Messparameter == input$Messparameter3.2.1) 
+     
+     
+     AErnte2.1 <- NULL
+     STErnte2.1 <- Ernte2.1 %>% 
+       group_by(Bundesland) %>% 
+       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
+       pull(Wert)
+     if(STErnte2.1 == 0) {
+       AErnte2.1 <- annotate("text", x = 2005, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
+     }
+     
+     Ernte2.1 %>%
       ggplot()+
       aes(x = Jahr, y = Wert, color = Mostsorte)+
       geom_point(size = 2)+
@@ -1042,7 +1054,8 @@ server <- function(input, output) {
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+       AErnte2.1
   })
   
   output$Weinernte2.2 <- DT::renderDT({
@@ -1086,10 +1099,20 @@ server <- function(input, output) {
   })
   
   output$Weinernte2.3 <- renderPlot({
-    E_BL_Jahr_RS_neu %>%
+    Ernte2.3 <- E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.2.3 | Bundesland == input$Bundesland3.2.4) %>%
       filter(Messparameter == input$Messparameter3.2.2) %>%
-      filter(Mostsorte == input$Mostsorte3.2) %>%
+      filter(Mostsorte == input$Mostsorte3.2)
+    
+    AErnte2.3 <- NULL
+    STErnte2.3 <- Ernte2.3 %>% 
+      group_by(Bundesland) %>% 
+      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
+      pull(Wert)
+    if(STErnte2.3 == 0) {
+      AErnte2.3 <- annotate("text", x = 1993, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
+    }
+    Ernte2.3 %>%
       ggplot()+
       aes(x = Jahr, y = Wert, color = Bundesland)+
       geom_point(size = 2)+
@@ -1103,7 +1126,8 @@ server <- function(input, output) {
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+      AErnte2.3
   })
   
   output$Weinernte2.4 <- DT::renderDT({
@@ -1150,11 +1174,21 @@ server <- function(input, output) {
   })
   
   output$Weinernte3.1 <- renderPlot({
-    E_BL_Jahr_RS_neu %>%
+   Ernte3.1 <- E_BL_Jahr_RS_neu %>%
       filter(Mostsorte == input$Mostsorte3.3.1) %>%
       filter(Jahr == input$Jahr3.3.1) %>%
-      filter(Messparameter == input$Messparameter3.3.1) %>%
-      ggplot()+
+      filter(Messparameter == input$Messparameter3.3.1)
+    
+    AErnte3.1 <- NULL
+    STErnte3.1 <- Ernte3.1 %>% 
+      group_by(Bundesland) %>% 
+      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
+      pull(Wert)
+    if(STErnte3.1 == 0) {
+      AErnte3.1 <- annotate("text", x = Bundesland, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
+    }
+    Ernte3.1 %>%
+      ggplot() +
       aes(x = Bundesland, y = Wert)+
       geom_col(position = "dodge", fill = "#2c3e50")+
       geom_label(aes(label=Wert)) +
@@ -1165,7 +1199,8 @@ server <- function(input, output) {
         caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
-            axis.title = element_text(size = 14))
+            axis.title = element_text(size = 14)) +
+    AErnte3.1
   })
   
   output$Weinernte3.2 <- DT::renderDT({
@@ -1209,10 +1244,20 @@ server <- function(input, output) {
   })
   
   output$Weinernte3.3 <- renderPlot({
-    E_BL_Jahr_RS_neu %>%
+    Ernte3.3 <- E_BL_Jahr_RS_neu %>%
       filter(Messparameter == input$Messparameter3.3.2) %>%
       filter(Mostsorte == input$Mostsorte3.3.2) %>%
-      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) %>%
+      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) 
+    
+    AErnte3.3 <- NULL
+    STErnte3.3 <- Ernte3.3 %>% 
+      group_by(Bundesland) %>% 
+      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
+      pull(Wert)
+    if(STErnte3.3 == 0) {
+      AErnte3.3 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
+    }
+    Ernte3.3 %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
       geom_col(aes(fill = as.factor(Jahr)), position = "dodge")+
@@ -1227,7 +1272,8 @@ server <- function(input, output) {
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14),
-            legend.position="top")
+            legend.position="top") +
+    AErnte3.3
   })
   
   output$Weinernte3.4 <- DT::renderDT({

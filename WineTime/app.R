@@ -229,6 +229,9 @@ ui <- navbarPage(title = "WineTime",
                  
                  # tabPanel 2 - Weinanbaugebiete ----
                  navbarMenu("Weinanbaugebiete",
+                            tabPanel("Gut zu Wissen",
+                                     includeHTML("WeinanbauINFO.html")
+                            ),
                             tabPanel("Die deutschen Anbaugebiete",
                                      includeHTML("Weinanbau.html"),
                                      sidebarLayout(
@@ -348,6 +351,9 @@ ui <- navbarPage(title = "WineTime",
                  
                  # tabPanel 3 - Ernte ----
                  navbarMenu("Weinernte",
+                            tabPanel("Gut zu Wissen",
+                                     includeHTML("WeinernteINFO.html")
+                            ),
                             tabPanel("Weinernte & Wetter der Bundesländer",
                                      includeHTML("Weinernte.html"),
                                      sidebarLayout(
@@ -510,7 +516,7 @@ ui <- navbarPage(title = "WineTime",
                                      ),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr3.3.4", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Messparameter3.3.2", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
                                                     selectInput("Mostsorte3.3.2", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1]),
@@ -553,6 +559,9 @@ ui <- navbarPage(title = "WineTime",
                  
                  # tabPanel 4 - Weinproduktion ----
                  navbarMenu("Weinproduktion",
+                            tabPanel("Gut zu Wissen",
+                                     includeHTML("WeinproduktionINFO.html")
+                            ),
                             tabPanel("Weinproduktion der Bundesländer",
                                      includeHTML("Weinproduktion.html"),
                                      sidebarLayout(
@@ -662,6 +671,9 @@ ui <- navbarPage(title = "WineTime",
                  
                  # tabPanel 5 - Weinbestände ----
                  navbarMenu("Weinbestände",
+                            tabPanel("Gut zu Wissen",
+                                     includeHTML("WeinbestandINFO.html")
+                            ),
                             tabPanel("Weinbestände der Bundesländer",
                                      includeHTML("Weinbestand.html"),
                                      sidebarLayout(
@@ -846,7 +858,7 @@ server <- function(input, output) {
       aes(x = Jahr, y = ha, color = Anbaugebiet)+
       geom_point(size = 2)+
       geom_line(aes(group = Anbaugebiet), size = 1.25)+
-      scale_color_manual(values = c("#8BCCCA", "#92A2D6")) +
+      scale_color_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
@@ -906,7 +918,7 @@ server <- function(input, output) {
       aes(x = Anbaugebiet, y = ha) +
       geom_col(aes(fill = Jahr), position = "dodge") +
       geom_label(aes(label=ha, group = Jahr), position = position_dodge(1), size = 3) +
-      scale_fill_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Anbaugebiete",
@@ -980,14 +992,17 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.1.2) %>%
       ggplot() +
       aes(x = Wetterphänomen, y = Wert) +
-      geom_col(position = "dodge", fill = c("Frosttage" = "#89B1D9", "Regenmenge in mm (1mm = 1l/m²)" = "#8FCFE3", "Sommertage" = "#89D9A9", "Sonnenstunden" = "#9895ED", "Temperaturdurchschnitt in °C" = "#A88FE3")) +
+      geom_col(position = "dodge", fill = c("Frosttage" = "#4c7cb0", "Regenmenge in mm (1mm = 1l/m²)" = "#36587d", "Sommertage" = "#6db2fc", "Sonnenstunden" = "#b9dafd", "Temperaturdurchschnitt in °C" = "#5b6c7d")) +
       geom_label(aes(label=Wert)) + 
       scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Wetterphänomene",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020") +
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Wetter1.2 <- DT::renderDT({
@@ -1009,12 +1024,16 @@ server <- function(input, output) {
       aes(x = Jahr, y = Wert, color = Mostsorte)+
       geom_point(size = 2)+
       geom_line(size = 1.25)+
+      scale_color_manual(values = c("Weißmost" = "#8aa4be", "Rotmost" = "#9e0657", "Weinmost insgesamt" = "#2c3e50")) +
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Weinernte2.2 <- DT::renderDT({
@@ -1035,11 +1054,16 @@ server <- function(input, output) {
       aes(x = Jahr, y = Wert, color = Wetterphänomen)+
       geom_point(size = 2)+
       geom_line(size = 1.25)+
+      scale_color_manual(values = c("Frosttage" = "#4c7cb0", "Regenmenge in mm (1mm = 1l/m²)" = "#36587d", "Sommertage" = "#6db2fc", "Sonnenstunden" = "#b9dafd", "Temperaturdurchschnitt in °C" = "#5b6c7d")) +
+      scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Wetter2.2 <- DT::renderDT({
@@ -1061,12 +1085,16 @@ server <- function(input, output) {
       aes(x = Jahr, y = Wert, color = Bundesland)+
       geom_point(size = 2)+
       geom_line(size = 1.25)+
+      scale_color_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Weinernte2.4 <- DT::renderDT({
@@ -1088,12 +1116,17 @@ server <- function(input, output) {
       ggplot()+
       aes(x = Jahr, y = Wert, color = Bundesland)+
       geom_point(size = 2)+
-      geom_line(size= 1.25)+
+      geom_line(aes(group = Bundesland), size= 1.25)+
+      scale_color_manual(values = c("#36587d", "#6DB2FC")) +
+      scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahr",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
-      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+      theme(
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   })
   
   output$Wetter2.4 <- DT::renderDT({
@@ -1114,12 +1147,13 @@ server <- function(input, output) {
       filter(Messparameter == input$Messparameter3.3.1) %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
-      geom_col(position = "dodge")+
+      geom_col(position = "dodge", fill = "#2c3e50")+
+      geom_label(aes(label=Wert)) +
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1142,11 +1176,13 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.3.2) %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
-      geom_col(position = "dodge")+
+      geom_col(position = "dodge", fill = "#2c3e50")+
+      geom_label(aes(label=Wert)) +
+      scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1169,13 +1205,15 @@ server <- function(input, output) {
       filter(Mostsorte == input$Mostsorte3.3.2) %>%
       filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) %>%
       ggplot()+
-      aes(x = Bundesland, y = Wert, fill = Jahr)+
-      geom_col(position = "dodge")+
+      aes(x = Bundesland, y = Wert)+
+      geom_col(aes(fill = Jahr), position = "dodge")+
+      geom_label(aes(label=Wert, group = Jahr), position = position_dodge(1), size = 3) +
+      scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1198,13 +1236,15 @@ server <- function(input, output) {
       filter(Wetterphänomen == input$Wetterphänomen3.3.2) %>%
       filter(Jahr == input$Jahr3.3.5 | Jahr == input$Jahr3.3.6) %>%
       ggplot()+
-      aes(x = Bundesland, y = Wert, fill = Jahr)+
-      geom_col(position = "dodge")+
-      scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
+      aes(x = Bundesland, y = Wert)+
+      geom_col(aes(fill = Jahr), position = "dodge")+
+      geom_label(aes(label=Wert, group = Jahr), position = position_dodge(1), size = 3) +
+      scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
+      scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt")+
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1291,7 +1331,7 @@ server <- function(input, output) {
       aes(x = Jahr, y = hl, color = Bundesland)+
       geom_point(size = 2)+
       geom_line(aes(group = Bundesland), size = 1.25)+
-      scale_color_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_color_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 10300000), breaks = seq(0, 10300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
@@ -1351,7 +1391,7 @@ server <- function(input, output) {
       aes(x = Bundesland, y = hl)+
       geom_col(position = "dodge", aes(fill = Jahr))+
       geom_label(aes(label=hl, group = Jahr), position = position_dodge(1), size = 2.25) +
-      scale_fill_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 10300000), breaks = seq(0, 10300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesländer",
@@ -1444,7 +1484,7 @@ server <- function(input, output) {
       aes(x = Jahr, y = hl, color = Bundesland)+
       geom_point(size = 2)+
       geom_line(aes(group = Bundesland), size = 1.25)+
-      scale_color_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_color_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 18300000), breaks = seq(0, 18300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
@@ -1504,7 +1544,7 @@ server <- function(input, output) {
       aes(x = Bundesland, y = hl)+
       geom_col(position = "dodge", aes(fill = Jahr))+
       geom_label(aes(label=hl, group = Jahr), position = position_dodge(1), size = 2.25) +
-      scale_fill_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 18300000), breaks = seq(0, 18300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesländer",

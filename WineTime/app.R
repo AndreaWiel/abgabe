@@ -209,12 +209,6 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                  fluid = TRUE, 
                  collapsible = TRUE,
                  
-                 
-                 
-                 # tags$head(
-                 #    tags$style(HTML("@import url('//fonts.googleapis.com/css?family=Dancing+Script:wght@700&display=swap"))
-                 #  ),
-                 
                  # headerPanel(
                  #  h1("WineTime",
                  #   style = "font-family: 'Dancing Script', cursive;

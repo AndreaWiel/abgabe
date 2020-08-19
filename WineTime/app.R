@@ -1333,7 +1333,7 @@ server <- function(input, output) {
       summarise(hl = sum(hl, na.rm = TRUE)) %>% 
       pull(hl)
     if(STProduktion1.1 == 0) {
-      AProduktion1.1 <- annotate("text", x = 7, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 5)
+      AProduktion1.1 <- annotate("text", x = 6.5, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 5)
     }
     Produktion1.1 %>%
       ggplot() +

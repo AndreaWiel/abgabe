@@ -1317,9 +1317,19 @@ server <- function(input, output) {
   })
   
   output$Weinproduktion1.1 <- renderPlot(width = "auto", height = 600, {
-    WP_BL_Jahr_WK_neu %>%
+    Produktion1.1 <- WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.1) %>%
-      filter(Jahr == input$Jahr4.1) %>%
+      filter(Jahr == input$Jahr4.1)
+    
+    AProduktion1.1 <- NULL
+    STProduktion1.1 <- Produktion1.1 %>% 
+      group_by(Bundesland) %>% 
+      summarise(hl = sum(hl, na.rm = TRUE)) %>% 
+      pull(hl)
+    if(STProduktion1.1 == 0) {
+      AProduktion1.1 <- annotate("text", x = 6.5, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 5)
+    }
+    Produktion1.1 %>%
       ggplot() +
       aes(x = Weinkategorie, y = hl) +
       geom_col(position = "dodge", fill = c("Weisswein: Qualitätswein" = "#8aa4be", "Weisswein: Prädikatswein" = "#8aa4be", "Weisswein: Wein und/oder Landwein" = "#8aa4be", "Weisswein: Insgesamt" = "#8aa4be", "Rotwein: Qualitätswein" = "#9e0657", "Rotwein: Prädikatswein" = "#9e0657", "Rotwein: Wein und/oder Landwein" = "#9e0657", "Rotwein: Insgesamt" = "#9e0657", "Insgesamt: Qualitätswein" = "#2c3e50", "Insgesamt: Prädikatswein" = "#2c3e50", "Insgesamt: Wein und/oder Landwein" = "#2c3e50", "Insgesamt: alle Rebsorten und Weinkategorien" = "#2c3e50")) +
@@ -1332,7 +1342,8 @@ server <- function(input, output) {
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+      AProduktion1.1
   })
   
   output$Weinproduktion1.2 <- DT::renderDT({
@@ -1347,10 +1358,21 @@ server <- function(input, output) {
   })
   
   output$Weinproduktion2.1 <- renderPlot({
-    WP_BL_Jahr_WK_neu %>%
+    Produktion2.1 <- WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.2.1) %>%
-      filter(Weinkategorie %in% input$Weinkategorie) %>%
-      ggplot()+
+      filter(Weinkategorie %in% input$Weinkategorie)
+    
+    AProduktion2.1 <- NULL
+    STProduktion2.1 <- Produktion2.1 %>% 
+      group_by(Bundesland) %>% 
+      summarise(hl = sum(hl, na.rm = TRUE)) %>% 
+      pull(hl)
+    if(STProduktion2.1 == 0) {
+      AProduktion2.1 <- annotate("text", x = 2014, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 4)
+    }
+    
+    Produktion2.1 %>%
+      ggplot() +
       aes(x = Jahr, y = hl, color = Weinkategorie)+
       geom_point(size = 2)+
       geom_line(aes(group = Weinkategorie),size = 1.25)+
@@ -1363,7 +1385,8 @@ server <- function(input, output) {
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+      AProduktion2.1
   })
   
   output$Weinproduktion2.2 <- DT::renderDT({
@@ -1475,7 +1498,7 @@ server <- function(input, output) {
   output$Weinbestand1.1 <- renderPlot(width = "auto", height = 600, {
     WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.1) %>%
-      filter(Jahr == input$Jahr5.1) %>% 
+      filter(Jahr == input$Jahr5.1) %>%
       ggplot() +
       aes(x = Rebsorte, y = hl) +
       geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +

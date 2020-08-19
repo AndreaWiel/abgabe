@@ -278,6 +278,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
@@ -324,6 +325,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr2.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
@@ -376,6 +378,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.1.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
@@ -416,6 +419,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.2", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
@@ -433,6 +437,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
@@ -454,6 +459,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.5", "Wählen Sie ein Bundesland*:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
@@ -497,6 +503,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
@@ -514,6 +521,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
@@ -535,6 +543,7 @@ ui <- navbarPage(title = "WineTime",
                                                  )
                                        )
                                      ),
+                                     br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),

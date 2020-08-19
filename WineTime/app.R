@@ -1206,17 +1206,19 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
-      geom_col(aes(fill = Jahr), position = "dodge")+
+      geom_col(aes(fill = as.factor(Jahr)), position = "dodge")+
       geom_label(aes(label=Wert, group = Jahr), position = position_dodge(1), size = 3) +
       scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202",
+        fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
-            axis.title = element_text(size = 14))
+            axis.title = element_text(size = 14),
+            legend.position="top")
   })
   
   output$Weinernte3.4 <- DT::renderDT({
@@ -1237,17 +1239,19 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.3.5 | Jahr == input$Jahr3.3.6) %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
-      geom_col(aes(fill = Jahr), position = "dodge")+
+      geom_col(aes(fill = as.factor(Jahr)), position = "dodge")+
       geom_label(aes(label=Wert, group = Jahr), position = position_dodge(1), size = 3) +
       scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020",
+        fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
-            axis.title = element_text(size = 14))
+            axis.title = element_text(size = 14),
+            legend.position="top")
   })
   
   output$Wetter3.4 <- DT::renderDT({
@@ -1299,9 +1303,9 @@ server <- function(input, output) {
       filter(Weinkategorie %in% input$Weinkategorie) %>%
       ggplot()+
       aes(x = Jahr, y = hl, color = Weinkategorie)+
-      geom_point(size = 3.5)+
-      geom_line(aes(group = Weinkategorie),size = 2)+
-      scale_color_manual(values = c("Weißwein: Qualitätswein" = "#a6c3e3", "Weißwein: Prädikatswein" = "#8ca5bf", "Weißwein: Wein und/oder Landwein" = "#badbff", "Weißwein: Insgesamt" = "#66798c", "Rotwein: Qualitätswein" = "#d10873", "Rotwein: Prädikatswein" = "#9e0657", "Rotwein: Wein und/oder Landwein" = "#ff0a8d", "Rotwein: Insgesamt" = "#6b043b", "Insgesamt: Qualitätswein" = "#466482", "Insgesamt: Prädikatswein" = "#2c3e50", "Insgesamt: Wein und/oder Landwein" = "#628bb5", "Insgesamt: alle Rebsorten und Weinkategorien" = "#1c2733")) +
+      geom_point(size = 2)+
+      geom_line(aes(group = Weinkategorie),size = 1.25)+
+      scale_color_manual(values = c("Weißwein: Qualitätswein" = "#a6c3e3", "Weißwein: Prädikatswein" = "#8ca5bf", "Weißwein: Wein und/oder Landwein" = "#badbff", "Weißwein: Insgesamt" = "#66798c", "Rotwein: Qualitätswein" = "#d10873", "Rotwein: Prädikatswein" = "#9e0657", "Rotwein: Wein und/oder Landwein" = "#ff0a8d", "Rotwein: Insgesamt" = "#6b043b", "Insgesamt: Qualitätswein" = "#466482", "Insgesamt: Prädikatswein" = "#2c3e50", "Insgesamt: Wein und/oder Landwein" = "#628bb5", "Insgesamt: alle Rebsorten und Weinkategorien" = "#0F161C")) +
       scale_y_continuous(limits = c(0, 10300000), breaks = seq(0, 10300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
@@ -1389,14 +1393,15 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr4.3.2 | Jahr == input$Jahr4.3.3) %>%
       ggplot()+
       aes(x = Bundesland, y = hl)+
-      geom_col(position = "dodge", aes(fill = Jahr))+
+      geom_col(position = "dodge", aes(fill = as.factor(Jahr)))+
       geom_label(aes(label=hl, group = Jahr), position = position_dodge(1), size = 2.25) +
       scale_fill_manual(values = c("#36587d", "#6DB2FC")) +
       scale_y_continuous(limits = c(0, 10300000), breaks = seq(0, 10300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesländer",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020",
+        fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14),

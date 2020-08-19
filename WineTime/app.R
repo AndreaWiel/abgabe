@@ -964,7 +964,7 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte1 == 0) {
-      AErnte1 <- annotate("text", x = 2005, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 7)
+      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
     }
     
     Ernte1 %>%
@@ -1037,7 +1037,7 @@ server <- function(input, output) {
        summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
        pull(Wert)
      if(STErnte2.1 == 0) {
-       AErnte2.1 <- annotate("text", x = 1998, y = 2015, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 2)
+       AErnte2.1 <- annotate("text", x = 2005, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
      }
      
      Ernte2.1 %>%
@@ -1110,7 +1110,7 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte2.3 == 0) {
-      AErnte2.3 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
+      AErnte2.3 <- annotate("text", x = 1993, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
     }
     Ernte2.3 %>%
       ggplot()+
@@ -1185,10 +1185,10 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte3.1 == 0) {
-      AErnte3.1 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
+      AErnte3.1 <- annotate("text", x = Bundesland, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
     }
     Ernte3.1 %>%
-      ggplot()+
+      ggplot() +
       aes(x = Bundesland, y = Wert)+
       geom_col(position = "dodge", fill = "#2c3e50")+
       geom_label(aes(label=Wert)) +
@@ -1199,7 +1199,7 @@ server <- function(input, output) {
         caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
-            axis.title = element_text(size = 14)) 
+            axis.title = element_text(size = 14)) +
     AErnte3.1
   })
   

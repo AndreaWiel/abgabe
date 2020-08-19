@@ -17,6 +17,7 @@ library(gghighlight)
 library(lubridate)
 library(tidyverse)
 library(shinydashboard)
+library(shinyWidgets)
 library(dplyr)
 
 # Daten einlesen ----
@@ -89,7 +90,7 @@ WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
            "Insgesamt: Qualitätswein" = "insgesamt...Qualitaetswein",
            "Insgesamt: Prädikatswein" = "Insgesamt...Praedikatswein",
            "Insgesamt: Wein und/oder Landwein" = "Insgesamt...Wein.und.oder.Landwein",
-           "Insgesamt: alles Rebsorten und Weinkategorien" = "Insgesamt...Rebsorten")) %>%
+           "Insgesamt: alle Rebsorten und Weinkategorien" = "Insgesamt...Rebsorten")) %>%
   gather("Weinkategorie", "hl", 3:14)
 
 WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
@@ -578,7 +579,8 @@ ui <- navbarPage(title = "WineTime",
                                      includeHTML("Weinproduktion.html"),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    selectInput("Bundesland4.2.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1])
+                                                    selectInput("Bundesland4.2.1", "Wählen Sie ein Bundesland:", choices = WP_BL_Op, selected = WP_BL_Op[1]),
+                                                    checkboxGroupInput("Weinkategorie", "Wählen Sie verschiedene Weinkategorien:", choices = WP_WK_Op, selected = WP_WK_Op[1])
                                        ),
                                        mainPanel(h4(strong("Weinproduktion im Zeitvergleich")),
                                                  textOutput('Wahl4.2.1'),
@@ -844,7 +846,7 @@ server <- function(input, output) {
       aes(x = Jahr, y = ha, color = Anbaugebiet)+
       geom_point(size = 2)+
       geom_line(aes(group = Anbaugebiet), size = 1.25)+
-      scale_color_manual(values = c("#8BCCCA", "92A2D6")) +
+      scale_color_manual(values = c("#8BCCCA", "#92A2D6")) +
       scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
@@ -978,9 +980,9 @@ server <- function(input, output) {
       filter(Jahr == input$Jahr3.1.2) %>%
       ggplot() +
       aes(x = Wetterphänomen, y = Wert) +
-      geom_col(position = "dodge") +
+      geom_col(position = "dodge", fill = c("Frosttage" = "#89B1D9", "Regenmenge in mm (1mm = 1l/m²)" = "#8FCFE3", "Sommertage" = "#89D9A9", "Sonnenstunden" = "#9895ED", "Temperaturdurchschnitt in °C" = "#A88FE3")) +
       geom_label(aes(label=Wert)) + 
-      ylim(0, 2153) +
+      scale_y_continuous(limits = c(0, 2160), breaks = seq(0, 2160, by = 100), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Wetterphänomene",
         y = "Wert der Wettervariablen",
@@ -1169,6 +1171,7 @@ server <- function(input, output) {
       ggplot()+
       aes(x = Bundesland, y = Wert, fill = Jahr)+
       geom_col(position = "dodge")+
+      scale_y_continuous(limits = c(0, 12300970), breaks = seq(0, 12300970, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
@@ -1253,11 +1256,12 @@ server <- function(input, output) {
   output$Weinproduktion2.1 <- renderPlot({
     WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.2.1) %>%
+      filter(Weinkategorie %in% input$Weinkategorie) %>%
       ggplot()+
       aes(x = Jahr, y = hl, color = Weinkategorie)+
-      geom_point(size = 2)+
-      geom_line(aes(group = Weinkategorie), size = 1.25)+
-      scale_color_manual(values = c("Weisswein: Qualitätswein" = "#8D8BCC", "Weisswein: Prädikatswein" = "#92A2D6", "Weisswein: Wein und/oder Landwein" = "#92C6D6", "Weisswein: Insgesamt" = "#8aa4be", "Rotwein: Qualitätswein" = "#7A02AB", "Rotwein: Prädikatswein" = "#B202B5", "Rotwein: Wein und/oder Landwein" = "#B50208", "Rotwein: Insgesamt" = "#9e0657", "Insgesamt: Qualitätswein" = "#2F2E5C", "Insgesamt: Prädikatswein" = "#333F66", "Insgesamt: Wein und/oder Landwein" = "#335A66", "Insgesamt: alle Rebsorten und Weinkategorien" = "#2c3e50")) +
+      geom_point(size = 3.5)+
+      geom_line(aes(group = Weinkategorie),size = 2)+
+      scale_color_manual(values = c("Weißwein: Qualitätswein" = "#a6c3e3", "Weißwein: Prädikatswein" = "#8ca5bf", "Weißwein: Wein und/oder Landwein" = "#badbff", "Weißwein: Insgesamt" = "#66798c", "Rotwein: Qualitätswein" = "#d10873", "Rotwein: Prädikatswein" = "#9e0657", "Rotwein: Wein und/oder Landwein" = "#ff0a8d", "Rotwein: Insgesamt" = "#6b043b", "Insgesamt: Qualitätswein" = "#466482", "Insgesamt: Prädikatswein" = "#2c3e50", "Insgesamt: Wein und/oder Landwein" = "#628bb5", "Insgesamt: alle Rebsorten und Weinkategorien" = "#1c2733")) +
       scale_y_continuous(limits = c(0, 10300000), breaks = seq(0, 10300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",

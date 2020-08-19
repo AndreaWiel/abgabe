@@ -924,10 +924,23 @@ server <- function(input, output) {
   })
   
   output$Weinernte1.1 <- renderPlot({
-    E_BL_Jahr_RS_neu %>%
+    temp <- E_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland3.1.1) %>%
       filter(Jahr == input$Jahr3.1.1) %>%
-      filter(Messparameter == input$Messparameter3.1) %>%
+      filter(Messparameter == input$Messparameter3.1) 
+    
+    
+    anmerkung <- NULL
+    
+    summentabelle <- temp %>% group_by(Bundesland) %>% 
+      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% pull(Wert)
+    
+    
+    if(summentabelle == 0) {
+      anmerkung <- annotate("text", x = 2, y = 6000000, label = "Dieses Bundesland hat keine Weinernte!", size = 9)
+    }
+    
+    temp %>%
       ggplot() +
       aes(x = Mostsorte, y = Wert) +
       geom_col(position = "dodge", fill = c("#8aa4be", "#9e0657", "#2c3e50")) +
@@ -939,7 +952,8 @@ server <- function(input, output) {
         caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
       theme(
         axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14))
+        axis.title = element_text(size = 14)) +
+      anmerkung
   })
   
   output$Weiernte1.2 <- DT::renderDT({

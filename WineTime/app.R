@@ -45,9 +45,9 @@ our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 # Daten aufbereiten ----
 
 ## NA mit 0 ersetzen
+RF_ABG_Jahr_RS[is.na(RF_ABG_Jahr_RS)] <- 0
 E_BL_Jahr_RS[is.na(E_BL_Jahr_RS)] <- 0
 WP_BL_Jahr_WK[is.na(WP_BL_Jahr_WK)] <- 0
-RF_ABG_Jahr_RS[is.na(RF_ABG_Jahr_RS)] <- 0
 WB_BL_Jahr_RS[is.na(WB_BL_Jahr_RS)] <- 0
 
 
@@ -803,9 +803,21 @@ server <- function(input, output) {
   })
   
   output$Weinanbaugebiete1.1 <- renderPlot({
-    RF_ABG_Jahr_RS_neu %>%
+    
+    Anbau1 <- RF_ABG_Jahr_RS_neu %>%
       filter(Anbaugebiet == input$Anbaugebiet2.1) %>%
-      filter(Jahr == input$Jahr2.1) %>%
+      filter(Jahr == input$Jahr2.1)
+    
+    AAnbau1 <- NULL
+    STAnbau1 <- Anbau1 %>% 
+      group_by(Anbaugebiet) %>% 
+      summarise(ha = sum(ha, na.rm = TRUE)) %>% 
+      pull(ha)
+    if(STAnbau1 == 0) {
+      AAnbau1 <- annotate("text", x = 2, y = 6000000, label = "Für den ausgewählten Zeitpunkt liegen im ausgewählten Anbaugebiet leider keine Daten vor.", size = 5)
+    }
+    
+    Anbau1 %>%
       ggplot() +
       aes(x = Rebsorte, y = ha) +
       geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
@@ -817,7 +829,8 @@ server <- function(input, output) {
         caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14))
+        axis.title = element_text(size = 14))+
+      AAnbau1
   })
   
   output$Weinanbaugebiete1.2 <- DT::renderDT({

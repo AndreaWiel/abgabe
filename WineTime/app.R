@@ -368,7 +368,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.1.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Bundesland3.1.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Messparameter3.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Messparameter3.1", "Wählen Sie einen Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
                                                     h6("Rotmost | Einschließlich Most aus gemischten Beständen.")
@@ -411,7 +411,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.1", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Messparameter3.2.1", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Messparameter3.2.1", "Wählen Sie einen Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
                                                     h6("Rotmost | Einschließlich Most aus gemischten Beständen.")
@@ -451,9 +451,9 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.3", "Wählen Sie ein Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Bundesland3.2.4", "Wählen Sie ein weiteres Bundesland:", choices = E_BL_Op, selected = E_BL_Op[1]),
-                                                    selectInput("Messparameter3.2.2", "Wählen Sie ein Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
-                                                    selectInput("Mostsorte3.2", "Wählen Sie eine Mostsorte", choices = E_MS_Op, selected = E_MS_Op),
+                                                    selectInput("Bundesland3.2.4", "Wählen Sie ein weiteres Bundesland:", choices = E_BL_Op, selected = E_BL_Op[2]),
+                                                    selectInput("Messparameter3.2.2", "Wählen Sie einen Messparameter", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Mostsorte3.2", "Wählen Sie eine Mostsorte", choices = E_MS_Op, selected = E_MS_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
                                                     h6("Rotmost | Einschließlich Most aus gemischten Beständen.")
@@ -475,7 +475,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.5", "Wählen Sie ein Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
                                                     selectInput("Bundesland3.2.6", "Wählen Sie ein weiteres Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[2]),
-                                                    selectInput("Wetterphänomen3.2", "Wählen Sie eine Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1]),
+                                                    selectInput("Wetterphänomen3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
                                        ),
@@ -498,7 +498,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Messparameter3.3.1", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Messparameter3.3.1", "Wählen Sie einen Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
                                                     selectInput("Mostsorte3.3.1", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
@@ -519,8 +519,8 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      br(),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
-                                                    sliderInput("Jahr3.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
-                                                    selectInput("Wetterphänomen3.3.1", "Wählen Sie eine Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
+                                                    sliderInput("Jahr3.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
+                                                    selectInput("Wetterphänomen3.3.1", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
                                        ),
                                        mainPanel(h4(strong("Wetter im Ländervergleich")),
                                                  textOutput('Wahl3.3.2'),
@@ -539,7 +539,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.3", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr3.3.4", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Messparameter3.3.2", "Wählen Sie ein Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
+                                                    selectInput("Messparameter3.3.2", "Wählen Sie einen Messparameter:", choices = E_MP_Op, selected = E_MP_Op[1]),
                                                     selectInput("Mostsorte3.3.2", "Wählen Sie eine Mostsorte:", choices = E_MS_Op, selected = E_MS_Op[1]),
                                                     h6("Hinweis:"),
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
@@ -1213,7 +1213,7 @@ server <- function(input, output) {
   
   ## Weinernte 3.1 ----
   output$Wahl3.3.1 <- renderText({
-    paste("Weinernte (", input$Messparameter3.3.1, ") der Bundesländer für die Mostsorte", input$Rebsorte3.3.1, "im Jahr", input$Jahr3.3.1, ".")
+    paste("Weinernte (", input$Messparameter3.3.1, ") der Bundesländer für die Mostsorte", input$Mostsorte3.3.1, "im Jahr", input$Jahr3.3.1, ".")
   })
   
   output$Weinernte3.1 <- renderPlot({

@@ -814,7 +814,7 @@ server <- function(input, output) {
       summarise(ha = sum(ha, na.rm = TRUE)) %>% 
       pull(ha)
     if(STAnbau1 == 0) {
-      AAnbau1 <- annotate("text", x = 2, y = 6000000, label = "Für den ausgewählten Zeitpunkt liegen im ausgewählten Anbaugebiet leider keine Daten vor.", size = 5)
+      AAnbau1 <- annotate("text", x = 2, y = 60000, label = "Für den ausgewählten Zeitpunkt liegen im ausgewählten Anbaugebiet leider keine Daten vor.", size = 5)
     }
     
     Anbau1 %>%
@@ -845,7 +845,7 @@ server <- function(input, output) {
   })
   
   output$Weinanbaugebiete2.1 <- renderPlot({
-    RF_ABG_Jahr_RS_neu %>%
+      RF_ABG_Jahr_RS_neu %>%
       filter(Anbaugebiet == input$Anbaugebiet2.2.1) %>%
       ggplot()+
       aes(x = Jahr, y = ha, color = Rebsorte)+

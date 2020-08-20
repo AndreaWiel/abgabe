@@ -259,10 +259,10 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Anbaugebiet2.2.1", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
-                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
-                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
-                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
-                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
+                                                    h6("Die Weingebiete umfassen folgende Bundesländer: Mittelrhein: Rheinland-Pfalz & Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz & Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer.
+                                                                    Saale-Unstrut: Brandenburg & Sachsen-Anhalt & Thüringen.
+                                                                    Sachsen: Brandenburg & Sachsen-Anhalt & Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.1'),
@@ -282,10 +282,10 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                                     selectInput("Anbaugebiet2.2.2", "Wählen Sie ein Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[1]),
                                                     selectInput("Anbaugebiet2.2.3", "Wählen Sie ein weiteres Anbaugebiet:", choices = RF_ABG_Op, selected = RF_ABG_Op[2]),
                                                     selectInput("Rebsorte2.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
-                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
-                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
-                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
-                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
+                                                    h6("Die Weingebiete umfassen folgende Bundesländer: Mittelrhein: Rheinland-Pfalz & Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz & Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer.
+                                                                    Saale-Unstrut: Brandenburg & Sachsen-Anhalt & Thüringen.
+                                                                    Sachsen: Brandenburg & Sachsen-Anhalt & Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Zeitvergleich")),
                                                  textOutput('Wahl2.2.2'),
@@ -306,10 +306,10 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr2.3.1", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Rebsorte2.3.1", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
-                                                    h6("Hinweis: Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
-                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
-                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
-                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
+                                                    h6("Die Weingebiete umfassen folgende Bundesländer: Mittelrhein: Rheinland-Pfalz & Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz & Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer.
+                                                                    Saale-Unstrut: Brandenburg & Sachsen-Anhalt & Thüringen.
+                                                                    Sachsen: Brandenburg & Sachsen-Anhalt & Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.1'),
@@ -329,10 +329,10 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                                     sliderInput("Jahr2.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr2.3.3", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
                                                     selectInput("Rebsorte2.3.2", "Wählen Sie eine Rebsorte:", choices = RF_RS_Op, selected = RF_RS_Op[1]),
-                                                    h6("Hinweis:    Mittelrhein: Rheinland-Pfalz. Nordrhein-Westfalen.
-                                                                     Mosel: Rheinland-Pfalz. Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer
-                                                                    Saale-Unstrut: Brandenburg. Sachsen-Anhalt. Thüringen.
-                                                                    Sachsen: Brandenburg. Sachsen-Anhalt. Sachsen.")
+                                                    h6("Die Weingebiete umfassen folgende Bundesländer: Mittelrhein: Rheinland-Pfalz & Nordrhein-Westfalen.
+                                                                     Mosel: Rheinland-Pfalz & Saarland. Bis 2007 Anbaugebiet Mosel-Saar-Ruwer.
+                                                                    Saale-Unstrut: Brandenburg & Sachsen-Anhalt & Thüringen.
+                                                                    Sachsen: Brandenburg & Sachsen-Anhalt & Sachsen.")
                                        ),
                                        mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
                                                  textOutput('Wahl2.3.2'),

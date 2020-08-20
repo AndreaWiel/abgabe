@@ -47,6 +47,9 @@ our_variables <- names(E_BL_Jahr_RS %>% select_if(selectable))
 ## NA mit 0 ersetzen
 E_BL_Jahr_RS[is.na(E_BL_Jahr_RS)] <- 0
 WP_BL_Jahr_WK[is.na(WP_BL_Jahr_WK)] <- 0
+RF_ABG_Jahr_RS[is.na(RF_ABG_Jahr_RS)] <- 0
+WB_BL_Jahr_RS[is.na(WB_BL_Jahr_RS)] <- 0
+
 
 ## Daten Rebfäche
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%

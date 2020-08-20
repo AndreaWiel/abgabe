@@ -50,6 +50,7 @@ E_BL_Jahr_RS[is.na(E_BL_Jahr_RS)] <- 0
 WP_BL_Jahr_WK[is.na(WP_BL_Jahr_WK)] <- 0
 WB_BL_Jahr_RS[is.na(WB_BL_Jahr_RS)] <- 0
 
+
 ## Daten Rebfäche
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
   gather("Jahr", "ha", 3:28)
@@ -838,7 +839,7 @@ server <- function(input, output) {
       summarise(ha = sum(ha, na.rm = TRUE)) %>% 
       pull(ha)
     if(STAnbau1 == 0) {
-      AAnbau1 <- annotate("text", x = 2, y = 6000000, label = "Für den ausgewählten Zeitpunkt liegen im ausgewählten Anbaugebiet leider keine Daten vor.", size = 5)
+      AAnbau1 <- annotate("text", x = 2, y = 60000, label = "Für den ausgewählten Zeitpunkt liegen im ausgewählten Anbaugebiet leider keine Daten vor.", size = 5)
     }
     
     Anbau1 %>%
@@ -869,7 +870,7 @@ server <- function(input, output) {
   })
   
   output$Weinanbaugebiete2.1 <- renderPlot({
-    RF_ABG_Jahr_RS_neu %>%
+      RF_ABG_Jahr_RS_neu %>%
       filter(Anbaugebiet == input$Anbaugebiet2.2.1) %>%
       ggplot()+
       aes(x = Jahr, y = ha, color = Rebsorte)+

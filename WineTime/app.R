@@ -51,9 +51,15 @@ WP_BL_Jahr_WK[is.na(WP_BL_Jahr_WK)] <- 0
 WB_BL_Jahr_RS[is.na(WB_BL_Jahr_RS)] <- 0
 
 
-## Daten Rebfäche
+## Daten Rebfläche
 RF_ABG_Jahr_RS_neu <- RF_ABG_Jahr_RS %>%
   gather("Jahr", "ha", 3:28)
+  
+RF_ABG_Jahr_RS_neu$Anbaugebiet <- recode(RF_ABG_Jahr_RS_neu$Anbaugebiet,
+                                        Wuerttemberg = "Württemberg")
+RF_ABG_Jahr_RS_neu$Rebsorte <- recode(RF_ABG_Jahr_RS_neu$Rebsorte,
+                                      Weisswein = "Weißwein",
+                                      Insgesamt = "Wein insgesamt")
 
 RF_ABG_Op <- RF_ABG_Jahr_RS_neu$Anbaugebiet %>% unique()
 RF_RS_Op <- RF_ABG_Jahr_RS_neu$Rebsorte %>% unique()
@@ -79,6 +85,10 @@ E_BL_Jahr_RS_EM_EE <- left_join(E_BL_Jahr_RS_EM, E_BL_Jahr_RS_EE, by = c("Bundes
 E_BL_Jahr_RS_neu <- left_join(E_BL_Jahr_RS_EM_EE, E_BL_Jahr_RS_RE, by = c("Bundesland", "Jahr", "Mostsorte")) %>%
   gather("Messparameter", "Wert", 4:6)
 
+E_BL_Jahr_RS_neu$Bundesland <- recode(E_BL_Jahr_RS_neu$Bundesland,
+                                      "Baden-Wuerttemberg" = "Baden-Württemberg",
+                                      "Thueringen" = "Thüringen")
+
 E_BL_Op <- E_BL_Jahr_RS_neu$Bundesland %>% unique()
 E_MS_Op <- E_BL_Jahr_RS_neu$Mostsorte %>% unique()
 E_MP_Op <- E_BL_Jahr_RS_neu$Messparameter %>% unique()
@@ -100,6 +110,10 @@ WP_BL_Jahr_WK_neu <- WP_BL_Jahr_WK %>%
            "Insgesamt: alle Rebsorten und Weinkategorien" = "Insgesamt...Rebsorten")) %>%
   gather("Weinkategorie", "hl", 3:14)
 
+WP_BL_Jahr_WK_neu$Bundesland <- recode(WP_BL_Jahr_WK_neu$Bundesland,
+                                       "Baden-Wuerttemberg" = "Baden-Württemberg",
+                                       "Thueringen" = "Thüringen")
+
 WP_BL_Op <- WP_BL_Jahr_WK_neu$Bundesland %>% unique()
 WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique() 
 
@@ -107,6 +121,13 @@ WP_WK_Op <- WP_BL_Jahr_WK_neu$Weinkategorie %>% unique()
 ## Daten Weinbestand
 WB_BL_Jahr_RS_neu <- WB_BL_Jahr_RS %>%
   gather("Jahr", "hl", 3:28)
+
+WB_BL_Jahr_RS_neu$Bundesland <- recode(WB_BL_Jahr_RS_neu$Bundesland,
+                                       "Baden-Wuerttemberg" = "Baden-Württemberg",
+                                       "Thueringen" = "Thüringen")
+WB_BL_Jahr_RS_neu$Rebsorte <- recode(WB_BL_Jahr_RS_neu$Rebsorte,
+                                     Weisswein = "Weißwein",
+                                     Insgesamt = "Wein insgesamt")
 
 WB_BL_Op <- WB_BL_Jahr_RS_neu$Bundesland %>% unique()
 WB_RS_Op <- WB_BL_Jahr_RS_neu$Rebsorte %>% unique()
@@ -215,12 +236,6 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                  footer = includeHTML("footer.html"),
                  fluid = TRUE, 
                  collapsible = TRUE,
-                 
-                 # headerPanel(
-                 #  h1("WineTime",
-                 #   style = "font-family: 'Dancing Script', cursive;
-                 #    font-weight: 900; line-height: 3.2; 
-                 #  color: #B3056A;")), #9e0657
                  
                  # tabPanel 1 - Home ----
                  tabPanel("Home", 
@@ -389,7 +404,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.1.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Bundesland3.1.2", "Wählen Sie ein Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
+                                                    selectInput("Bundesland3.1.2", "Wählen Sie ein Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[3]),
                                                     h6("Hinweis:"),
                                                     h6("Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
                                        ),
@@ -474,8 +489,8 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     selectInput("Bundesland3.2.5", "Wählen Sie ein Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[1]),
-                                                    selectInput("Bundesland3.2.6", "Wählen Sie ein weiteres Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[2]),
-                                                    selectInput("Wetterphänomen3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1]),
+                                                    selectInput("Bundesland3.2.6", "Wählen Sie ein weiteres Bundesland:", choices = Wetter_BL_Op, selected = Wetter_BL_Op[3]),
+                                                    selectInput("Wetterphänomen3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[3]),
                                                     h6("Hinweis:"),
                                                     h6("Die Stadtstaaten Berlin, Bremen und Hamburg können aufgrund nicht ausreichend differenzierter Daten leider nicht einzeln ausgewiesen werden. Die Wetterdaten für Berlin können nur in Verbindung mit Brandenburg betrachtet werden, sowie die Wetterdaten für Bremen und Hamburg nur in Verbindung mit Niedersachsen.")
                                        ),
@@ -520,7 +535,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.2", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Wetterphänomen3.3.1", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
+                                                    selectInput("Wetterphänomen3.3.1", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[3])
                                        ),
                                        mainPanel(h4(strong("Wetter im Ländervergleich")),
                                                  textOutput('Wahl3.3.2'),
@@ -562,7 +577,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
                                                     sliderInput("Jahr3.3.5", "Wählen Sie ein Jahr:", min = 1993, max = 2018, value = 2005, step = 1, sep = ""),
                                                     sliderInput("Jahr3.3.6", "Wählen Sie ein weiteres Jahr:", min = 1993, max = 2018, value = 2010, step = 1, sep = ""),
-                                                    selectInput("Wetterphänomen3.3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[1])
+                                                    selectInput("Wetterphänomen3.3.2", "Wählen Sie ein Wetterphänomen:", choices = Wetter_WP_Op, selected = Wetter_WP_Op[3])
                                        ),
                                        mainPanel(h4(strong("Wetter im Ländervergleich")),
                                                  textOutput('Wahl3.3.4'),
@@ -595,7 +610,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                                     h6("Sachsen-Anhalt | Einschließlich Thüringen ab 1998."),
                                                     h6("Rotwein | Einschließlich Rotling und Roséwein.")
                                        ),
-                                       mainPanel(h4(strong("Weinbestände der Bundesländer")),
+                                       mainPanel(h4(strong("Weinproduktion der Bundesländer")),
                                                  textOutput('Wahl4.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik", icon = icon("bar-chart-o"),
@@ -845,13 +860,13 @@ server <- function(input, output) {
     Anbau1 %>%
       ggplot() +
       aes(x = Rebsorte, y = ha) +
-      geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      geom_col(position = "dodge", fill = c("Weißwein" = "#8aa4be", "Rotwein" = "#9e0657", "Wein insgesamt" = "#2c3e50")) +
       geom_label(aes(label=ha)) + 
       scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Rebsorten",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14))+
@@ -876,12 +891,12 @@ server <- function(input, output) {
       aes(x = Jahr, y = ha, color = Rebsorte)+
       geom_point(size = 2) +
       geom_line(aes(group = Rebsorte), size = 1.25)+
-      scale_color_manual(values = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      scale_color_manual(values = c("Weißwein" = "#8aa4be", "Rotwein" = "#9e0657", "Wein insgesamt" = "#2c3e50")) +
       scale_y_continuous(limits = c(0, 106300), breaks = seq(0, 106300, by = 10000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -911,7 +926,7 @@ server <- function(input, output) {
       labs(
         x = "Jahre",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -941,7 +956,7 @@ server <- function(input, output) {
       labs(
         x = "Anbaugebiete",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -971,7 +986,7 @@ server <- function(input, output) {
       labs(
         x = "Anbaugebiete",
         y = "Anbaufläche in ha",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14),
@@ -1004,7 +1019,7 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte1 == 0) {
-      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
+      AErnte1 <- annotate("text", x = 2, y = 6000000, label = "Für den ausgewählten Zeitpunkt im ausgewählten Bundesland gibt es keine Ernte oder es liegen leider keine Daten vor.", size = 5)
     }
     
     Ernte1 %>%
@@ -1016,7 +1031,7 @@ server <- function(input, output) {
       labs(
         x = "Mostsorte",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14)) +
@@ -1049,7 +1064,7 @@ server <- function(input, output) {
       labs(
         x = "Wetterphänomene",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020") +
+        caption = "Quelle: Deutscher Wetterdienst 2020 | Stand: 18.08.2020") +
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1080,7 +1095,7 @@ server <- function(input, output) {
        summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
        pull(Wert)
      if(STErnte2.1 == 0) {
-       AErnte2.1 <- annotate("text", x = 2005, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
+       AErnte2.1 <- annotate("text", x = 2005, y = 6000000, label = "In denm ausgewählten Bundesland gibt es keine Weinernte oder es liegen leider keine Daten vor.", size = 4)
      }
      
      Ernte2.1 %>%
@@ -1093,7 +1108,7 @@ server <- function(input, output) {
       labs(
         x = "Jahr",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1124,7 +1139,7 @@ server <- function(input, output) {
       labs(
         x = "Jahr",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1153,7 +1168,7 @@ server <- function(input, output) {
       summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
       pull(Wert)
     if(STErnte2.3 == 0) {
-      AErnte2.3 <- annotate("text", x = 1993, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 4)
+      AErnte2.3 <- annotate("text", x = 1993, y = 6000000, label = "In den ausgewählten Bundesländern gibt es keine Weinernte oder es liegen leider keine Daten vor.", size = 4)
     }
     Ernte2.3 %>%
       ggplot()+
@@ -1165,7 +1180,7 @@ server <- function(input, output) {
       labs(
         x = "Jahr",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1198,7 +1213,7 @@ server <- function(input, output) {
       labs(
         x = "Jahr",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1217,20 +1232,10 @@ server <- function(input, output) {
   })
   
   output$Weinernte3.1 <- renderPlot({
-   Ernte3.1 <- E_BL_Jahr_RS_neu %>%
+   E_BL_Jahr_RS_neu %>%
       filter(Mostsorte == input$Mostsorte3.3.1) %>%
       filter(Jahr == input$Jahr3.3.1) %>%
-      filter(Messparameter == input$Messparameter3.3.1)
-    
-    AErnte3.1 <- NULL
-    STErnte3.1 <- Ernte3.1 %>% 
-      group_by(Bundesland) %>% 
-      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
-      pull(Wert)
-    if(STErnte3.1 == 0) {
-      AErnte3.1 <- annotate("text", x = Bundesland, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
-    }
-    Ernte3.1 %>%
+      filter(Messparameter == input$Messparameter3.3.1) %>%
       ggplot() +
       aes(x = Bundesland, y = Wert)+
       geom_col(position = "dodge", fill = "#2c3e50")+
@@ -1239,11 +1244,10 @@ server <- function(input, output) {
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
-            axis.title = element_text(size = 14)) +
-    AErnte3.1
+            axis.title = element_text(size = 14)) 
   })
   
   output$Weinernte3.2 <- DT::renderDT({
@@ -1269,7 +1273,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesland",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Deutscher Wetterdienst 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1287,20 +1291,10 @@ server <- function(input, output) {
   })
   
   output$Weinernte3.3 <- renderPlot({
-    Ernte3.3 <- E_BL_Jahr_RS_neu %>%
+    E_BL_Jahr_RS_neu %>%
       filter(Messparameter == input$Messparameter3.3.2) %>%
       filter(Mostsorte == input$Mostsorte3.3.2) %>%
-      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) 
-    
-    AErnte3.3 <- NULL
-    STErnte3.3 <- Ernte3.3 %>% 
-      group_by(Bundesland) %>% 
-      summarise(Wert = sum(Wert, na.rm = TRUE)) %>% 
-      pull(Wert)
-    if(STErnte3.3 == 0) {
-      AErnte3.3 <- annotate("text", x = 2, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinernte oder es liegen keine Daten vor.", size = 5)
-    }
-    Ernte3.3 %>%
+      filter(Jahr == input$Jahr3.3.3 | Jahr == input$Jahr3.3.4) %>%
       ggplot()+
       aes(x = Bundesland, y = Wert)+
       geom_col(aes(fill = as.factor(Jahr)), position = "dodge")+
@@ -1310,13 +1304,12 @@ server <- function(input, output) {
       labs(
         x = "Bundesland",
         y = "Wert der Messvariablen",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202",
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.202",
         fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14),
-            legend.position="top") +
-    AErnte3.3
+            legend.position="top") 
   })
   
   output$Weinernte3.4 <- DT::renderDT({
@@ -1344,7 +1337,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesland",
         y = "Wert der Wettervariablen",
-        caption = "Quelle & Copyright: Deutscher Wetterdienst 2020 | Stand: 18.08.2020",
+        caption = "Quelle: Deutscher Wetterdienst 2020 | Stand: 18.08.2020",
         fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
@@ -1376,8 +1369,9 @@ server <- function(input, output) {
       summarise(hl = sum(hl, na.rm = TRUE)) %>% 
       pull(hl)
     if(STProduktion1.1 == 0) {
-      AProduktion1.1 <- annotate("text", x = 6.5, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 5)
+      AProduktion1.1 <- annotate("text", x = 6.5, y = 6000000, label = "Für den ausgewählten Zeitpunt im ausgewählten Bundesland gibt es keine Weinproduktion oder es liegen leider keine Daten vor.", size = 5)
     }
+    
     Produktion1.1 %>%
       ggplot() +
       aes(x = Weinkategorie, y = hl) +
@@ -1387,7 +1381,7 @@ server <- function(input, output) {
       labs(
         x = "Weinkategorien",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1407,6 +1401,10 @@ server <- function(input, output) {
   })
   
   output$Weinproduktion2.1 <- renderPlot({
+    validate(
+      need(input$Weinkategorie !="", "Bitte wählen Sie mindestens eine Weinkategorie aus.")
+    )
+    
     Produktion2.1 <- WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.2.1) %>%
       filter(Weinkategorie %in% input$Weinkategorie)
@@ -1417,7 +1415,7 @@ server <- function(input, output) {
       summarise(hl = sum(hl, na.rm = TRUE)) %>% 
       pull(hl)
     if(STProduktion2.1 == 0) {
-      AProduktion2.1 <- annotate("text", x = 2014, y = 6000000, label = "In diesem Bundesland gab es entweder keine Weinproduktion oder es liegen keine Daten vor.", size = 4)
+      AProduktion2.1 <- annotate("text", x = 2014, y = 6000000, label = "In dem ausgewählten Bundesland gibt es keine Weinproduktion oder es liegen leider keine Daten vor.", size = 4)
     }
     
     Produktion2.1 %>%
@@ -1430,7 +1428,7 @@ server <- function(input, output) {
       labs(
         x = "Jahre",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1449,9 +1447,20 @@ server <- function(input, output) {
   })
   
   output$Weinproduktion2.3 <- renderPlot({
-    WP_BL_Jahr_WK_neu %>%
+    Produktion2.2 <- WP_BL_Jahr_WK_neu %>%
       filter(Bundesland == input$Bundesland4.2.2 | Bundesland == input$Bundesland4.2.3) %>%
-      filter(Weinkategorie == input$Weinkategorie4.2) %>%
+      filter(Weinkategorie == input$Weinkategorie4.2)
+    
+    AProduktion2.2 <- NULL
+    STProduktion2.2 <- Produktion2.2 %>% 
+      group_by(Bundesland) %>% 
+      summarise(hl = sum(hl, na.rm = TRUE)) %>% 
+      pull(hl)
+    if(STProduktion2.2 == 0) {
+      AProduktion2.2 <- annotate("text", x = 2014, y = 6000000, label = "In den ausgewählten Bundesländern gibt es keine Weinproduktion oder es liegen leider keine Daten vor.", size = 4)
+    }
+    
+    Produktion2.2 %>% 
       ggplot()+
       aes(x = Jahr, y = hl, color = Bundesland)+
       geom_point(size = 2)+
@@ -1461,11 +1470,12 @@ server <- function(input, output) {
       labs(
         x = "Jahre",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+      AProduktion2.2
   })
   
   output$Weinproduktion2.4 <- DT::renderDT({
@@ -1491,7 +1501,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesländer",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1521,7 +1531,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesländer",
         y = "Weinproduktion in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020",
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020",
         fill = "Jahr")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
@@ -1545,21 +1555,33 @@ server <- function(input, output) {
   })
   
   output$Weinbestand1.1 <- renderPlot(width = "auto", height = 600, {
-    WB_BL_Jahr_RS_neu %>%
+   Bestand1 <- WB_BL_Jahr_RS_neu %>%
       filter(Bundesland == input$Bundesland5.1) %>%
-      filter(Jahr == input$Jahr5.1) %>%
+      filter(Jahr == input$Jahr5.1)
+      
+      ABestand1 <- NULL
+      STBestand1 <- Bestand1 %>% 
+        group_by(Bundesland) %>% 
+        summarise(hl = sum(hl, na.rm = TRUE)) %>% 
+        pull(hl)
+      if(STBestand1 == 0) {
+        ABestand1 <- annotate("text", x = 2, y = 6000000, label = "Für den ausgewählten Zeitpunt im ausgewählten Bundesland gibt es keinen Weinbestand oder es liegen leider keine Daten vor.", size = 5)
+      }
+    
+   Bestand1 %>%     
       ggplot() +
       aes(x = Rebsorte, y = hl) +
-      geom_col(position = "dodge", fill = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      geom_col(position = "dodge", fill = c("Weißwein" = "#8aa4be", "Rotwein" = "#9e0657", "Wein insgesamt" = "#2c3e50")) +
       geom_label(aes(label=hl)) + 
       scale_y_continuous(limits = c(0, 18300000), breaks = seq(0, 18300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Rebsorten",
         y = "Weinbestand in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020") +
       theme(
         axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14))
+        axis.title = element_text(size = 14))+
+      ABestand1
   })
   
   output$Weinbestand1.2 <- DT::renderDT({
@@ -1580,12 +1602,12 @@ server <- function(input, output) {
       aes(x = Jahr, y = hl, color = Rebsorte)+
       geom_point(size = 2)+
       geom_line(aes(group = Rebsorte), size = 1.25)+
-      scale_color_manual(values = c("Weisswein" = "#8aa4be", "Rotwein" = "#9e0657", "Insgesamt" = "#2c3e50")) +
+      scale_color_manual(values = c("Weißwein" = "#8aa4be", "Rotwein" = "#9e0657", "Wein insgesamt" = "#2c3e50")) +
       scale_y_continuous(limits = c(0, 18300000), breaks = seq(0, 18300000, by = 1000000), labels = function(x) format(x, scientific = FALSE)) +
       labs(
         x = "Jahre",
         y = "Weinbestand in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1615,7 +1637,7 @@ server <- function(input, output) {
       labs(
         x = "Jahre",
         y = "Weinbestand in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(
         axis.text = element_text(size = 12),
         axis.title = element_text(size = 14),
@@ -1645,7 +1667,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesländer",
         y = "Weinbestand in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14))
@@ -1675,7 +1697,7 @@ server <- function(input, output) {
       labs(
         x = "Bundesländer",
         y = "Weinbestand in hl",
-        caption = "Quelle & Copyright: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
+        caption = "Quelle: Statistisches Bundesamt (Destatis), 2020 | Stand: 18.08.2020")+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
             axis.text = element_text(size = 12),
             axis.title = element_text(size = 14),

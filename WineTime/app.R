@@ -321,7 +321,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                        )
                                      )
                             ),
-                            tabPanel("Anbaugebiete im Ländervergleich",
+                            tabPanel("Anbaugebiete im Flächenvergleich",
                                      includeHTML("Weinanbau.html"),
                                      sidebarLayout(
                                        sidebarPanel(h4(strong("Auswahlmöglichkeiten")),
@@ -333,7 +333,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                                     h6("Saale-Unstrut | Brandenburg, Sachsen-Anhalt & Thüringen"),
                                                     h6("Sachsen | Brandenburg, Sachsen-Anhalt & Sachsen")
                                        ),
-                                       mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
+                                       mainPanel(h4(strong("Anbaugebiete im Flächenvergleich")),
                                                  textOutput('Wahl2.3.1'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik", icon = icon("bar-chart-o"),
@@ -357,7 +357,7 @@ ui <- navbarPage(title = div(img(src='images/Weinglas_weiß.png',style="margin-t
                                                     h6("Saale-Unstrut | Brandenburg, Sachsen-Anhalt & Thüringen"),
                                                     h6("Sachsen | Brandenburg, Sachsen-Anhalt & Sachsen")
                                        ),
-                                       mainPanel(h4(strong("Anbaugebiete im Ländervergleich")),
+                                       mainPanel(h4(strong("Anbaugebiete im Flächenvergleich")),
                                                  textOutput('Wahl2.3.2'),
                                                  tabsetPanel(
                                                    tabPanel("Grafik", icon = icon("bar-chart-o"),
